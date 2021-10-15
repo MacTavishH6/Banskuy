@@ -15,7 +15,7 @@ class CreateMslevelgradeTable extends Migration
     {
         Schema::create('mslevelgrade', function (Blueprint $table) {
             
-            $table->increment("LevelGradeID");
+            $table->increments("LevelGradeID");
             $table->string("LevelName",36);
             $table->integer("LevelExp");
             $table->integer("LevelOrder");

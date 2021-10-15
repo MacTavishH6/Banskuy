@@ -15,7 +15,7 @@ class CreateMsuserlevelTable extends Migration
     {
         Schema::create('msuserlevel', function (Blueprint $table) {
             
-            $table->increment("LevelID");
+            $table->increments("LevelID");
             $table->integer("UserID");
             $table->integer("LevelGradeID");
             $table->date("ReceivedDate");
