@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.2', '7.3', '^8.*']
+        php-versions: ['7.2', '7.3', '8.0']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -51,6 +51,8 @@ jobs:
           # key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
+      - name: Update Composer
+        run: composer update
       - name: Install Composer dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Prepare the application
