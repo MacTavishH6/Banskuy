@@ -10,21 +10,21 @@ class User extends Authenticatable
 {
     protected $table = "msuser";
 
-    public function followpost(){
+    public function FollowPost(){
 
-        return $this->hasMany(followpost::class,'UserID','UserID');
-
-    }
-
-    public function userlevel(){
-
-        return $this->hasMany(userlevel::class,'UserID','UserID');
+        return $this->hasMany(FollowPost::class,'UserID','UserID');
 
     }
 
-    // public function donationtransaction(){
+    public function UserLevel(){
 
-    //     return $this->hasMany(donationtransaction::class,'UserID','UserID');
+        return $this->hasMany(UserLevel::class,'UserID','UserID');
 
-    // }
+    }
+
+    public function DonationTransaction(){
+
+        return $this->hasMany(DonationTransaction::class,'UserID','UserID');
+
+    }
 }
