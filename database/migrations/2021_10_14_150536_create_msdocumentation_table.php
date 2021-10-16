@@ -16,7 +16,7 @@ class CreateMsdocumentationTable extends Migration
         Schema::create('msdocumentation', function (Blueprint $table) {
             
             $table->increments("DocumentationID");
-            $table->integer("DonationTypeID");
+            $table->integer("DonationTypeID")->unsigned();
             $table->date("DocumentationDate");
 
             $table->foreign('DonationTypeID')->references('DonationTypeID')->on('MsDonationType');

@@ -16,12 +16,13 @@ class CreateTrfollowpostTable extends Migration
         Schema::create('trfollowpost', function (Blueprint $table) {
 
             $table->increments('FollowPostID');
-            $table->integer("UserID");
+            $table->integer("UserID")->unsigned();
             $table->integer("DonationTypeID");
 
-            $table->foreign('UserID')->references('UserID')->on('MsUser');
+            
 
             $table->timestamps();
+            $table->foreign('UserID')->references('UserID')->on('msuser');
         });
     }
 

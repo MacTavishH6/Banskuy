@@ -15,7 +15,7 @@ class CreateTrdocumentationphotoTable extends Migration
     {
         Schema::create('trdocumentationphoto', function (Blueprint $table) {
             
-            $table->integer("DocumentationID");
+            $table->integer("DocumentationID")->unsigned();
             $table->string("PhotoName",50);
 
             $table->foreign('DocumentationID')->references('DocumentationID')->on('MsDocumentation');
