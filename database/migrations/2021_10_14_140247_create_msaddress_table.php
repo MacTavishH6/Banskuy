@@ -16,13 +16,13 @@ class CreateMsaddressTable extends Migration
         Schema::create('msaddress', function (Blueprint $table) {
             $table->increments('AddressID');
             $table->integer('ID');
-            $table->integer('ProvinceID');
-            $table->integer('CityID');
+            $table->integer('ProvinceID')->unsigned();
+            $table->integer('CityID')->unsigned();
             $table->string('Address', 100);
             $table->timestamps();
 
-            // $table->foreign('ProvinceID')->references('ProvinceID')->on('msprovince');
-            // $table->foreign('CityID')->references('CityID')->on('mscity');
+             $table->foreign('ProvinceID')->references('ProvinceID')->on('msprovince');
+             $table->foreign('CityID')->references('CityID')->on('mscity');
         });
     }
 

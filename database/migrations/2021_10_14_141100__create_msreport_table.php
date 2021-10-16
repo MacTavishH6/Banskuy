@@ -17,11 +17,11 @@ class CreateMsreportTable extends Migration
             $table->increments('ReportID');
             $table->integer('IDTarget');
             $table->integer('IDSource');
-            $table->integer('ReportCategoryID');
+            $table->integer('ReportCategoryID')->unsigned();
             $table->string('Reason',255);
             $table->timestamps();
 
-            //$table->foreign('ReportCategoryID')->references('ReportCategoryID')->on('ltreportcategory');
+            $table->foreign('ReportCategoryID')->references('ReportCategoryID')->on('ltreportcategory');
         });
     }
 

@@ -15,19 +15,19 @@ class CreateTrdonationtransactionTable extends Migration
     {
         Schema::create('trdonationtransaction', function (Blueprint $table) {
             $table->increments('DonationTransactionID');
-            $table->integer('UserID');
-            $table->integer('FoundationID');
-            $table->integer('DonationTypeDetailID');
-            $table->integer('ApprovalStatusID');
+            $table->integer('UserID')->unsigned();
+            $table->integer('FoundationID')->unsigned();
+            $table->integer('DonationTypeDetailID')->unsigned();
+            $table->integer('ApprovalStatusID')->unsigned();
             $table->string('DonationDescriptionName', 255);
             $table->date('TransactionDate');
             $table->decimal('Quantity', $precision = 5, $scale = 2);
             $table->timestamps();
 
-            // $table->foreign('UserID')->references('UserID')->on('msuser');
-            // $table->foreign('FoundationID')->references('FoundationID')->on('msfoundation');
-            // $table->foreign('DonationTypeDetailID')->references('DonationTypeDetailID')->on('msdonationtypedetail');
-            // $table->foreign('ApprovalStatusID')->references('ApprovalStatusID')->on('msapprovalstatus');
+             $table->foreign('UserID')->references('UserID')->on('msuser');
+             $table->foreign('FoundationID')->references('FoundationID')->on('msfoundation');
+             $table->foreign('DonationTypeDetailID')->references('DonationTypeDetailID')->on('msdonationtypedetail');
+             $table->foreign('ApprovalStatusID')->references('ApprovalStatusID')->on('msapprovalstatus');
         });
     }
 

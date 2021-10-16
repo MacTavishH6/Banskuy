@@ -15,11 +15,11 @@ class CreateMscityTable extends Migration
     {
         Schema::create('mscity', function (Blueprint $table) {
             $table->increments('CityID');
-            $table->integer('ProvinceID');
+            $table->integer('ProvinceID')->unsigned();
             $table->string('CityName', 36);
             $table->timestamps();
 
-            // $table->foreign('ProvinceID')->references('ProvinceID')->on('msprovince');
+             $table->foreign('ProvinceID')->references('ProvinceID')->on('msprovince');
         });
     }
 

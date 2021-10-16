@@ -19,7 +19,7 @@ class CreateMsdocumentationTable extends Migration
             $table->integer("DonationTypeID")->unsigned();
             $table->date("DocumentationDate");
 
-            $table->foreign('DonationTypeID')->references('DonationTypeID')->on('MsDonationType');
+            $table->foreign('DonationTypeID')->references('DonationTypeID')->on('msdonationtype');
 
             $table->timestamps();
         });

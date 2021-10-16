@@ -19,7 +19,7 @@ class CreateTrlevelTable extends Migration
             $table->integer("Exp");
             $table->date("ReceivedDate");
 
-            $table->foreign('LevelID')->references('LevelID')->on('MsUserLevel');
+            $table->foreign('LevelID')->references('LevelID')->on('msuserlevel');
 
             $table->timestamps();
         });

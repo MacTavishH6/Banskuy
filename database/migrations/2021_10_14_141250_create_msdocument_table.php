@@ -15,16 +15,16 @@ class CreateMsdocumentTable extends Migration
     {
         Schema::create('msdocument', function (Blueprint $table) {
             $table->increments('DocumentID');
-            $table->integer('FoundationID');
-            $table->integer('DocumentTypeID');
+            $table->integer('FoundationID')->unsigned();
+            $table->integer('DocumentTypeID')->unsigned();
             $table->string('DocumentName',50);
             $table->integer('ApprovalStatusID');
             $table->date('UploadDate');
             $table->date('ReviewDate');
             $table->timestamps();
 
-            //$table->foreign('FoundationID')->references('FoundationID')->on('msfoundation');
-            //$table->foreign('DocumentTypeID')->references('DocumentTypeID')->on('msdocumenttype');
+            $table->foreign('FoundationID')->references('FoundationID')->on('msfoundation');
+            $table->foreign('DocumentTypeID')->references('DocumentTypeID')->on('msdocumenttype');
             
         });
     }

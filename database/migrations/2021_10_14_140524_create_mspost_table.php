@@ -15,7 +15,7 @@ class CreateMspostTable extends Migration
     {
         Schema::create('mspost', function (Blueprint $table) {
             $table->increments('PostID');
-            $table->integer('DonationTypeDetailID');
+            $table->integer('DonationTypeDetailID')->unsigned();
             $table->integer('ID');
             $table->string('PostDescription', 255);
             $table->date('UploadDate');
@@ -23,7 +23,7 @@ class CreateMspostTable extends Migration
             $table->decimal('Quantity', $precision = 5, $scale = 2);
             $table->timestamps();
 
-            // $table->foreign('DonationTypeDetailID')->references('DonationTypeDetailID')->on('msdonationtypedetail');
+             $table->foreign('DonationTypeDetailID')->references('DonationTypeDetailID')->on('msdonationtypedetail');
         });
     }
 

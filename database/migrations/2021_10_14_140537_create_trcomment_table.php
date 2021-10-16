@@ -14,13 +14,13 @@ class CreateTrcommentTable extends Migration
     public function up()
     {
         Schema::create('trcomment', function (Blueprint $table) {
-            $table->integer('PostID');
+            $table->integer('PostID')->unsigned();
             $table->integer('ID');
             $table->string('Comment', 255);
             $table->date('CommentDate');
             $table->timestamps();
 
-            // $table->foreign('PostID')->references('PostID')->on('mspost');
+             $table->foreign('PostID')->references('PostID')->on('mspost');
         });
     }
 
