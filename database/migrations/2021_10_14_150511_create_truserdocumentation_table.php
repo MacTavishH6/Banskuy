@@ -16,9 +16,11 @@ class CreateTruserdocumentationTable extends Migration
         Schema::create('truserdocumentation', function (Blueprint $table) {
             
             $table->integer("ID");
-            $table->integer("DocumentationID");
+            $table->integer("DocumentationID")->unsigned();
 
             $table->timestamps();
+
+            $table->foreign('DocumentationID')->references('DocumentationID')->on('msdocumentation');
         });
     }
 

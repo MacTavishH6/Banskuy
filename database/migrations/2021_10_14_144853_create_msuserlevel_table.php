@@ -23,8 +23,8 @@ class CreateMsuserlevelTable extends Migration
            
             
             $table->timestamps();
-            $table->foreign('UserID')->references('UserID')->on('MsUser');
-            $table->foreign('LevelGradeID')->references('LevelGradeID')->on('MsLevelGrade');
+            $table->foreign('UserID')->references('UserID')->on('msuser');
+            $table->foreign('LevelGradeID')->references('LevelGradeID')->on('mslevelgrade');
         });
     }
 

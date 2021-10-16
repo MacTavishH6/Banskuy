@@ -16,12 +16,12 @@ class CreateMsbannedaccountTable extends Migration
         Schema::create('msbannedaccount', function (Blueprint $table) {
             $table->increments('BannedAccountID');
             $table->integer('ID');
-            $table->integer('ReportID');
+            $table->integer('ReportID')->unsigned();
             $table->integer('Status');
             $table->date('Duration');
             $table->timestamps();
 
-            //$table->foreign('ReportID')->references('ReportID')->on('msreport');
+            $table->foreign('ReportID')->references('ReportID')->on('msreport');
         });
     }
 

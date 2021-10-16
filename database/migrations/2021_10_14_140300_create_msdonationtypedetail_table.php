@@ -15,11 +15,11 @@ class CreateMsdonationtypedetailTable extends Migration
     {
         Schema::create('msdonationtypedetail', function (Blueprint $table) {
             $table->increments('DonationTypeDetailID');
-            $table->integer('DonationTypeID');
+            $table->integer('DonationTypeID')->unsigned();
             $table->string('DonationTypeDetail', 20);
             $table->timestamps();
 
-            // $table->foreign('DonationTypeID')->references('DonationTypeID')->on('msdonationtype');
+             $table->foreign('DonationTypeID')->references('DonationTypeID')->on('msdonationtype');
         });
     }
 

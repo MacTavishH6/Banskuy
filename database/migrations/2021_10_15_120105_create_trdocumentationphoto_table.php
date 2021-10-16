@@ -18,7 +18,7 @@ class CreateTrdocumentationphotoTable extends Migration
             $table->integer("DocumentationID")->unsigned();
             $table->string("PhotoName",50);
 
-            $table->foreign('DocumentationID')->references('DocumentationID')->on('MsDocumentation');
+            $table->foreign('DocumentationID')->references('DocumentationID')->on('msdocumentation');
 
             $table->timestamps();
         });
