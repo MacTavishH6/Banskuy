@@ -16,15 +16,15 @@ class CreateMsuserlevelTable extends Migration
         Schema::create('msuserlevel', function (Blueprint $table) {
             
             $table->increments("LevelID");
-            $table->integer("UserID");
-            $table->integer("LevelGradeID");
+            $table->integer("UserID")->unsigned();
+            $table->integer("LevelGradeID")->unsigned();
             $table->date("ReceivedDate");
 
-            $table->foreign('UserID')->references('UserID')->on('MsUser');
-            $table->foreign('LevelGradeID')->references('LevelGradeID')->on('MsLevelGrade');
+           
             
             $table->timestamps();
-
+            $table->foreign('UserID')->references('UserID')->on('MsUser');
+            $table->foreign('LevelGradeID')->references('LevelGradeID')->on('MsLevelGrade');
         });
     }
 

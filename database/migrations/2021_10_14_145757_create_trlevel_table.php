@@ -15,7 +15,7 @@ class CreateTrlevelTable extends Migration
     {
         Schema::create('trlevel', function (Blueprint $table) {
             
-            $table->integer("LevelID");
+            $table->integer("LevelID")->unsigned();
             $table->integer("Exp");
             $table->date("ReceivedDate");
 
