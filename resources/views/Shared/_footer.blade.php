@@ -1,4 +1,4 @@
-@include('_layout')
+@include('layouts.app')
 
 @section('footer')
     
