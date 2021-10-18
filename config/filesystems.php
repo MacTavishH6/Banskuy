@@ -53,6 +53,21 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => 'ftp.banskuy.com',
+            'username' => 'Basnkuy2022@banskuy.com',
+            'password' => 'b!Nu$_Basnkuy22FTP',
+            
+            
+            
+            // Optional FTP Settings...
+            'port' => 21,
+            // 'root' => '',
+            // 'passive' => true,
+            // 'ssl' => true,
+            'timeout' => 30,
+            ],
     ],
 
     /*
