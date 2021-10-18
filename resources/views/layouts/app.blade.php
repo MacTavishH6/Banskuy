@@ -21,13 +21,13 @@
 </head>
 <body>
     <div id="app">
-        @yield('header')
+        @include('Shared._header')
 
         <main class="py-4">
             @yield('content')
         </main>
 
-        @yield('footer')
+        @include('Shared._footer')
     </div>
 </body>
 </html>
