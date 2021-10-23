@@ -37,7 +37,7 @@
 
                     @if (Request::is('index'))
                         <li class="nav-item">
-                            <a class="nav-link text-white py-1 px-3" style="background-color: #AC8FFF; border-radius: 10%" href="{{ route('login') }}">{{ __('Login Now') }}</a>
+                            <a class="nav-link text-white py-1 px-3" style="background-color: #AC8FFF; border-radius: 20px;" href="{{ route('login') }}">{{ __('Login Now') }}</a>
                         </li>
                     @endif
 
@@ -54,7 +54,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white py-1 px-3" style="background-color: #AC8FFF; border-radius: 10%"
+                        <a class="nav-link text-white py-1 px-3" style="background-color: #AC8FFF; border-radius: 20px;"
                             href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                                                                                                                         document.getElementById('logout-form').submit();">

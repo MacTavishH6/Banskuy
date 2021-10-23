@@ -32,9 +32,9 @@
             </div>
             <div class="pt-5 w-25 m-auto">
                 <div class="d-flex justify-content-around">
-                    <p>Foto 1</p>
-                    <p>Foto 2</p>
-                    <p>Foto 3</p>
+                    <p><h2 class="text-white font-weight-bold">BanSkuy</h2></p>
+                    <p><img src="https://www.banskuy.com/banskuy.com/Basnkuy2022/assets/BinusUniv.png" alt="BinusSOCS" style="width: 100px; height: 72px;"></p>
+                    <p><img src="https://www.banskuy.com/banskuy.com/Basnkuy2022/assets/BinusSOCS.png " alt="BinusSOCS" style="width: 100px; height: 72px;"></p>
                 </div>
             </div>
             <div class="row">
