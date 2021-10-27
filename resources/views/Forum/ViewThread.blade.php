@@ -30,11 +30,14 @@
             max-width: 90%;
         }
 
+        .container{
+            width:50%
+        }
     </style>
 
     {{-- css style end here --}}
 
-    <div class="container">
+    <div class="container" >
         {{-- SLIDER START HERE --}}
         <div class="slider">
             @include('Shared.Slider')
@@ -44,34 +47,34 @@
 
         <div class="card w-100 mx-auto">
             <div class="card-header">
-                <div class="media mb-4">
+                <div class="media mb-3">
                     {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
-                    <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"
+                    <img class="mr-3 d-block rounded-circle" style="height:75px;width:75px"
                         src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png">
 
                     <div class="media-body mt-3">
                         <div class="d-flex">
                             <div class="mr-auto">
-                                <h3>Buku matematika kelas 4 SD</h3>
+                                <h4>Buku matematika kelas 4 SD</h4>
                             </div>
-                            <div class="mr-3">
-                                <button type="submit" class="btn btn-warning pb-2 pt-1 px-4">
+                            <div class="mr-2">
+                                <button type="submit" class="btn btn-warning pb-2 pt-1 px-1">
                                     Contact Author</button>
                             </div>
-                            <div class="mr-3">
-                                <button type="submit" class="btn btn-primary pb-2 pt-1 px-4">Open For
+                            <div class="mr-2">
+                                <button type="submit" class="btn btn-primary pb-2 pt-1 px-1">Open For
                                     Donation</button>
                             </div>
-                            <div><button type="button" class="btn btn-danger pb-2 pt-1 px-4" data-toggle="modal"
+                            <div><button type="button" class="btn btn-danger pb-2 pt-1 px-3" data-toggle="modal"
                                     data-target="#mdlMakePost">
                                     Report
                                 </button></div>
                         </div>
                         <div class="d-flex">
-                            <div class="p-1">
+                            <div class="mr-2">
                                 <h5 style="font-weight: normal">Fikri Fadillah</h5>
                             </div>
-                            <div class="p-1 text-muted">
+                            <div class="text-muted">
                                 10 July 2021 at 10:00 AM
                             </div>
                         </div>
@@ -80,24 +83,24 @@
             </div>
             <div class="card-body">
                 <div class="d-flex flex-column bd-highlight">
-                    <div class="p-2 bd-highlight h4">
+                    <div class="p-2 bd-highlight h6 font-weight-normal">
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, quaerat similique! Impedit, harum
                         aut voluptas, quos quae soluta aspernatur dolor eligendi molestiae explicabo eveniet! Temporibus
                         omnis blanditiis eius tenetur delectus.
                     </div>
                     <div class="p-2 bd-highlight">
-                        <img class="w-100 h-100" src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/Money.jpg">
+                        <img class="w-75 h-50" src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/Money.jpg">
                     </div>
                     <div class="p-2 bd-highlight">
                         <div class="d-flex">
                             <div class="p-2 mr-auto">
                                 <i class="fa fa-thumbs-up fa-2x"></i> 22 Likes
                             </div>
-                            <div class="p-2 ">
+                            <div class="p-3 ">
                                 <button type="button" class="btn btn-link" style="text-decoration: none"
                                     data-toggle="collapse" data-target="#CollapseComment" arial-expaned="true"
                                     arial-controls="CollapseComment">
-                                    <h5 class="text-muted">5 Replies</h5>
+                                    <h6 class="text-muted">5 Replies</h6>
                                 </button>
                             </div>
                         </div>
@@ -109,7 +112,7 @@
                             <div id="CommentSection">
                                 <div class="media">
                                     {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
-                                    <img class="mr-3 mt-1    d-block rounded-circle" style="height:75px;width:75px"
+                                    <img class="mr-3 mt-1    d-block rounded-circle" style="height:50px;width:50px"
                                         src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png">
                                     <div class="border mt-2">
                                         <div class="media-body p-3">
@@ -123,21 +126,21 @@
                                                 <div>
                                                     <button id="btnReplyComment" class="btn btn-link">
                                                         <button id="btnReplyComment" class="btn btn-link">
-                                                            <h5>Reply</h5>
+                                                            <h6>Reply</h6>
                                                         </button>
                                                     </button>
                                                 </div>
                                             </div>
-                                            <h5>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id repellat amet aliquid repellendus facilis, odio tempore, natus quasi accusantium voluptas ipsa non, rerum quidem. Neque iure repellat in dicta nisi!</h5>
+                                            <h6>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id repellat amet aliquid repellendus facilis, odio tempore, natus quasi accusantium voluptas ipsa non, rerum quidem. Neque iure repellat in dicta nisi!</h6>
                                         </div>
                                     </div>
                                 </div>
                              </div> 
 
                              <div id="ReplySection" class="ml-5">
-                                    <div class="media mb-4">
+                                    <div class="media mb-2">
                                         {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
-                                        <img class="mr-3 mt-1    d-block rounded-circle" style="height:75px;width:75px"
+                                        <img class="mr-3 mt-1    d-block rounded-circle" style="height:50px;width:50px"
                                             src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png">
                                         <div class="border mt-2">
                                             <div class="media-body p-3">
@@ -152,7 +155,7 @@
                                                         Reply to Fikri Fadillah
                                                     </div>
                                                 </div>
-                                                <h5>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id repellat amet aliquid repellendus facilis, odio tempore, natus quasi accusantium voluptas ipsa non, rerum quidem. Neque iure repellat in dicta nisi!</h5>
+                                                <h6>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id repellat amet aliquid repellendus facilis, odio tempore, natus quasi accusantium voluptas ipsa non, rerum quidem. Neque iure repellat in dicta nisi!</h6>
                                               </div>
                                         </div>
                                     </div>
