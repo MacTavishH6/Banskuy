@@ -15,11 +15,19 @@
         .btn{
           border-radius:21px;
         }
+
+        .container{
+            width:50%
+        }
+
+        .card-header{
+            max-height: 70px;
+        }
     </style>
 
     {{-- css style end here --}}
 
-    <div class="container">
+    <div class="container" >
         {{-- SLIDER START HERE --}}
         <div class="slider">
             @include('Shared.Slider')
@@ -27,9 +35,9 @@
         {{-- SLIDER END HERE --}}
 
         <div>
-            <h1 class="title ml-1">
+            <h2 class="title ml-1">
                 Finance
-            </h1>
+            </h2>
 
             <div class="description">
                 <div class="d-flex flex-row bd-highlight">
@@ -65,9 +73,9 @@
                     <div class=" mr-auto p-2 bd-highlight">
                         50k
                     </div>
-                    <div class="p-2 bd-highlight">
-                        <button type="button" class="btn btn-primary px-5">
-                            <h4>Follow</h4>
+                    <div class="bd-highlight mb-2">
+                        <button type="button" class="btn btn-primary px-4 pt-2">
+                            <h6>Follow</h6>
                         </button>
                     </div>
 
@@ -77,97 +85,89 @@
             </div>
 
             <div id="accordion ">
-                <div class="card mb-5">
+                <div class="card mb-3">
                     <div class="row">
                         <div class="col-12">
-                            <div class="card-header" id="headingOne">
+                            <div class="card-header" id="headingOne" >
                                 <div class="d-flex">
-                                    <div class="mr-auto p-4">
-                                        <h3>Finance</h3>
+                                    <div class="mr-auto p-2">
+                                        <h4>Finance</h4>
                                     </div>
                                     <div>
                                         <button class="btn btn-link" style="text-decoration: none;" data-toggle="collapse"
                                             data-target="#CollapseFinance" arial-expanded="true"
                                             aria-controls="CollapseFinance">
-                                            <h1 class="font-weight-bold display-4">-</h1>
+                                            <h2 class="font-weight-bold">-</h2>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <div id="CollapseFinance" class="collapse show" aria-labelledby="headingOne"
                                 data-parent="#accordion">
-                                <div class="Post-Item mb-2 card-body">
-
-                                    @for ($i = 0; $i < 5; $i++)
-                                        <div class="media mb-4 ">
-                                            <img class="mr-3 d-block w-25 h-25"
-                                                src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/Money.jpg">
-                                            <div class="media-body">
-                                                <div class="d-flex">
-                                                    <div class="mr-auto p-2">
-                                                        <h5>Buku matematika kelas 4 SD</h5>
+                                @for ($i = 0; $i < 5; $i++)
+                                <div class="Post-Item mb-2 card-body mb-2">
+                                    <div class="media mb-4 ">
+                                        <img class="mr-3 d-block w-25 h-25"
+                                            src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/Money.jpg">
+                                        <div class="media-body">
+                                            <div class="d-flex">
+                                                <div class="mr-auto p-1">
+                                                    <h5>Buku matematika kelas 4 SD</h5>
+                                                </div>
+                                                <div >
+                                                    <button type="submit" class="btn btn-primary pb-2 pt-1 px-2" >Open For
+                                                        Donation</button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-column bd-highlight">
+                                                <div class="d-flex flex-row bd-highlight">
+                                                    <div class="p-1 bd-higlight mb-2 mr-4">
+                                                        Author :
                                                     </div>
-                                                    <div class="p-2">
-                                                        <button type="submit" class="btn btn-primary pb-2 pt-1 px-4" >Open For
-                                                            Donation</button>
+
+                                                    <div class="p-1 bd-higlight mb-2">
+                                                        Rafli
                                                     </div>
                                                 </div>
-                                                <div class="d-flex flex-column bd-highlight">
-                                                    <div class="d-flex flex-row bd-highlight">
-                                                        <div class="p-2 bd-higlight mb-2 mr-4">
-                                                            Author
-                                                        </div>
-                                                        <div class="p-2 bd-higlight mb-2">
-                                                            :
-                                                        </div>
-                                                        <div class="p-2 bd-higlight mb-2">
-                                                            Rafli
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="d-flex flex-row bd-highlight">
-                                                        <div class="p-2 bd-higlight mb-2 mr-3">
-                                                            Money Gathered
-                                                        </div>
-                                                        <div class="p-2 bd-higlight mb-2">
-                                                            :
-                                                        </div>
-                                                        <div class="p-2 bd-higlight mb-2">
-                                                            50
-                                                        </div>
+                                                <div class="d-flex flex-row bd-highlight">
+                                                    <div class="p-1 bd-higlight mb-2 mr-3">
+                                                        Money Gathered :
                                                     </div>
+                                                    <div class="p-1 bd-higlight mb-2">
+                                                        50
+                                                    </div>
+                                                </div>
 
-                                                    <div class="d-flex flex-row bd-highlight">
-                                                        <div class="p-2 bd-higlight mb-2 mr-1">
-                                                            Comment
-                                                        </div>
-                                                        <div class="p-2 bd-higlight mb-2">
-                                                            :
-                                                        </div>
-                                                        <div class="p-2 bd-higlight mb-2">
-                                                            10k
-                                                        </div>
+                                                <div class="d-flex flex-row bd-highlight">
+                                                    <div class="p-1 bd-higlight mb-2 mr-1">
+                                                        Comment :
                                                     </div>
-                                                    <div class="d-flex flex-column bd-highlight w-75">
-                                                        <div class="p-2 bd-higlight mb-2 mr-1">
-                                                            <form>
-                                                                <div class="form-inline">
-                                                                    <div class="form-group w-100">
-                                                                        <input type="text" class="form-control w-75 mr-3"
-                                                                            placeholder="Leave a comment...">
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary px-4">Send</button>
-                                                                    </div>
+                                                    <div class="p-1 bd-higlight mb-2">
+                                                        10k
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column bd-highlight w-100">
+                                                    <div class="p-2 bd-higlight mb-2 mr-1">
+                                                        <form>
+                                                            <div class="form-inline">
+                                                                <div class="form-group w-100">
+                                                                    <input type="text" class="form-control w-75 mr-3"
+                                                                        placeholder="Leave a comment...">
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary px-4">Send</button>
                                                                 </div>
-                                                            </form>
-                                                        </div>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    @endfor
+                                    </div>
 
-                                </div>
+                            </div>
+                                @endfor
+                                
                             </div>
                         </div>
 
