@@ -50,13 +50,20 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            @if (true)
+                            @if (false)
                                 <button class="text-white py-1 px-3"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit
                                     Profile</button>
                             @else
                                 <button class="text-white py-1 px-3"
-                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Report</button>
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;" data-toggle="modal"
+                                    data-target="#mdlMakeReport">Report</button>
+                                     
+                                {{-- POP UP CREATE POST START HERE --}}
+                                <div class="slider">
+                                    @include('Forum.Misc.component-form-reportuserpopup')
+                                </div>
+                                {{-- POP UP CREATE POST End HERE --}}
                             @endif
 
                         </div>
