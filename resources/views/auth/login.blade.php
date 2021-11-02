@@ -8,7 +8,7 @@
         font-size: 250%;
     }
     .login_button {
-        background-color: #AC8FFF;
+        background-color: #9F51CF;
         text-align: center;
         border: none;
         border-radius: 21px;
@@ -23,7 +23,8 @@
         color: black;
       }
       .login_button:hover {
-        box-shadow: 0px 5px 20px rgb(153, 121, 39);
+        background-color: #45C1A4;
+        box-shadow: 0px 0px 20px rgb(255,255,255);
       }
       .buttonlogin{
           text-align: center;
@@ -38,6 +39,7 @@
     }
 </style>
 
+<div style="">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -124,5 +126,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
