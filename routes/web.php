@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Ofi\Route\AutoRoute;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,4 +19,15 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Route::view('/Forum','Forum/Forum');
+
+// Route::view('/ViewForum','Forum/ViewForum');
+
+// Route::view('/ViewThread','Forum/ViewThread');
+
+// Route::view('/Profile','Profile/profile');
+
+AutoRoute::init();
+
