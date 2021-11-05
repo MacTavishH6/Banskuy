@@ -1,12 +1,20 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\Users as Authenticatable;
 
-class User extends Model
+class User extends Authenticatable
 {
     protected $table = "msuser";
+    protected $primaryKey = "UserID";
+
+    protected $fillable = [
+        'email',
+        'password',
+        'phoneNumber',
+    ];
 
     public function FollowPost(){
 
