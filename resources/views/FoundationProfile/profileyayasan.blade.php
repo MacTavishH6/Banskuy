@@ -1,6 +1,11 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Profile Yayasan</title>
 
-@section('styles')
     <style>
         ul#myTab li.nav-item a.nav-link {
             color: black;
@@ -17,9 +22,14 @@
         }
 
     </style>
-@endsection
+</head>
 
-@section('content')
+<body>
+    @extends('layouts.app')
+
+    @section('content')  
+
+    @section('content')
     <section class="d-flex">
         <div class="container">
             <div class="row">
@@ -30,9 +40,7 @@
                 <div class="col-9">
                     <div class="row mt-5">
                         <div class="col-12">
-                            <h2>My Username<small
-                                    style="display: inline-block; vertical-align: top; font-size: 16px;">Saint***</small>
-                            </h2>
+                            <h2>Yayasan Mutiara Bunda</h2>
                         </div>
                         <div class="col-12">
                             <small>Member since - March 2020</small>
@@ -49,23 +57,26 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-12 mb-3" style="font-size:150%">
+                            <small>Jl. Dr. Wahidin Sudirohusodo No.25, Fatmawati, Jakarta Selatan</small>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col">
-                            @if (false)
+                            @if (true)
                                 <button class="text-white py-1 px-3"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit
                                     Profile</button>
                             @else
                                 <button class="text-white py-1 px-3"
-                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;" data-toggle="modal"
-                                    data-target="#mdlMakeReport">Report</button>
-                                     
-                                {{-- POP UP CREATE POST START HERE --}}
-                                <div class="slider">
-                                    @include('Forum.Misc.component-form-reportuserpopup')
-                                </div>
-                                {{-- POP UP CREATE POST End HERE --}}
-                            @endif
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Contact</button>
 
+                                <button class="text-white py-1 px-3"
+                                    style="border-radius: 20px; background-color: #53FF37; border: none;">Goods Needed</button>
+
+                                <button class="text-white py-1 px-3"
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Report</button>                                
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -75,49 +86,37 @@
     <section class="pt-5">
         <div class="container">
             <div class="row justify-content-center">
-                <ul class="nav text-center" id="myTab" role="tablist">
+                <ul class="nav text-center" id="myTab" role="tablist">                    
                     <li class="nav-item">
-                        <a class="nav-link active" id="post-tab" data-toggle="tab" href="#post" role="tab"
-                            aria-controls="post" aria-selected="true">Post</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="documentation-tab" data-toggle="tab" href="#documentation" role="tab"
+                        <a class="nav-link active" id="documentation-tab" data-toggle="tab" href="#documentation" role="tab"
                             aria-controls="documentation" aria-selected="false">Documentation</a>
                     </li>
-                    @if (true)
+                    {{-- @if (true) --}}
                         <li class="nav-item">
-                            <a class="nav-link" id="leveltracking-tab" data-toggle="tab" href="#leveltracking"
-                                role="tab" aria-controls="leveltracking" aria-selected="false">Level Tracking</a>
+                            <a class="nav-link" id="aboutus-tab" data-toggle="tab" href="#aboutus"
+                                role="tab" aria-controls="aboutus" aria-selected="false">About Us</a>
                         </li>
-                    @endif
+                    {{-- @endif --}}
                 </ul>
             </div>
         </div>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="post" role="tabpanel" aria-labelledby="post-tab">
+            <div class="tab-pane fade show active" id="documentation" role="tabpanel" aria-labelledby="documentation-tab">
                 <div class="container">
-                    @include('Profile.Misc.component-list-post')
+                    @include('FoundationProfile.FoundationMisc.component-list-documentation')
                 </div>
             </div>
-            <div class="tab-pane fade" id="documentation" role="tabpanel" aria-labelledby="documentation-tab">
+            <div class="tab-pane fade" id="aboutus" role="tabpanel" aria-labelledby="aboutus-tab">
                 <div class="container">
-                    @include('Profile.Misc.component-list-documentation')
-                    @include('Profile.Misc.component-list-documentation')
-                    @include('Profile.Misc.component-list-documentation')
-                </div>
-            </div>
-            <div class="tab-pane fade" id="leveltracking" role="tabpanel" aria-labelledby="leveltracking-tab">
-                <div class="container">
-                    @include('Profile.Misc.component-list-leveltracking')
+                    @include('FoundationProfile.FoundationMisc.component-list-visimisiaboutus')
                 </div>
             </div>
         </div>
     </section>
 
-@endsection
+    @endsection
 
-@section('scripts')
-    <script>
-
-    </script>
-@endsection
+    
+    @endsection
+</body>
+</html>

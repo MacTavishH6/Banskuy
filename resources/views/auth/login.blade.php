@@ -1,11 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
+
+<style>
+    .titlejoin{
+        text-align: center;
+        font-size: 250%;
+    }
+    .login_button {
+        background-color: #9F51CF;
+        text-align: center;
+        border: none;
+        border-radius: 21px;
+        font-family: "Raleway SemiBold", sans-serif;
+        height: 42.3px;
+        margin: 0 auto;
+        transition: 0.25s;
+        width: 153px;
+        box-shadow: 0px 1px 8px rgb(153, 121, 39);
+        margin-bottom: 10px;
+        cursor: pointer;
+        color: black;
+      }
+      .login_button:hover {
+        background-color: #45C1A4;
+        box-shadow: 0px 0px 20px rgb(255,255,255);
+      }
+      .buttonlogin{
+          text-align: center;
+      }
+      .forgotpassword{
+          text-align: center;
+      }
+
+      .donthaveanaccount{
+        margin-top: 5%;
+        text-align: center;
+    }
+</style>
+
+<div style="">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+
+                <div class="titlecontainer">
+                    <div class="titlejoin">{{ __('Logo BanSkuy') }}</div>
+                    <div class="titlejoin">{{ __('The Others are Waiting !') }}</div>        
+                </div>
+
+                <br>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -24,6 +69,8 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <br>
 
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
@@ -51,23 +98,34 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                        <br>
+
+                        <div class="buttonlogin form-group row mb-0">
+                            {{-- <div class="col-md-8 offset-md-4"> --}}
+                                <button type="submit" class="login_button" style="color: white">
                                     {{ __('Login') }}
                                 </button>
+                            {{-- </div> --}}
+                        </div>
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
+                        <div class="forgotpassword">
+                            @if (Route::has('password.request'))
+                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    {{ __('Forgot Your Password?') }}
+                                </a>
+                            @endif
+                        </div>
+
+                        <div class="donthaveanaccount">
+                            <p>
+                                Don't Have An Account? <a href="{{ route('register') }}">Register Now!</a>
+                            </p>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
