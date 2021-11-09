@@ -8,7 +8,7 @@
 
     <style>
         .backgroundstyle{
-            background-image: url("../assets/lp_background.jpg");
+            background-image: url("https://banskuy.com/banskuy.com/Basnkuy2022/assets/lp_background.jpg");
             background-repeat: no-repeat;
             background-size: cover;
         }
