@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Models\Foundation;
 use App\Models\User;
+use Carbon\Carbon;
 
 
 class RegisterController extends Controller
@@ -32,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = ('/LandingPageController/landingpage');
+    protected $redirectTo = ('/LandingPage/landingpage');
 
     /**
      * Create a new controller instance.
@@ -71,13 +72,15 @@ class RegisterController extends Controller
         return User::create([
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'phoneNumber' => $data['phoneNumber']
+            'phoneNumber' => $data['phoneNumber'],
+            'registerDate'=> Carbon::now()->toDateTimeString()
         ]);
         else if($data['registerAs']=='2')
         return Foundation::create([
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'foundationPhone' => $data['phoneNumber']
+            'foundationPhone' => $data['phoneNumber'],
+            'registerDate'=> Carbon::now()->toDateTimeString()
         ]);
     }
 }

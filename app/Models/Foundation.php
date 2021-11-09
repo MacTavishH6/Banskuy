@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 //use Illuminate\Foundation\Auth\Foundations as Authenticatable;
 
+use App\Models\Users as Authenticatable;
 
-class Foundation extends Model
+class Foundation extends Authenticatable
 {
     protected $table = "msfoundation";
 
@@ -15,6 +16,7 @@ class Foundation extends Model
         'email',
         'password',
         'foundationPhone',
+        'registerDate'
     ];
 
 

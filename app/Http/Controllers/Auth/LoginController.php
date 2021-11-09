@@ -34,7 +34,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = ("/LandingPageController/landingpage");
+    protected $redirectTo = ("/LandingPage/landingpage");
 
     /**
      * Create a new controller instance.
@@ -63,7 +63,6 @@ class LoginController extends Controller
     }
 
     public function login(Request $request){
-
         $validated = $this->validateLoginRequest($request);
         
         if ($validated->fails()) return redirect()->back()->withInput($request->all())->withErrors($validated->errors());
@@ -88,7 +87,7 @@ class LoginController extends Controller
 
             }
 
-            return redirect('/LandingPageController/landingpage');
+            return showLoginForm();
 
         }
         else return redirect('/login')->with('failed',"Invalid email or password");
@@ -96,7 +95,7 @@ class LoginController extends Controller
 
     public function showLoginForm(){
         if(Auth::check()){
-            return redirect('/LandingPageControler/landingpage');
+            return redirect('/LandingPage/landingpage');
         }
         else{   
             return view("auth/login");

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Ofi\Route\AutoRoute;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,5 +28,7 @@ Auth::routes();
 
 // Route::view('/Profile','Profile/profile');
 
-AutoRoute::init();
+Route::get('/logout',function() {
+    Auth::logout();
+});
 

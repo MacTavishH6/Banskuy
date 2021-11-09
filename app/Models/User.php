@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 //use Illuminate\Foundation\Auth\Users as Authenticatable;
 
+use Illuminate\Foundation\Auth\Users as Authenticatable;
 
-class User extends Model
+
+class User extends Authenticatable
 {
     protected $table = "msuser";
     protected $primaryKey = "UserID";
@@ -16,6 +18,7 @@ class User extends Model
         'email',
         'password',
         'phoneNumber',
+        'registerDate'
     ];
 
     public function FollowPost(){
