@@ -48,7 +48,7 @@
                     @endif
                 @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">
+                        <a class="nav-link" href="/Profile/profile">
                             {{-- {{ Auth::user()->name }} --}}
                             Profile
                         </a>
