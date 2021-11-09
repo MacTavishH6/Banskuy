@@ -35,6 +35,24 @@
       .register_button:hover {
         box-shadow: 0px 5px 20px rgb(153, 121, 39);
       }
+
+
+      .disabled{
+        background-color: #525252;
+        text-align: center;
+        border: none;
+        border-radius: 21px;
+        font-family: "Raleway SemiBold", sans-serif;
+        height: 42.3px;
+        margin: 0 auto;
+        transition: 0.25s;
+        width: 153px;
+        box-shadow: 0px 1px 8px rgb(153, 121, 39);
+        margin-bottom: 10px;
+        cursor: not-allowed;
+        color: black;
+      }
+
       .buttonregister{
           text-align: center;
       }
@@ -91,18 +109,26 @@
                     <div class="titlejoin">{{ __('Logo BanSkuy') }}</div>
                     <div class="titlejoin">{{ __('Join The Others !') }}</div>        
                 </div>
-                
-                
-                
-                
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
+                        <input type="hidden" id="hidRegisterAs" name="registerAs" value="1">
+
                         <div class="buttonuserchosen">
-                            <input type="submit" class="userchosen_button" name="submit" style="color: white" value="Register as Foundation">
+                            <button class="userchosen_button" name="btnFoundation" style="color: white"> Register as Foundation </button>
+
+                            <button class="userchosen_button d-none" name="btnUser" style="color: white"> Register as User </button>
                         </div>
+
+                        <div class="form-group row">
+                            <div class="" id="headReqAs" style="font-size: 150%">
+                                Now You're Register As User
+                            </div>
+                        </div>
+
+                        <br>
 
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
@@ -147,12 +173,12 @@
                         <br>
 
                         <div class="form-group row">
-                            <label for="PhoneNumber" class="col-md-4 col-form-label text-md-right">{{ __('PhoneNumber') }}</label>
+                            <label for="phoneNumber" class="col-md-4 col-form-label text-md-right">{{ __('phoneNumber') }}</label>
 
                             <div class="col-md-6">
-                                <input id="PhoneNumber" type="text" class="form-control @error('PhoneNumber') is-invalid @enderror" name="PhoneNumber" value="{{ old('PhoneNumber') }}" required autocomplete="PhoneNumber" autofocus>
+                                <input id="phoneNumber" type="text" class="form-control @error('phoneNumber') is-invalid @enderror" name="phoneNumber" value="{{ old('phoneNumber') }}" required autocomplete="phoneNumber" autofocus>
 
-                                @error('PhoneNumber')
+                                @error('phoneNumber')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -173,7 +199,7 @@
                         {{-- BUTTON REGISTER BAWAAN BOOTSTRAP --}}
                         <div class="buttonregister form-group row mb-0">
                             {{-- <div class="col-md-6 offset-md-4"> --}}
-                                <button type="submit" class="register_button" style="color: white">
+                                <button id="btnRegister" disabled type="submit" class="disabled" style="color: white">
                                     {{ __('Register') }}
                                 </button>
                             {{-- </div> --}}
@@ -191,4 +217,38 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $(".userchosen_button").on('click', function () {
+                event.preventDefault();
+
+                $(".userchosen_button").removeClass("d-none");
+                var regAs;
+
+                if($(this).prop("name").includes("User")) regAs = "1";
+                else regAs = "2";
+
+                if(regAs == "1") $("#headReqAs").html("Now You're Register As User");
+                else if(regAs == "2")
+                $("#headReqAs").html("Now You're Register As Foundation");
+
+                $(this).addClass("d-none");
+                $("#hidRegisterAs").val(regAs);
+            });
+
+            $("#checkbox").on("click", function () {
+                if($(this).prop("checked")){
+                    $("#btnRegister").removeClass("disabled").addClass("userchosen_button");
+                    $("#btnRegister").prop("disabled",false);
+                }
+                else{
+                    $("#btnRegister").removeClass("userchosen_button").addClass("disabled");
+                    $("#btnRegister").prop("disabled",true);
+                }
+            });
+        });
+    </script>
 @endsection

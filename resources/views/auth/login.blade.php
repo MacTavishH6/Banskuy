@@ -44,13 +44,35 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-
+                
                 <div class="titlecontainer">
                     <div class="titlejoin">{{ __('Logo BanSkuy') }}</div>
                     <div class="titlejoin">{{ __('The Others are Waiting !') }}</div>        
                 </div>
 
                 <br>
+                @if ($errors->any())
+                    <div class="alert alert-danger" style="margin-top: 20px">
+                        <div>
+                            @foreach ($errors->all() as $error)
+                                <div>{{ $error }}</div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+                    
+                @if(session('failed'))
+                    <div class="alert alert-danger mt-2" role="alert">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {{ session('failed') }}
+                    </div>
+                @elseif(session('status'))
+                    <div class="alert alert-success mt-2" role="alert">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {{ session('status') }}
+                    </div>
+                @endif
+                
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
