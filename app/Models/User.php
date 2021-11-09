@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 //use Illuminate\Foundation\Auth\Users as Authenticatable;
 
-use Illuminate\Foundation\Auth\Users as Authenticatable;
+use App\Models\Users as Authenticatable;
 
 
 class User extends Authenticatable
