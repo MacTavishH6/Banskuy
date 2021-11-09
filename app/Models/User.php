@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-// use Illuminate\Foundation\Auth\Users as Authenticatable;
-// Authenticatable (ini buat ditaro di sebelah kanan extends)
+//use Illuminate\Foundation\Auth\Users as Authenticatable;
 
-class User extends Model 
+class User extends Model
 {
     protected $table = "msuser";
     protected $primaryKey = "UserID";
@@ -34,4 +33,5 @@ class User extends Model
         return $this->hasMany(DonationTransaction::class,'UserID','UserID');
 
     }
+
 }
