@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\Foundations as Authenticatable;
 
-class Foundation extends Model
+class Foundation extends Authenticatable
 {
     protected $table = "msfoundation";
 
