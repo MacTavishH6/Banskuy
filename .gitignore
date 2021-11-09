@@ -4,16 +4,16 @@
 /storage/*.key
 !/vendor
 /vendor/*
-!/vendor/laravel/
-/vendor/laravel/*
-!/vendor/laravel/framework
-!/vendor/laravel/ui
-/vendor/laravel/framework/src/illuminate/*
-!/vendor/laravel/framework/src/illuminate/Foundation
-/vendor/laravel/framework/src/illuminate/Foundation/*
-!/vendor/laravel/framework/src/illuminate/Foundation/Auth
-!/vendor/laravel/framework/src/illuminate/Auth
-!/vendor/ofi
+# !/vendor/laravel/
+# /vendor/laravel/*
+# !/vendor/laravel/framework
+# !/vendor/laravel/ui
+# /vendor/laravel/framework/src/illuminate/*
+# !/vendor/laravel/framework/src/illuminate/Foundation
+# /vendor/laravel/framework/src/illuminate/Foundation/*
+# !/vendor/laravel/framework/src/illuminate/Foundation/Auth
+# !/vendor/laravel/framework/src/illuminate/Auth
+# !/vendor/ofi
 .env
 .env.backup
 .phpunit.result.cache
