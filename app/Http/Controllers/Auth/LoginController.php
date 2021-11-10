@@ -87,7 +87,7 @@ class LoginController extends Controller
 
             }
 
-            return showLoginForm();
+            return $this->showLoginForm();
 
         }
         else return redirect('/login')->with('failed',"Invalid email or password");
@@ -95,7 +95,7 @@ class LoginController extends Controller
 
     public function showLoginForm(){
         if(Auth::check()){
-            return redirect('/LandingPage/landingpage');
+            return redirect('landingpage');
         }
         else{   
             return view("auth/login");

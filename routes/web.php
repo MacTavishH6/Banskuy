@@ -12,8 +12,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function(){
+    return redirect('/login');
+});
+
+//Route::get("/",[HomeController::class,'index'])->name('Home');
+
+Route::get("/logout", function(){
+    Auth::logout();
+    return redirect('/landingpage');
 });
 
 Auth::routes();
@@ -28,7 +35,4 @@ Auth::routes();
 
 // Route::view('/Profile','Profile/profile');
 
-Route::get('/logout',function() {
-    Auth::logout();
-});
-
+Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
