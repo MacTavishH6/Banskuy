@@ -19,7 +19,6 @@ class Foundation extends Authenticatable
         'registerDate'
     ];
 
-
     public function Document(){
         return $this->hasMany(Document::class, 'FoundationID', 'FoundationID');
     }

@@ -12,5 +12,8 @@ class Document extends Model
         return $this->hasOne(DocumentType::class, 'DocumentTypeID', 'DocumentTypeID');
     }
 
+    public function Foundation(){
+        return $this->belongsTo(Foundation::class,'FoundationID');
+    }
     
 }
