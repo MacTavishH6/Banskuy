@@ -25,6 +25,9 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'profile']);
     Route::get('/editprofile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile']);
+
+    Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
+    Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
 });
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
