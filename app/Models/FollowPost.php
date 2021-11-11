@@ -11,7 +11,7 @@ class FollowPost extends Model
 
     public function User(){
 
-        return $this->hasOne(User::class,'UserID','UserID');
+        return $this->belongsTo(User::class,'UserID','UserID');
 
     }
 }

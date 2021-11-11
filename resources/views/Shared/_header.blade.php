@@ -3,12 +3,12 @@
         <a class="navbar-brand" href="{{ url('/') }}">
             BanSkuy
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar"
+            aria-controls="header-navbar" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="header-navbar">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
 
@@ -48,8 +48,8 @@
                     @endif
                 @else
                     <li class="nav-item">
-                        <a class="nav-link" href="/Profile/profile">
-                            {{-- {{ Auth::user()->name }} --}}
+                        <a class="nav-link" href="/profile/{{base64_encode(Auth::id())}}">
+                            {{ Auth::user()->Username?Auth::user()->username:Auth::user()->Email }}
                             Profile
                         </a>
                     </li>

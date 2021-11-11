@@ -12,4 +12,8 @@ class Post extends Model
         return $this->hasOne(DonationTypeDetail::class,'DonationTypeDetailID','DonationTypeDetailID');
     }
 
+    public function FollowPost(){
+        return $this->hasMany(FollowPost::class, 'FollowPostID');
+    }
+
 }

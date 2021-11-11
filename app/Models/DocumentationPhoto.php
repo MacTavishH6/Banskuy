@@ -11,7 +11,7 @@ class DocumentationPhoto extends Model
 
     public function Documentation(){
 
-        return $this->hasOne(Documentation::class,'DocumentationID','DocumentationID');
+        return $this->belongsTo(Documentation::class,'DocumentationID','DocumentationID');
 
     }
 }

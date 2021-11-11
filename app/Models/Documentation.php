@@ -11,8 +11,12 @@ class Documentation extends Model
 
     public function UserDocumentation(){
 
-        return $this->hasOne(UserDocumentation::class,'DocumentationID','DocumentationID');
+        return $this->belongsTo(UserDocumentation::class,'DocumentationID','DocumentationID');
 
+    }
+
+    public function DonationType(){
+        return $this->hasOne(DonationType::class,'DonationTypeID', 'DonationTypeID');
     }
 
     public function DocumentationPhoto(){
