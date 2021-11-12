@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-// use Illuminate\Foundation\Auth\Users as Authenticatable;
-// Authenticatable (ini buat ditaro di sebelah kanan extends)
 
-class User extends Model 
+//use Illuminate\Foundation\Auth\Users as Authenticatable;
+
+use App\Models\Users as Authenticatable;
+
+
+class User extends Authenticatable
 {
     protected $table = "msuser";
     protected $primaryKey = "UserID";
@@ -15,6 +18,7 @@ class User extends Model
         'email',
         'password',
         'phoneNumber',
+        'registerDate'
     ];
 
     public function FollowPost(){
@@ -34,4 +38,9 @@ class User extends Model
         return $this->hasMany(DonationTransaction::class,'UserID','UserID');
 
     }
+
+    public function Address(){
+        return $this->hasOne(Address::class, 'AddressID');
+    }
+
 }

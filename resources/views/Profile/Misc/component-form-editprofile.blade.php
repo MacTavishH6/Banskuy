@@ -4,8 +4,8 @@
             style="border-radius: 50%; border: 1px solid black; width: 100px">
         <p>Edit Photo</p>
     </div>
-    <div class="col-9">
-        <h2>My UserName</h2>
+    <div class="col-9 mt-4">
+        <h2>{{ $user->Username ? $user->Username : '-' }}</h2>
     </div>
 </div>
 <form>
@@ -14,7 +14,7 @@
             <label for="FirstName">First Name</label>
         </div>
         <div class="col-6">
-            <input type="text" name="FirstName" id="FirstName" class="form-control">
+            <input type="text" name="FirstName" id="FirstName" value="{{ $user->FirstName }}" class="form-control">
         </div>
     </div>
     <div class="form-row py-1">
@@ -22,7 +22,7 @@
             <label for="LastName">Last Name</label>
         </div>
         <div class="col-6">
-            <input type="text" name="LastName" id="LastName" class="form-control">
+            <input type="text" name="LastName" id="LastName" value="{{ $user->LastName }} " class="form-control">
         </div>
     </div>
     <div class="form-row py-1">
@@ -30,7 +30,7 @@
             <label for="Username">Username</label>
         </div>
         <div class="col-6">
-            <input type="text" name="Username" id="Username" class="form-control">
+            <input type="text" name="Username" id="Username" {{ $user->Username }} class="form-control">
         </div>
     </div>
     <div class="form-row py-1">
@@ -38,7 +38,7 @@
             <label for="Email">Email</label>
         </div>
         <div class="col-6">
-            <input type="email" name="Email" id="Email" class="form-control">
+            <input type="email" name="Email" id="Email" {{ $user->Email }} class="form-control">
         </div>
     </div>
     <div class="form-row py-1">
@@ -46,7 +46,7 @@
             <label for="PhoneNumber">Phone Number</label>
         </div>
         <div class="col-6">
-            <input type="tel" name="PhoneNumber" id="PhoneNumber" class="form-control">
+            <input type="tel" name="PhoneNumber" id="PhoneNumber" {{ $user->PhoneNumber }} class="form-control">
         </div>
     </div>
     <div class="form-row py-1">
@@ -55,11 +55,13 @@
         </div>
         <div class="col-6">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="Gender" id="Gender" value="1">
+                <input class="form-check-input" {{ $user->Gender == 'Male' ? 'checked' : '' }} type="radio" name="Gender"
+                    id="Gender" value="Male">
                 <label class="form-check-label" for="Male">Male</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="Gender" id="Gender" value="2">
+                <input class="form-check-input" type="radio" name="Gender" {{ $user->Gender == 'Female' ? 'checked' : '' }}
+                    id="Gender" value="Female">
                 <label class="form-check-label" for="Female">Female</label>
             </div>
         </div>
@@ -69,8 +71,8 @@
             <label for="Address">Address</label>
         </div>
         <div class="col-6">
-            <textarea name="Address" id="Address" class="form-control" style="resize: none;">
-                                                        </textarea>
+            {{-- {{dd($user)}} --}}
+            <textarea name="Address" id="Address" class="form-control" style="resize: none;">{{$user->Address?$user->Address->Address:''}}</textarea>
         </div>
     </div>
     <div class="form-row py-1">
@@ -78,7 +80,9 @@
             <label for="Country">Country</label>
         </div>
         <div class="col-6">
-            <select name="Country" id="Country" class="form-control"></select>
+            <select name="Country" id="Country" class="form-control">
+                <option value="1" selected>Indonesia</option>
+            </select>
         </div>
     </div>
     <div class="form-row py-1">

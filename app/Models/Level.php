@@ -11,7 +11,7 @@ class Level extends Model
 
     public function UserLevel(){
 
-        return $this->hasOne(UserLevel::class,'LevelID','LevelID');
+        return $this->belongsTo(UserLevel::class,'LevelID','LevelID');
 
     }
 }

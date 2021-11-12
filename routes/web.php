@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Ofi\Route\AutoRoute;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,11 +13,22 @@ use Ofi\Route\AutoRoute;
 |
 */
 
+Auth::routes();
+
+
+Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/landingpage');
 });
 
-Auth::routes();
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'profile']);
+    Route::get('/editprofile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile']);
+
+    Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
+    Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
+});
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -28,6 +39,3 @@ Auth::routes();
 // Route::view('/ViewThread','Forum/ViewThread');
 
 // Route::view('/Profile','Profile/profile');
-
-AutoRoute::init();
-

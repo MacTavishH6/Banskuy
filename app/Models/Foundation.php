@@ -4,7 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Foundation extends Model
+//use Illuminate\Foundation\Auth\Foundations as Authenticatable;
+
+use App\Models\Users as Authenticatable;
+
+class Foundation extends Authenticatable
 {
     protected $table = "msfoundation";
 
@@ -12,8 +16,8 @@ class Foundation extends Model
         'email',
         'password',
         'foundationPhone',
+        'registerDate'
     ];
-
 
     public function Document(){
         return $this->hasMany(Document::class, 'FoundationID', 'FoundationID');
