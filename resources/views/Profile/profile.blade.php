@@ -30,28 +30,28 @@
                 <div class="col-9">
                     <div class="row mt-5">
                         <div class="col-12">
-                            <h2>My Username<small
-                                    style="display: inline-block; vertical-align: top; font-size: 16px;">Saint***</small>
+                            <h2>{{$user->Username?$user->Username:$user->Email}}<small
+                                    style="display: inline-block; vertical-align: top; font-size: 16px; color: #2f9194;">{{$user->UserLevel->first()->LevelGrade->LevelName}}
+                                    <?php 
+                                    $level = $user->UserLevel->first()->LevelGrade->LevelOrder;
+                                    for ($i=0; $i < $level; $i++) {?>
+                                        *
+                                    <?php } ?></small>
                             </h2>
                         </div>
                         <div class="col-12">
-                            <small>Member since - March 2020</small>
+                            <small>{{$user->RegisterDate}}</small>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <p align="justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio
-                                reprehenderit adipisci corporis! Eaque quod libero, delectus numquam consequuntur pariatur
-                                accusantium ipsum fugiat nisi. Aspernatur sit obcaecati cumque quis at enim. Lorem, ipsum
-                                dolor sit amet consectetur adipisicing elit. Porro fugit voluptatibus possimus? Vitae
-                                distinctio doloribus amet a deleniti quam nihil earum expedita ducimus quas! Debitis saepe
-                                minus veniam modi et.</p>
+                            <p align="justify">{{$user->Bio}}</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            @if (false)
-                                <button class="text-white py-1 px-3"
+                            @if (Auth::user()->UserID == $user->UserID)
+                                <button class="text-white py-1 px-3 edit-profile"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit
                                     Profile</button>
                             @else
@@ -113,11 +113,21 @@
             </div>
         </div>
     </section>
-
+    <div id="modal">
+        @include('Shared._popupConfirmed')
+    </div>
 @endsection
 
 @section('scripts')
-    <script>
-
+    <script type="text/javascript">
+        var user = <?php echo json_encode($user); ?>;
+        $(document).ready(function () {
+            if(!user.IsConfirmed){
+                $("#confirmedModal").modal();
+            }
+            $(".edit-profile").on('click', function () {
+                return location.href = '/editprofile/' + btoa(user.UserID);
+            });
+        });
     </script>
 @endsection

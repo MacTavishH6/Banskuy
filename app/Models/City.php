@@ -9,6 +9,6 @@ class City extends Model
     protected $table = 'mscity';
 
     public function Province(){
-        return $this->hasOne(Province::class,'ProvinceID','ProvinceID');
+        return $this->belongsTo(Province::class,'ProvinceID','ProvinceID');
     }
 }

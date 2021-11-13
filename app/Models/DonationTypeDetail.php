@@ -9,7 +9,7 @@ class DonationTypeDetail extends Model
     protected $table = 'msdonationtypedetail';
 
     public function DonationType(){
-        return $this->hasOne(DonationType::class,'DonationTypeID','DonationTypeID');
+        return $this->belongsTo(DonationType::class,'DonationTypeID','DonationTypeID');
     }
 
     
