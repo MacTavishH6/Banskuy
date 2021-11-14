@@ -14,7 +14,7 @@ class UpdateMslevelgradeAddphotopath extends Migration
     public function up()
     {
         Schema::table('mslevelgrade', function (Blueprint $table) {
-            $table->integer('Path')->nullable();
+            $table->string('Path',30)->nullable();
         });
     }
 
