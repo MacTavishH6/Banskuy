@@ -1,8 +1,7 @@
 .btn-banskuy {
-    border-radius: 20px; 
+    border-radius: 10px; 
     background-color: #9F51CF; 
     border: none; 
-    font-size: 140%;
     transition:0.2s;
   }
   .btn-banskuy:hover {
