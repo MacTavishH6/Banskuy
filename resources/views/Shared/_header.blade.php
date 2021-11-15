@@ -55,8 +55,8 @@
                     @endif
                 @else
                     <li class="nav-item">
-                        <a class="nav-link" href="/foundationprofile/{{base64_encode(Auth::id())}}">
-                            {{ Auth::user()->Username?Auth::user()->username:Auth::user()->Email }}
+                        <a class="nav-link" href="/profile/{{Crypt::encrypt(Auth::id())}}">
+                            {{ Auth::user()->Username?Auth::user()->Username:Auth::user()->Email }}
                             Profile
                         </a>
                     </li>

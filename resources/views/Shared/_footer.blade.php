@@ -33,8 +33,8 @@
             <div class="pt-5 w-25 m-auto">
                 <div class="d-flex justify-content-around">
                     <p><h2 class="text-white font-weight-bold">BanSkuy</h2></p>
-                    <p><img src="https://www.banskuy.com/banskuy.com/Basnkuy2022/assets/BinusUniv.png" alt="BinusSOCS" style="width: 100px; height: 72px;"></p>
-                    <p><img src="https://www.banskuy.com/banskuy.com/Basnkuy2022/assets/BinusSOCS.png " alt="BinusSOCS" style="width: 100px; height: 72px;"></p>
+                    <p><img src="{{env('FTP_URL')}}assets/BinusUniv.png" alt="BinusSOCS" style="width: 100px; height: 72px;"></p>
+                    <p><img src="{{env('FTP_URL')}}assets/BinusSOCS.png " alt="BinusSOCS" style="width: 100px; height: 72px;"></p>
                 </div>
             </div>
             <div class="row">

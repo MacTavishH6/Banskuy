@@ -40,7 +40,11 @@ class User extends Authenticatable
     }
 
     public function Address(){
-        return $this->hasOne(Address::class, 'AddressID');
+        return $this->hasOne(Address::class, 'AddressID', 'AddressID');
+    }
+
+    public function Photo(){
+        return $this->hasOne(Photo::class, 'PhotoID', 'PhotoID');
     }
 
 }
