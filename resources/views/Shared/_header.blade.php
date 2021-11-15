@@ -19,6 +19,13 @@
                 <li class="nav-item">
                     <a class="nav-link" href="">{{ __('Let\'s Donate!') }}</a>
                 </li>
+
+                @if(Auth::guard('foundations')->check())
+                    
+                @elseif(Auth::check())
+                    
+                @endif
+
                 @auth
                     <li class="nav-item">
                         <a class="nav-link" href="">{{ __('Check Your Progress Here!') }}</a>
