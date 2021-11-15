@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Models\UserLevel;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -83,6 +84,7 @@ class RegisterController extends Controller
             $user->password = Hash::make($request['password']);
             $user->phoneNumber = $request['phoneNumber'];
             $user->registerDate = Carbon::now()->toDateTimeString();
+            $user->Role = '1';
             $user->created_at = date('Y-m-d H:i:s');
             $user->save(); 
 
@@ -122,11 +124,14 @@ class RegisterController extends Controller
             $foundation->password = Hash::make($request['password']);
             $foundation->foundationPhone = $request['phoneNumber'];
             $foundation->registerDate = Carbon::now()->toDateTimeString();
+            $foundation->Role = '2';
             $foundation->created_at = date('Y-m-d H:i:s');
             $foundation->save();
 
 
-            $this->guard()->login($foundation);
+            // $this->guard()->login($foundation);
+            Auth::guard('foundations')->login($foundation);
+
 
             if ($response = $this->registered($request, $foundation)) {
                 return $response;

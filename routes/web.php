@@ -20,12 +20,19 @@ Route::get('/', function () {
     return redirect('/landingpage');
 });
 
+Route::get('/logout',function () {Auth::logout();});
+
 Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
 
-Route::middleware(['auth:users,admin'])->group(function () {
+
+Route::middleware(['auth:web'])->group(function () {
     Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'profile']);
     Route::get('/editprofile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile']);
     Route::get('/getprofile/{id}', [App\Http\Controllers\ProfileController::class, 'GetProfile']);
+
+    Route::get('/makerequest/{id}', [App\Http\Controllers\TransactionController::class, 'MakeTransaction']);
+    Route::post('/getfoundationsearch', [App\Http\Controllers\TransactionController::class, 'GetFoundationSearch']);
+    Route::post('/getfoundationbyid', [App\Http\Controllers\TransactionController::class, 'GetFoundationByID']);
 
     Route::Post('/UpdateProfilePicture', [App\Http\Controllers\ProfileController::class, 'UpdateProfilePicture']);
 
@@ -36,9 +43,11 @@ Route::middleware(['auth:users,admin'])->group(function () {
 
     Route::delete('/deleteprofilephoto', [App\Http\Controllers\ProfileController::class, 'DeleteProfilePhoto']);
 
+    Route::get('/nextlevel/{id}', [App\Http\Controllers\LevelController::class, 'GetNextLevelInfo']);
+
     Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
     Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
-    Route::get('/nextlevel/{id}', [App\Http\Controllers\LevelController::class, 'GetNextLevelInfo']);
+    Route::get('/getdonationtype', [App\Http\Controllers\LOVController::class, 'DonationType']);
 });
 
 Route::get('/foundationlogin', function(){
