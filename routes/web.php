@@ -38,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
     Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
+    Route::get('/nextlevel/{id}', [App\Http\Controllers\LevelController::class, 'GetNextLevelInfo']);
 });
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
