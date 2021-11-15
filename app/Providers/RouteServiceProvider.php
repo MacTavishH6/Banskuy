@@ -46,6 +46,11 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+
+            Route::domain('foundation.' . env('APP_URL'))
+                ->middleware('foundations')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/foundations.php'));
         });
     }
 

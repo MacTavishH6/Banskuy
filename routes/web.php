@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FoundationProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 /*
@@ -15,20 +16,51 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-
-Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
-
 Route::get('/', function () {
     return redirect('/landingpage');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::get('/logout',function () {Auth::logout();});
+
+Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
+
+
+Route::middleware(['auth:web'])->group(function () {
     Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'profile']);
     Route::get('/editprofile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile']);
+    Route::get('/getprofile/{id}', [App\Http\Controllers\ProfileController::class, 'GetProfile']);
+
+    Route::get('/makerequest/{id}', [App\Http\Controllers\TransactionController::class, 'MakeTransaction']);
+    Route::post('/getfoundationsearch', [App\Http\Controllers\TransactionController::class, 'GetFoundationSearch']);
+    Route::post('/getfoundationbyid', [App\Http\Controllers\TransactionController::class, 'GetFoundationByID']);
+
+    Route::Post('/UpdateProfilePicture', [App\Http\Controllers\ProfileController::class, 'UpdateProfilePicture']);
+
+    Route::put('/updateprofile', [App\Http\Controllers\ProfileController::class, 'put']);
+    Route::put('/updatebio', [App\Http\Controllers\ProfileController::class, 'updatebio']);
+
+    Route::put('/changepassword', [App\Http\Controllers\ProfileController::class, 'ChangePassword']);
+
+    Route::delete('/deleteprofilephoto', [App\Http\Controllers\ProfileController::class, 'DeleteProfilePhoto']);
+
+    Route::get('/nextlevel/{id}', [App\Http\Controllers\LevelController::class, 'GetNextLevelInfo']);
 
     Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
     Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
+    Route::get('/getdonationtype', [App\Http\Controllers\LOVController::class, 'DonationType']);
 });
+
+Route::get('/foundationlogin', function(){
+    return view('/auth/foundationLogin');
+});
+
+Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+
+Route::post('/loginfoundation', [App\Http\Controllers\Auth\LoginController::class, 'loginfoundation']);
+
+Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
+
+Route::get('/editfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'editfoundationprofile']);
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateMsfoundationNullable extends Migration
+class UpdateMsfoundationBio extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +14,7 @@ class UpdateMsfoundationNullable extends Migration
     public function up()
     {
         Schema::table('msfoundation', function (Blueprint $table) {
-            $table->string('FoundationName', 50)->nullable()->change();
-            $table->string('Username', 36)->nullable()->change();
-            $table->string('Visi', 100)->nullable()->change();
-            $table->string('Misi', 255)->nullable()->change();
-            $table->boolean('IsConfirmed')->nullable();
-            $table->string('Password', 255)->change();
+            $table->string('Bio', 100)->nullable();
         });
     }
 
