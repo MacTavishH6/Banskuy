@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FoundationProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 /*
@@ -15,20 +16,29 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-
-Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
-
 Route::get('/', function () {
     return redirect('/landingpage');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
+
+Route::middleware(['auth:users,admin'])->group(function () {
     Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'profile']);
     Route::get('/editprofile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile']);
 
     Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
     Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
 });
+
+Route::get('/foundationlogin', function(){
+    return view('/auth/foundationLogin');
+});
+
+Route::post('/loginfoundation', [App\Http\Controllers\Auth\LoginController::class, 'loginfoundation']);
+
+Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
+
+Route::get('/editfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'editfoundationprofile']);
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
