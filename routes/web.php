@@ -45,6 +45,8 @@ Route::get('/foundationlogin', function(){
     return view('/auth/foundationLogin');
 });
 
+Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+
 Route::post('/loginfoundation', [App\Http\Controllers\Auth\LoginController::class, 'loginfoundation']);
 
 Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
