@@ -228,7 +228,7 @@
             var user;
             $.ajax({
                 url: '/getprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>,
-                method: 'GET',
+                type: 'GET',
                 success: function(data) {
                     user = data.payload;
                     console.log(user);
@@ -236,7 +236,7 @@
                 complete: function() {
                     $.ajax({
                         url: '/getprovince',
-                        method: 'GET',
+                        type: 'GET',
                         success: function(data) {
                             var option = document.getElementById("Province");
                             let newOption = new Option('', '');
@@ -254,7 +254,7 @@
                                 $("#City").empty();
                                 $.ajax({
                                     url: '/getcity/' + $(option).val(),
-                                    method: 'GET',
+                                    type: 'GET',
                                     success: function(data) {
                                         var option = document.getElementById(
                                             "City");
@@ -282,7 +282,7 @@
                                     $("#City").empty();
                                     $.ajax({
                                         url: '/getcity/' + $(this).val(),
-                                        method: 'GET',
+                                        type: 'GET',
                                         success: function(data) {
                                             var option = document
                                                 .getElementById(

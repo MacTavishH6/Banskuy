@@ -16,17 +16,19 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="">{{ __('Let\'s Donate!') }}</a>
-                </li>
-
-                @if(Auth::guard('foundations')->check())
-                    
-                @elseif(Auth::check())
-                    
+                @if (!Auth::guard('foundations')->check())
+                    <li class="nav-item">
+                        <a class="nav-link" href="">{{ __('Let\'s Donate!') }}</a>
+                    </li>
                 @endif
 
-                @auth
+                @if (Auth::guard('foundations')->check())
+
+                @elseif(Auth::check())
+
+                @endif
+
+                 @if (Auth::guard('foundations')->check() || Auth::check())
                     <li class="nav-item">
                         <a class="nav-link" href="">{{ __('Check Your Progress Here!') }}</a>
                     </li>
@@ -34,31 +36,21 @@
                 <li class="nav-item">
                     <a class="nav-link" href="">{{ __('Forum') }}</a>
                 </li>
+                
                 <!-- Authentication Links -->
-                @guest
-                    @if (!Request::is('login'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login Now') }}</a>
-                        </li>
-                    @endif
-
-                    @if (Request::is('index'))
-                        <li class="nav-item">
-                            <a class="nav-link text-white py-1 px-3" style="background-color: #AC8FFF; border-radius: 20px;" href="{{ route('login') }}">{{ __('Login Now') }}</a>
-                        </li>
-                    @endif
-
-                    @if (Request::is('login'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register Now') }}</a>
-                        </li>
-                    @endif
-                @else
+                @if (Auth::guard('foundations')->check() || Auth::check())
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile/{{Crypt::encrypt(Auth::id())}}">
-                            {{ Auth::user()->Username?Auth::user()->Username:Auth::user()->Email }}
-                            Profile
-                        </a>
+                        @if (Auth::guard('foundations')->check())
+                            <a class="nav-link" href="/foundationprofile/{{ Crypt::encrypt(Auth::id()) }}">
+                                {{ Auth::guard('foundations')->user()->Username ? Auth::guard('foundations')->user()->Username : Auth::guard('foundations')->user()->Email }}
+                                Profile
+                            </a>
+                        @elseif(Auth::check())
+                            <a class="nav-link" href="/profile/{{ Crypt::encrypt(Auth::id()) }}">
+                                {{ Auth::user()->Username ? Auth::user()->Username : Auth::user()->Email }}
+                                Profile
+                            </a>
+                        @endif
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white py-1 px-3" style="background-color: #AC8FFF; border-radius: 20px;"
@@ -72,7 +64,28 @@
                             @csrf
                         </form>
                     </li>
-                @endguest
+                @else
+                    @if (!Request::is('login'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login Now') }}</a>
+                        </li>
+                    @endif
+
+                    @if (Request::is('index'))
+                        <li class="nav-item">
+                            <a class="nav-link text-white py-1 px-3"
+                                style="background-color: #AC8FFF; border-radius: 20px;"
+                                href="{{ route('login') }}">{{ __('Login Now') }}</a>
+                        </li>
+                    @endif
+
+                    @if (Request::is('login'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register Now') }}</a>
+                        </li>
+                    @endif
+
+                @endif
             </ul>
         </div>
     </div>
