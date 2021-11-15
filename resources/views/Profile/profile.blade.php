@@ -20,12 +20,13 @@
 @endsection
 
 @section('content')
-    <section class="d-flex">
+    <section class="d-flex mt-3">
         <div class="container">
             <div class="row">
                 <div class="col-3">
                     <img src="{{ env('FTP_URL') }}{{ $user->Photo ? 'ProfilePicture/Donatur/' . $user->Photo->Path : 'assets/Smiley.png' }}"
-                        alt="UsernamePhotoProfile" style="border-radius: 50%; border: 1px solid black; width: 250px; height: 250px;"
+                        alt="UsernamePhotoProfile"
+                        style="border-radius: 50%; border: 1px solid black; width: 250px; height: 250px;"
                         onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
                 </div>
                 <div class="col-9">
@@ -113,7 +114,7 @@
                 </ul>
             </div>
         </div>
-        <div class="tab-content" id="myTabContent">
+        <div class="tab-content mb-3" id="myTabContent">
             <div class="tab-pane fade show active" id="post" role="tabpanel" aria-labelledby="post-tab">
                 <div class="container">
                     @include('Profile.Misc.component-list-post')
@@ -172,6 +173,14 @@
                 $("#hidBio").val($("#Bio").val());
                 $("#count-bio-word").html($("#hidBio").val().length + "/100");
             });
+            $.ajax({
+                url: '/nextlevel/' + <?php echo '"' . Crypt::encrypt($user->UserLevel->where('IsCurrentLevel', '1')->first()->LevelID) . '"'; ?>,
+                method: 'GET',
+                success: function(data) {
+                    $("#nextlevelxp").html(data.payload.LevelExp);
+                    $("#nextlevelname").html(data.payload.LevelName);
+                }
+            })
         });
     </script>
 @endsection
