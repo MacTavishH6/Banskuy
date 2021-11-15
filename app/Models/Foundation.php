@@ -11,6 +11,7 @@ use App\Models\Users as Authenticatable;
 class Foundation extends Authenticatable
 {
     protected $table = "msfoundation";
+    protected $primaryKey = "FoundationID";
 
     protected $fillable = [
         'email',
@@ -21,5 +22,9 @@ class Foundation extends Authenticatable
 
     public function Document(){
         return $this->hasMany(Document::class, 'FoundationID', 'FoundationID');
+    }
+
+    public function Address(){
+        return $this->hasOne(Address::class, 'AddressID');
     }
 }
