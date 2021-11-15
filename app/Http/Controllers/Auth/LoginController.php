@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Foundation;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -56,8 +57,6 @@ class LoginController extends Controller
 
         ]);
 
-
-
         return $validated;
 
     }
@@ -67,8 +66,7 @@ class LoginController extends Controller
         
         if ($validated->fails()) return redirect()->back()->withInput($request->all())->withErrors($validated->errors());
 
-        $credential = $request->only('email','password');
-        
+        $credential = $request->only('email','password');        
         $isRemember = false;
 
         if($request->rememberMe != null) $isRemember = true;
@@ -78,19 +76,32 @@ class LoginController extends Controller
         if(Auth::check()){
 
             if($isRemember == true){
-
                 $minute = 120;
-
                 $rememberToken = Auth::getRecallerName();
-
                 Cookie::queue($rememberToken,Cookie::get($rememberToken),$minute);
-
             }
-
             return $this->showLoginForm();
-
         }
         else return redirect('/login')->with('failed',"Invalid email or password");
+    }
+
+    public function loginFoundation(Request $request){
+        $foundation = Foundation::where('Email', $request->email)->first();
+        
+        $result = Hash::check($request->password, $foundation->Password);
+        
+        $credential = $request->only('email','password');
+
+        if($result == true){
+            // $guard = Auth::guard('foundations');
+            // auth()->guard($guard)->login();
+            if(Auth::guard('foundations')->attempt($credential)){
+                
+                return $this->showLoginForm();
+            }else dd(Auth::guard('foundations')->attempt($credential));
+ 
+        }else dd($result);
+        
     }
 
     public function showLoginForm(){
@@ -98,6 +109,9 @@ class LoginController extends Controller
             return redirect('/landingpage');
         }
         else{   
+            if(Auth::guard('foundations')->check()){
+                return redirect('/landingpage');
+            }
             return view("auth/login");
         }
     }

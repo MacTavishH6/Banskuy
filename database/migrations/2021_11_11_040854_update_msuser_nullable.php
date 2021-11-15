@@ -19,7 +19,7 @@ class UpdateMsuserNullable extends Migration
             $table->string('Username', 36)->nullable()->change();
             $table->string('Gender', 10)->nullable()->change();
             $table->string('Bio', 100)->nullable()->change();
-            $table->string('Password', 60)->change();
+            $table->string('Password', 255)->change();
             $table->boolean('IsConfirmed')->nullable();
             $table->integer('AddressID')->unsigned()->nullable();
             $table->foreign('AddressID')->references('AddressID')->on('MsAddress');
