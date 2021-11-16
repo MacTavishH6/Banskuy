@@ -12,5 +12,7 @@ class DonationTypeDetail extends Model
         return $this->belongsTo(DonationType::class,'DonationTypeID','DonationTypeID');
     }
 
-    
+    public function Post(){
+        return $this->hasMany(Post::class,'DonationTypeDetailID','DonationTypeDetailID');
+    }
 }

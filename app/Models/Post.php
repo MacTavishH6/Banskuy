@@ -16,4 +16,12 @@ class Post extends Model
         return $this->hasMany(FollowPost::class, 'FollowPostID');
     }
 
+    public function User(){
+        return $this->hasOne(User::class,'UserID','ID');
+    }
+
+    public function Like(){
+        return $this->hasMany(Like::class,'PostID','PostID');
+    }
+
 }
