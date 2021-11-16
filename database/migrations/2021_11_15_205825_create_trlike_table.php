@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrcommentTable extends Migration
+class CreateTrlikeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateTrcommentTable extends Migration
      */
     public function up()
     {
-        Schema::create('trcomment', function (Blueprint $table) {
+        Schema::create('trlike', function (Blueprint $table) {
+            $table->increments('LikeID');
             $table->integer('PostID')->unsigned();
             $table->integer('ID');
-            $table->string('Comment', 255);
-            $table->date('CommentDate');
+            $table->integer('LikePost');
             $table->timestamps();
 
              $table->foreign('PostID')->references('PostID')->on('mspost');
@@ -31,6 +31,6 @@ class CreateTrcommentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trcomment');
+        Schema::dropIfExists('trlike');
     }
 }
