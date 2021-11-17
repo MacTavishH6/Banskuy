@@ -33,7 +33,7 @@
                     <div class="row mt-5">
                         <div class="col-12">
                             <h2>{{ $user->Username ? $user->Username : $user->Email }}<small
-                                    style="display: inline-block; vertical-align: top; font-size: 16px; color: #2f9194;">{{ $user->UserLevel->where('IsCurrentLevel','1')->first()->LevelGrade->LevelName }}
+                                    style="display: inline-block; vertical-align: top; font-size: 16px; color: #2f9194;">{{ $user->UserLevel->where('IsCurrentLevel', '1')->first()->LevelGrade->LevelName }}
                                     <?php 
                                     $level = $user->UserLevel->where('IsCurrentLevel','1')->first()->LevelGrade->LevelOrder;
                                     for ($i=0; $i < $level; $i++) {?>
@@ -147,6 +147,12 @@
                 url: '/getprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>,
                 type: 'GET',
                 async: false,
+                beforeSend: function() {
+                    $("#loadingModal").modal();
+                },
+                complete: function() {
+                    $("#loadingModal").modal('hide');
+                },
                 success: function(data) {
                     user = data.payload;
                 }
@@ -176,6 +182,12 @@
             $.ajax({
                 url: '/nextlevel/' + <?php echo '"' . Crypt::encrypt($user->UserLevel->where('IsCurrentLevel', '1')->first()->LevelID) . '"'; ?>,
                 type: 'GET',
+                beforeSend: function() {
+                    $("#loadingModal").modal();
+                },
+                complete: function() {
+                    $("#loadingModal").modal('hide');
+                },
                 success: function(data) {
                     $("#nextlevelxp").html(data.payload.LevelExp);
                     $("#nextlevelname").html(data.payload.LevelName);

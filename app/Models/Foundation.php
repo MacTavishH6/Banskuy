@@ -27,4 +27,8 @@ class Foundation extends Authenticatable
     public function Address(){
         return $this->hasOne(Address::class, 'AddressID');
     }
+
+    public function DonationTransaction(){
+        return $this->hasMany(DonationTransaction::class);
+    }
 }
