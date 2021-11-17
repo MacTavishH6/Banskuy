@@ -13,7 +13,7 @@ class DonationTransaction extends Model
     }
 
     public function Foundation(){
-        return $this->belongsTo(Foundation::class,'FoudationID','FoundationID');
+        return $this->hasOne(Foundation::class, 'FoundationID','FoundationID');
     }
 
     public function DonationTypeDetail(){
@@ -22,5 +22,10 @@ class DonationTransaction extends Model
 
     public function ApprovalStatus(){
         return $this->hasOne(ApprovalStatus::class,'ApprovalStatusID','ApprovalStatusID');
+    }
+
+    public function Post()
+    {
+        return $this->hasOne(Post::class, 'PostID', 'PostID');
     }
 }

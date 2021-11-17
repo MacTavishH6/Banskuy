@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApprovalStatus;
 use Illuminate\Http\Request;
 use App\Models\Province;
 use App\Models\City;
@@ -28,6 +29,14 @@ class LOVController extends Controller
     public function DonationType(){
         $donationtype = DonationType::with('DonationTypeDetail')->get();
         return response()->json(array('msg' => $donationtype), 200);
+    }
 
+    public function DonationStatus(){
+        $donationstatus = ApprovalStatus::get();
+        return response()->json(array('msg' => $donationstatus), 200);
+    }
+
+    public function PostList(Request $request){
+        
     }
 }

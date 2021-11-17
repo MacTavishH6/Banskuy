@@ -47,13 +47,14 @@
         </main>
 
         @include('Shared._footer')
+        @include('Shared._loading')
     </div>
 
     @yield('scripts')
     <script type="text/javascript">
-        var toastsuccess = <?php echo session('toastsuccess') ? '"' . session('toastsuccess') . '"' :  '""'; ?>;
+        var toastsuccess = <?php echo session('toastsuccess') ? '"' . session('toastsuccess') . '"' : '""'; ?>;
 
-        var toasterror = <?php echo session('toasterror') ? '"' . session('toasterror') . '"' :  '""'; ?>;
+        var toasterror = <?php echo session('toasterror') ? '"' . session('toasterror') . '"' : '""'; ?>;
         $(document).ready(function() {
             if (toastsuccess) toastr.success(toastsuccess);
         });

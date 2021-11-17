@@ -229,6 +229,12 @@
             $.ajax({
                 url: '/getprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>,
                 type: 'GET',
+                beforeSend: function() {
+                    $("#loadingModal").modal();
+                },
+                complete: function() {
+                    $("#loadingModal").modal('hide');
+                },
                 success: function(data) {
                     user = data.payload;
                     console.log(user);
@@ -237,6 +243,12 @@
                     $.ajax({
                         url: '/getprovince',
                         type: 'GET',
+                        beforeSend: function() {
+                            $("#loadingModal").modal();
+                        },
+                        complete: function() {
+                            $("#loadingModal").modal('hide');
+                        },
                         success: function(data) {
                             var option = document.getElementById("Province");
                             let newOption = new Option('', '');
@@ -253,6 +265,12 @@
                                 $("#City").prop("disabled", false);
                                 $("#City").empty();
                                 $.ajax({
+                                    beforeSend: function() {
+                                        $("#loadingModal").modal();
+                                    },
+                                    complete: function() {
+                                        $("#loadingModal").modal('hide');
+                                    },
                                     url: '/getcity/' + $(option).val(),
                                     type: 'GET',
                                     success: function(data) {
@@ -283,6 +301,13 @@
                                     $.ajax({
                                         url: '/getcity/' + $(this).val(),
                                         type: 'GET',
+                                        beforeSend: function() {
+                                            $("#loadingModal").modal();
+                                        },
+                                        complete: function() {
+                                            $("#loadingModal").modal(
+                                                'hide');
+                                        },
                                         success: function(data) {
                                             var option = document
                                                 .getElementById(
