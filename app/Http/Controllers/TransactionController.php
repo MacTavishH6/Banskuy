@@ -68,4 +68,10 @@ class TransactionController extends Controller
         $response = ['payload' => $donationhistory];
         return response()->json($response);
     }
+
+    public function GetDonationHistoryDetail(Request $request){
+        $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->first();
+        $response = ['payload' => $donation];
+        return response()->json($response);
+    }
 }

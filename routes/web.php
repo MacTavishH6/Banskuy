@@ -37,6 +37,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/donationhistory', [App\Http\Controllers\TransactionController::class, 'DonationHistory']);
     Route::post('/getdonationhistory',
     [App\Http\Controllers\TransactionController::class, 'GetDonationHistory']);
+    Route::post('/gettransactiondetail', [App\Http\Controllers\TransactionController::class, 'GetDonationHistoryDetail']);
 
     Route::Post('/UpdateProfilePicture', [App\Http\Controllers\ProfileController::class, 'UpdateProfilePicture']);
 
