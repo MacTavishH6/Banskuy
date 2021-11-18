@@ -222,23 +222,12 @@
                 event.preventDefault();
                 $("#table-foundation tbody").empty();
                 var searchtext = $("#Foundation").val();
-                $.ajax({
-                    url: "{{ url('/getfoundationsearch') }}",
-                    type: 'POST',
-                    data: {
-                        text: searchtext,
-                        _token: "<?php echo csrf_token(); ?>"
-                    },
-                    beforeSend: function() {
-                        $("#loadingModal").modal();
-                    },
-                    complete: function() {
-                        $("#loadingModal").modal('hide');
-                    },
-                    error: function(data) {
-                        console.log(data);
-                    },
-                    success: function(data) {
+                var data = {
+                    text: searchtext,
+                    _token: "<?php echo csrf_token(); ?>"
+                }
+                banskuy.postReq("{{ url('/getfoundationsearch') }}", data)
+                    .then(function(data) {
                         var tbodystring;
                         if (data.payload && data.payload.length > 0) {
                             data.payload.forEach((foundation, index) => {
@@ -266,26 +255,17 @@
                             tbodystring += "</tr>";
                         }
                         $("#table-foundation tbody").append(tbodystring);
-                    },
-                    complete: function() {
+                    })
+                    .finally(function() {
                         $("#modal-foundation").modal();
                         $("#foundationselect").on('click', function() {
                             var foundationid = $(this).attr('data-id');
-                            $.ajax({
-                                url: "{{ url('/getfoundationbyid') }}",
-                                type: 'POST',
-                                data: {
-                                    UserID: foundationid,
-                                    _token: "<?php echo csrf_token(); ?>"
-                                },
-                                beforeSend: function() {
-                                    $("#loadingModal").modal();
-                                },
-                                complete: function() {
-                                    $("#loadingModal").modal('hide');
-                                },
-                                success: function(data) {
-                                    console.log(data);
+                            var data = {
+                                UserID: foundationid,
+                                _token: "<?php echo csrf_token(); ?>"
+                            }
+                            banskuy.postReq("{{ url('/getfoundationbyid') }}", data)
+                                .then(function(data) {
                                     var foundation = data.payload;
                                     $("#FoundationID").val(data
                                         .foundationid);
@@ -302,15 +282,12 @@
                                         foundation.address.city ?
                                         foundation.address.city
                                         .CityName : '') : '');
-                                },
-                                complete: function() {
+                                })
+                                .finally(function() {
                                     $("#modal-foundation").modal('hide');
-
-                                }
-                            })
+                                });
                         });
-                    }
-                })
+                    })
             });
             $("#Unit").on('change', function() {
                 console.log($('#Unit').val());
@@ -322,19 +299,11 @@
             $("input[name='WithPost']").change(function() {
                 if ($(this).val() == 1) {
                     $("#select-post").removeClass('d-none');
-                    $.ajax({
-                        url: '{{ url('/getpostlist') }}',
-                        type: 'POST',
-                        beforeSend: function() {
-                            $("#loadingModal").modal();
-                        },
-                        complete: function() {
-                            $("#loadingModal").modal('hide');
-                        },
-                        success: function(data) {
+                    var data = {};
+                    banskuy.postReq('/getpostlist', data)
+                        .then(function(data) {
                             console.log(data);
-                        }
-                    });
+                        });
                 } else if ($(this).val() == 2) {
                     $("#select-post").addClass('d-none');
                     $("#SelectPost").empty();
@@ -343,16 +312,8 @@
         });
 
         function bindDonationType() {
-            $.ajax({
-                url: '/getdonationtype',
-                type: "GET",
-                beforeSend: function() {
-                    $("#loadingModal").modal();
-                },
-                complete: function() {
-                    $("#loadingModal").modal('hide');
-                },
-                success: function(data) {
+            banskuy.getReq('/getdonationtype')
+                .then(function(data) {
                     var donationtype = data.msg;
                     var option = document.getElementById("DonationType");
                     let newOption = new Option('', '');
@@ -363,25 +324,19 @@
                         option.add(newOption, undefined);
 
                     });
-                }
-            })
-            bindDonationTypeDetail();
+                })
+                .finally(function() {
+                    bindDonationTypeDetail();
+                });
+
         }
 
         function bindDonationTypeDetail() {
             $("#Unit").empty().trigger('change');
             if ($("#DonationType").val()) {
                 $("#Unit").prop('disabled', false);
-                $.ajax({
-                    url: '/getdonationtype',
-                    type: 'GET',
-                    beforeSend: function() {
-                        $("#loadingModal").modal();
-                    },
-                    complete: function() {
-                        $("#loadingModal").modal('hide');
-                    },
-                    success: function(data) {
+                banskuy.getReq('/getdonationtype')
+                    .then(function(data) {
                         var donationtype = data.msg;
                         console.log(donationtype);
                         var donationtypeval = $("#DonationType").val();
@@ -397,8 +352,7 @@
                                 element2.DonationTypeDetailID);
                             optiondetail.add(newOptionDetail, undefined);
                         });
-                    }
-                })
+                    });
             } else {
                 $("#Unit").prop('disabled', true);
                 $("#Quantity").val('').prop('disabled', true);

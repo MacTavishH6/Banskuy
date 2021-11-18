@@ -91,21 +91,14 @@
             </nav>
         </div>
     </div>
+    @include('DonationHistory.Misc.component-modal-donation-history')
     @include('DonationHistory.Misc.component-list-donation')
 @endsection
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $.ajax({
-                url: '/getdonationtype',
-                type: "GET",
-                beforeSend: function() {
-                    $("#loadingModal").modal();
-                },
-                complete: function() {
-                    $("#loadingModal").modal('hide');
-                },
-                success: function(data) {
+            banskuy.getReq('/getdonationtype')
+                .then(function(data) {
                     var donationtype = data.msg;
                     var option = document.getElementById("donationType");
                     let newOption = new Option('All', '');
@@ -116,18 +109,9 @@
                         option.add(newOption, undefined);
 
                     });
-                }
-            })
-            $.ajax({
-                url: '/getdonationstatus',
-                type: "GET",
-                beforeSend: function() {
-                    $("#loadingModal").modal();
-                },
-                complete: function() {
-                    $("#loadingModal").modal('hide');
-                },
-                success: function(data) {
+                });
+            banskuy.getReq('/getdonationstatus')
+                .then(function(data) {
                     var donationtype = data.msg;
                     var option = document.getElementById("donationStatus");
                     let newOption = new Option('All', '');
@@ -138,8 +122,7 @@
                         option.add(newOption, undefined);
 
                     });
-                }
-            })
+                });
             $("#applyFilter").on('click', function() {
                 $("#list-containter").empty();
                 var data = {
@@ -150,17 +133,8 @@
                     UserID: <?php echo '"' . Crypt::encrypt(Auth::id()) . '"'; ?>,
                     _token: "<?php echo csrf_token(); ?>"
                 }
-                $.ajax({
-                    url: "/getdonationhistory",
-                    type: "POST",
-                    data: data,
-                    beforeSend: function() {
-                        $("#loadingModal").modal();
-                    },
-                    complete: function() {
-                        $("#loadingModal").modal('hide');
-                    },
-                    success: function(response) {
+                banskuy.postReq('/getdonationhistory', data)
+                    .then((response) => {
                         var listDonation = response.payload;
                         _.each(listDonation, function(donation, donationKey) {
                             var data = {};
@@ -175,6 +149,7 @@
                             var formattedDate = transactionDate.toString(
                                 "MMMM dS, yyyy");
                             data.transactionDate = formattedDate;
+                            data.transactionID = donation.DonationTransactionID;
                             data.status = donation.approval_status.ApprovalStatusName;
                             switch (donation.approval_status.ApprovalStatusID) {
                                 case 1:
@@ -204,9 +179,30 @@
                             }));
                         });
 
-                    }
-                })
+                    })
+                    .finally(function() {
+                        $(".historydetail_button").on('click', function() {
+                            // alert('tes');
+                            var transactionid = $(this).attr('data-id');
+                            var data = {
+                                TransactionID: transactionid,
+                                _token: "<?php echo csrf_token(); ?>"
+                            }
+                            banskuy.postReq('/gettransactiondetail', data)
+                                .then(function(response) {
+                                    var modal = _.template($(
+                                        "#component-modal-donation-history"
+                                    ).html());
+                                    $(".container").append(modal({
+                                        data: ''
+                                    }));
+                                    $('.modal').css('overflow-y', 'auto');
+                                    $("#donationhistorydetail").modal();
+                                });
+                        });
+                    });
             });
+
         });
     </script>
 @endsection

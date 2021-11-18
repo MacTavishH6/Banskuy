@@ -1,5 +1,5 @@
 <script type="text/template" id="component-list-donation">
-<div class="d-flex justify-content-center mb-3">
+    <div class="d-flex justify-content-center mb-3">
     <div class="col-md-9">
         <div class="card">
             <div class="card-header <%=data.headerColor%>">
@@ -57,12 +57,9 @@
                 </div>
                 <div class="col-3">
                     <div class="buttonhistorydetail">
-                        {{-- Route Login ini harusnya ke historydetailpage bukan ke loginpage --}}
-                        <a href="{{ route('login') }}">
-                            <button type="submit" class="historydetail_button">
-                                {{ __('HistoryDetail') }}
-                            </button>
-                        </a>
+                        <button type="button" id="btnHistoryDetail" data-id="<%=data.transactionID%>" class="historydetail_button">
+                            {{ __('HistoryDetail') }}
+                        </button>
                     </div>
                 </div>
             </div>
