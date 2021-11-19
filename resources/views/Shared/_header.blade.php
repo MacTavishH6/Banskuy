@@ -41,7 +41,7 @@
                 @if (Auth::guard('foundations')->check() || Auth::check())
                     <li class="nav-item">
                         @if (Auth::guard('foundations')->check())
-                            <a class="nav-link" href="/foundationprofile/{{ Crypt::encrypt(Auth::id()) }}">
+                            <a class="nav-link" href="/foundationprofile/{{ Crypt::encrypt(Auth::guard('foundations')->id()) }}">
                                 {{ Auth::guard('foundations')->user()->Username ? Auth::guard('foundations')->user()->Username : Auth::guard('foundations')->user()->Email }}
                                 Profile
                             </a>

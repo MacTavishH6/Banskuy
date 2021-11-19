@@ -86,20 +86,12 @@ class LoginController extends Controller
     }
 
     public function loginFoundation(Request $request){
-        $foundation = Foundation::where('Email', $request->email)->first();
-        
-        //$result = Hash::check($request->password, $foundation->Password);
-        
         $credential = $request->only('email','password');
 
-            // $guard = Auth::guard('foundations');
-            // auth()->guard($guard)->login();
-            if(Auth::guard('foundations')->attempt($credential)){
-                return $this->showLoginForm();
-            }else dd(Auth::guard('foundations')->attempt($credential));
- 
-     
-        
+        if(Auth::guard('foundations')->attempt($credential)){
+            return $this->showLoginForm();
+        }
+        else return redirect('/foundationlogin')->with('failed',"Invalid email or password");    
     }
 
     public function showLoginForm(){
