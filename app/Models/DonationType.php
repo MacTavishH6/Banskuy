@@ -11,4 +11,6 @@ class DonationType extends Model
     public function DonationTypeDetail(){
         return $this->hasMany(DonationTypeDetail::class, 'DonationTypeID', 'DonationTypeID');
     }
+
+    
 }

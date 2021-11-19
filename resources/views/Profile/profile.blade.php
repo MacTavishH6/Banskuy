@@ -33,7 +33,7 @@
                     <div class="row mt-5">
                         <div class="col-12">
                             <h2>{{ $user->Username ? $user->Username : $user->Email }}<small
-                                    style="display: inline-block; vertical-align: top; font-size: 16px; color: #2f9194;">{{ $user->UserLevel->where('IsCurrentLevel','1')->first()->LevelGrade->LevelName }}
+                                    style="display: inline-block; vertical-align: top; font-size: 16px; color: #2f9194;">{{ $user->UserLevel->where('IsCurrentLevel', '1')->first()->LevelGrade->LevelName }}
                                     <?php 
                                     $level = $user->UserLevel->where('IsCurrentLevel','1')->first()->LevelGrade->LevelOrder;
                                     for ($i=0; $i < $level; $i++) {?>
@@ -143,44 +143,39 @@
     <script type="text/javascript">
         $(document).ready(function() {
             var user;
-            $.ajax({
-                url: '/getprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>,
-                type: 'GET',
-                async: false,
-                success: function(data) {
+            banskuy.getReq('/getprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>)
+                .then(function(data) {
                     user = data.payload;
-                }
-            })
-            if (!user.FullName && !user.LastName && !user.Address) {
-                $("#confirmedModal").modal();
-            }
-            $(".edit-profile").on('click', function() {
-                return location.href = '/editprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>;
-            });
-            $('#Bio').on('input', function() {
-                if ($(this).val().length > 100) $(this).val($(this).val().substring(0, 100));
-                $("#count-bio-word").html($(this).val().length + "/100");
-                $("#hidBio").val($(this).val());
-            });
-            if (user.Bio) {
-                $(".edit-bio").addClass("d-none");
-            } else {
-                $(".has-bio").addClass("d-none");
-            }
-            $("#btnEditBio").on('click', function() {
-                $(".edit-bio").removeClass("d-none");
-                $(".has-bio").addClass("d-none");
-                $("#hidBio").val($("#Bio").val());
-                $("#count-bio-word").html($("#hidBio").val().length + "/100");
-            });
-            $.ajax({
-                url: '/nextlevel/' + <?php echo '"' . Crypt::encrypt($user->UserLevel->where('IsCurrentLevel', '1')->first()->LevelID) . '"'; ?>,
-                type: 'GET',
-                success: function(data) {
+                })
+                .finally(function() {
+                    if (!user.FullName && !user.LastName && !user.Address) {
+                        $("#confirmedModal").modal();
+                    }
+                    $(".edit-profile").on('click', function() {
+                        return location.href = '/editprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>;
+                    });
+                    $('#Bio').on('input', function() {
+                        if ($(this).val().length > 100) $(this).val($(this).val().substring(0, 100));
+                        $("#count-bio-word").html($(this).val().length + "/100");
+                        $("#hidBio").val($(this).val());
+                    });
+                    if (user.Bio) {
+                        $(".edit-bio").addClass("d-none");
+                    } else {
+                        $(".has-bio").addClass("d-none");
+                    }
+                    $("#btnEditBio").on('click', function() {
+                        $(".edit-bio").removeClass("d-none");
+                        $(".has-bio").addClass("d-none");
+                        $("#hidBio").val($("#Bio").val());
+                        $("#count-bio-word").html($("#hidBio").val().length + "/100");
+                    });
+                });
+            banskuy.getReq('/nextlevel/' + <?php echo '"' . Crypt::encrypt($user->UserLevel->where('IsCurrentLevel', '1')->first()->LevelID) . '"'; ?>)
+                .then(function(data) {
                     $("#nextlevelxp").html(data.payload.LevelExp);
                     $("#nextlevelname").html(data.payload.LevelName);
-                }
-            })
+                });
         });
     </script>
 @endsection

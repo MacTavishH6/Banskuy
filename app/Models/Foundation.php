@@ -31,4 +31,8 @@ class Foundation extends Authenticatable
     public function FoundationPhoto(){
         return $this->hasOne(FoundationPhoto::class, 'PhotoID', 'PhotoID');
     }
+
+    public function DonationTransaction(){
+        return $this->hasMany(DonationTransaction::class);
+    }
 }

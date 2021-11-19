@@ -17,6 +17,9 @@ class CreateMspostTable extends Migration
             $table->increments('PostID');
             $table->integer('DonationTypeDetailID')->unsigned();
             $table->integer('ID');
+            $table->string('PostTitle',100);
+            $table->integer('PostTypeID');
+            $table->string('PostType');
             $table->string('PostDescription', 255);
             $table->date('UploadDate');
             $table->string('PostPicture', 255);

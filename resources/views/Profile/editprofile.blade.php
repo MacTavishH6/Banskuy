@@ -226,18 +226,13 @@
             var passwordError = <?php echo ($errors->any() && $errors->has('NewPassword')) || $errors->has('OldPassword') ? json_encode($errors) : '""'; ?>;
             if (passwordError) $("#changepassword-tab").click();
             var user;
-            $.ajax({
-                url: '/getprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>,
-                type: 'GET',
-                success: function(data) {
+            banskuy.getReq('/getprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>)
+                .then(function(data) {
                     user = data.payload;
-                    console.log(user);
-                },
-                complete: function() {
-                    $.ajax({
-                        url: '/getprovince',
-                        type: 'GET',
-                        success: function(data) {
+                })
+                .finally(function() {
+                    banskuy.getReq('/getprovince')
+                        .then(function(data) {
                             var option = document.getElementById("Province");
                             let newOption = new Option('', '');
                             option.add(newOption, undefined);
@@ -252,10 +247,8 @@
                             if ($(option).val()) {
                                 $("#City").prop("disabled", false);
                                 $("#City").empty();
-                                $.ajax({
-                                    url: '/getcity/' + $(option).val(),
-                                    type: 'GET',
-                                    success: function(data) {
+                                banskuy.getReq('/getcity/' + $(option).val())
+                                    .then(function(data) {
                                         var option = document.getElementById(
                                             "City");
                                         let newOption = new Option('', '');
@@ -271,8 +264,7 @@
                                         if (user.address) {
                                             $(option).val(user.address.CityID);
                                         }
-                                    }
-                                });
+                                    })
                             } else {
                                 $("#City").prop("disabled", true);
                             }
@@ -280,10 +272,8 @@
                                 if ($(this).val()) {
                                     $("#City").prop("disabled", false);
                                     $("#City").empty();
-                                    $.ajax({
-                                        url: '/getcity/' + $(this).val(),
-                                        type: 'GET',
-                                        success: function(data) {
+                                    banskuy.getReq('/getcity/' + $(this).val())
+                                        .then(function(data) {
                                             var option = document
                                                 .getElementById(
                                                     "City");
@@ -310,18 +300,14 @@
                                                     .address.CityID);
                                                 // console.log(option);
                                             }
-                                        }
-                                    });
+                                        })
                                 } else {
                                     $("#City").prop("disabled", true);
                                     $("#City").empty();
                                 }
                             });
-                        }
-                    });
-                }
-
-            })
+                        })
+                });
             $("#editphoto").on('click', function() {
                 event.preventDefault();
                 $("#form-file").modal();

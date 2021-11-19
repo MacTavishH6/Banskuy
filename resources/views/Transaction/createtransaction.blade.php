@@ -23,7 +23,7 @@
         </div>
     </section>
     <section>
-        <div class="card w-50 m-auto">
+        <div class="card w-50 mx-auto my-3">
             <div class="card-body">
                 <div class="form-row py-4">
                     <div class="col-2 text-center">
@@ -44,7 +44,39 @@
                         </h3>
                     </div>
                 </div>
-                <form action="#" method="post">
+                <form action="/requesttransaction" method="post">
+                    @csrf
+                    @method('POST')
+                    <input type="hidden" name="UserID" value="{{ Crypt::encrypt($user->UserID) }}">
+                    <div class="form-row py-1">
+                        <div class="col-3">
+                            <label for="WithPost">With Post</label>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="WithPost" id="WithPostYes" value="1"
+                                    required>
+                                <label class="form-check-label" for="WithPostYes">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="WithPost" id="WithPostNo" value="2">
+                                <label class="form-check-label" for="WithPostNo">No</label>
+                            </div>
+                            @error('WithPost')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-row py-1 d-none" id="select-post">
+                        <div class="col-3">
+                            <label for="SelectPost">Select Post</label>
+                        </div>
+                        <div class="col-5">
+                            <select name="SelectPost" class="form-control" id="SelectPost"></select>
+                        </div>
+                    </div>
                     <div class="form-row py-1">
                         <div class="col-3">
                             <label for="DonationType">Donation Type</label>
@@ -58,8 +90,8 @@
                             <label for="Foundation">Foundation</label>
                         </div>
                         <div class="col-5">
-                            <input type="text" name="Foundation" id="Foundation" class="form-control">
-                            <input type="hidden" name="FoundationID">
+                            <input type="text" name="Foundation" id="Foundation" class="form-control" required>
+                            <input type="hidden" name="FoundationID" id="FoundationID">
                         </div>
                         <div class="col mt-1">
                             <button type="button" style="border-radius: 20px; background-color: #AC8FFF; border: none;"
@@ -72,32 +104,42 @@
                         </div>
                         <div class="col-5">
                             <textarea class="form-control" name="FoundationAddress" id="FoundationAddress" rows="3"
-                                style="resize: none;" disabled></textarea>
+                                style="resize: none;" disabled required></textarea>
                         </div>
                     </div>
-                    @if (true)
-                        <div class="form-row py-1">
-                            <div class="col-3">
-                                <label for="DonationDescription">
-                                    @if (true)
-                                        Donation Description
-                                    @elseif (false)
-                                        Kind of Service
-                                    @endif
-                                </label>
-                            </div>
-                            <div class="col-5">
-                                <textarea name="DonationDescription" id="DonationDescription" rows="3"
-                                    class="form-control" style="resize: none;"></textarea>
-                            </div>
+                    <div class="form-row py-1">
+                        <div class="col-3">
+                            <label for="FoundationAddress">Foundation Province</label>
                         </div>
-                    @endif
+                        <div class="col-5">
+                            <input type="text" name="Province" id="Province" class="form-control" disabled required>
+                        </div>
+                    </div>
+                    <div class="form-row py-1">
+                        <div class="col-3">
+                            <label for="FoundationAddress">Foundation City</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="text" name="City" id="City" class="form-control" disabled required>
+                        </div>
+                    </div>
+                    <div class="form-row py-1 d-none" id="descriptionContainer">
+                        <div class="col-3">
+                            <label for="DonationDescription" id="descriptionLabel">
+
+                            </label>
+                        </div>
+                        <div class="col-5">
+                            <textarea name="DonationDescription" id="DonationDescription" rows="3" class="form-control"
+                                style="resize: none;" required></textarea>
+                        </div>
+                    </div>
                     <div class="form-row py-1">
                         <div class="col-3">
                             <label for="Unit">Unit</label>
                         </div>
                         <div class="col-5">
-                            <select name="Unit" id="Unit" class="form-control"></select>
+                            <select name="Unit" id="Unit" class="form-control" required></select>
                         </div>
                     </div>
                     <div class="form-row py-1">
@@ -105,7 +147,9 @@
                             <label for="Quantity">Quantity</label>
                         </div>
                         <div class="col-5">
-                            <input type="text" name="Quantity" id="Quantity" class="form-control">
+                            <input type="text" name="Quantity" id="Quantity" class="form-control"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                required>
                         </div>
                     </div>
                     <div class="row">
@@ -155,26 +199,42 @@
         $(document).ready(function() {
             bindDonationType();
             $("#DonationType").on('change', function() {
+                if ($(this).val()) {
+                    var donType = $(this).val();
+                    $("#descriptionContainer").removeClass('d-none');
+                    switch (donType) {
+                        case '1':
+                            $("#descriptionLabel").html('Donation Title');
+                            break;
+                        case '2':
+                            $("#descriptionLabel").html('Kind of Service');
+                            break;
+                        case '3':
+                            $("#descriptionLabel").html('Donation Title');
+                            break;
+                    }
+                } else {
+                    $("#descriptionContainer").addClass('d-none');
+                }
                 bindDonationTypeDetail();
             });
             $("#searchfoundation").on('click', function() {
                 event.preventDefault();
                 $("#table-foundation tbody").empty();
                 var searchtext = $("#Foundation").val();
-                $.ajax({
-                    url: "{{ url('/getfoundationsearch') }}",
-                    type: 'POST',
-                    data: {
-                        text: searchtext,
-                        _token: "<?php echo csrf_token(); ?>"
-                    },
-                    error: function(data) {
-                        console.log(data);
-                    },
-                    success: function(data) {
+                var data = {
+                    text: searchtext,
+                    _token: "<?php echo csrf_token(); ?>"
+                }
+                banskuy.postReq("{{ url('/getfoundationsearch') }}", data)
+                    .then(function(data) {
                         var tbodystring;
                         if (data.payload && data.payload.length > 0) {
                             data.payload.forEach((foundation, index) => {
+                                var hashedFoundationId = data.foundationID.find(obj =>
+                                    obj.key == foundation.FoundationID);
+                                hashedFoundationId = hashedFoundationId ?
+                                    hashedFoundationId.value : '';
                                 tbodystring += "<tr>";
                                 tbodystring += "<td>" + (index + 1) + "</td>";
                                 tbodystring += "<td>" + foundation.FoundationName +
@@ -184,7 +244,7 @@
                                     "</td>";
                                 tbodystring +=
                                     "<td><button type=\"Button\" id=\"foundationselect\" data-id=\"" +
-                                    foundation.FoundationID +
+                                    hashedFoundationId +
                                     "\" class=\"btn btn-info\">Select</button></td>";
                                 tbodystring += "</tr>";
                             });
@@ -195,47 +255,65 @@
                             tbodystring += "</tr>";
                         }
                         $("#table-foundation tbody").append(tbodystring);
-                    },
-                    complete: function() {
+                    })
+                    .finally(function() {
                         $("#modal-foundation").modal();
                         $("#foundationselect").on('click', function() {
                             var foundationid = $(this).attr('data-id');
-                            $.ajax({
-                                url: "{{ url('/getfoundationbyid') }}",
-                                type: 'POST',
-                                data: {
-                                    UserID: foundationid,
-                                    _token: "<?php echo csrf_token(); ?>"
-                                },
-                                success: function(data) {
+                            var data = {
+                                UserID: foundationid,
+                                _token: "<?php echo csrf_token(); ?>"
+                            }
+                            banskuy.postReq("{{ url('/getfoundationbyid') }}", data)
+                                .then(function(data) {
                                     var foundation = data.payload;
-                                    $("#FoundationID").val(foundation.FoundationID);
-                                    $("#Foundation").val(foundation.FoundationName)
-                                    $("#FoundationAddress").val(foundation.address?foundation.address.Address:'');
-                                },
-                                complete: function() {
+                                    $("#FoundationID").val(data
+                                        .foundationid);
+                                    $("#Foundation").val(foundation
+                                        .FoundationName)
+                                    $("#FoundationAddress").val(foundation
+                                        .address ? foundation.address
+                                        .Address : '');
+                                    $("#Province").val(foundation.address ?
+                                        (foundation.address.province ?
+                                            foundation.address.province
+                                            .ProvinceName : '') : '');
+                                    $("#City").val(foundation.address ? (
+                                        foundation.address.city ?
+                                        foundation.address.city
+                                        .CityName : '') : '');
+                                })
+                                .finally(function() {
                                     $("#modal-foundation").modal('hide');
-
-                                }
-                            })
+                                });
                         });
-                    }
-                })
+                    })
             });
-
             $("#Unit").on('change', function() {
                 console.log($('#Unit').val());
                 if ($('#Unit').val()) $("#Quantity").prop('disabled', false);
                 else $("#Quantity").prop('disabled', true);
                 $("#Quantity").val('');
             });
+
+            $("input[name='WithPost']").change(function() {
+                if ($(this).val() == 1) {
+                    $("#select-post").removeClass('d-none');
+                    var data = {};
+                    banskuy.postReq('/getpostlist', data)
+                        .then(function(data) {
+                            console.log(data);
+                        });
+                } else if ($(this).val() == 2) {
+                    $("#select-post").addClass('d-none');
+                    $("#SelectPost").empty();
+                }
+            });
         });
 
         function bindDonationType() {
-            $.ajax({
-                url: '/getdonationtype',
-                type: "GET",
-                success: function(data) {
+            banskuy.getReq('/getdonationtype')
+                .then(function(data) {
                     var donationtype = data.msg;
                     var option = document.getElementById("DonationType");
                     let newOption = new Option('', '');
@@ -246,20 +324,21 @@
                         option.add(newOption, undefined);
 
                     });
-                }
-            })
-            bindDonationTypeDetail();
+                })
+                .finally(function() {
+                    bindDonationTypeDetail();
+                });
+
         }
 
         function bindDonationTypeDetail() {
             $("#Unit").empty().trigger('change');
             if ($("#DonationType").val()) {
                 $("#Unit").prop('disabled', false);
-                $.ajax({
-                    url: '/getdonationtype',
-                    type: 'GET',
-                    success: function(data) {
+                banskuy.getReq('/getdonationtype')
+                    .then(function(data) {
                         var donationtype = data.msg;
+                        console.log(donationtype);
                         var donationtypeval = $("#DonationType").val();
                         var donationtypedetail = donationtype.find(function(x) {
                             return x.DonationTypeID == donationtypeval
@@ -267,13 +346,13 @@
                         var optiondetail = document.getElementById("Unit");
                         let newOptionDetail = new Option('', '');
                         optiondetail.add(newOptionDetail, undefined);
+                        console.log(donationtypedetail);
                         donationtypedetail.forEach(element2 => {
                             let newOptionDetail = new Option(element2.DonationTypeDetail,
                                 element2.DonationTypeDetailID);
                             optiondetail.add(newOptionDetail, undefined);
                         });
-                    }
-                })
+                    });
             } else {
                 $("#Unit").prop('disabled', true);
                 $("#Quantity").val('').prop('disabled', true);

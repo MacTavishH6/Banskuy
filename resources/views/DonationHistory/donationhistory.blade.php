@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Donation History</title>
-
+@extends('layouts.app')
+@section('styles')
     <style>
-        .pagetitle{
+        .pagetitle {
             font-size: 300%;
             text-align: center;
         }
+
         .historydetail_button {
             background-color: #AC8FFF;
             border: none;
@@ -25,139 +20,55 @@
             cursor: pointer;
             color: black;
         }
+
         .historydetail_button:hover {
             box-shadow: 0px 5px 20px rgb(153, 121, 39);
         }
+
     </style>
-
-</head>
-
-<body>
-    @extends('layouts.app')
-
-    @section('content')
-
-        <div class="pagetitle">
-            <p>
-                Donation History
-            </p>
-        </div>
-
-        <br>
-
-        <div class="containermenu">
-
-            <div class="row">
-                <div class="col-3"></div>
-
-                {{-- sebelahkiri --}}
-                <div class="col-3">
-                    <div class="searchbox">
-
-                        <label for="searchbox">Search :</label> <br>
-    
-                        <form class="form-inline m-0">
-                            <input class="form-control col-10 mr-sm-2" type="search" placeholder="Input Keyword" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-2" type="submit">Go</button>
-                        </form>
-    
-                    </div>
-
-                    <div class="donationstatus">
-                        <div class="form-group">
-    
-                            <label for="inputState">Donation Status :</label>
-    
-                            <select id="inputState" class="form-control">
-                                <option selected>Status 1</option>
-                                <option>Status 2</option>
-                                <option>Status 3</option>
-                            </select>
-    
-                        </div>
-                    </div>
-                </div>
-
-                {{-- sebelahkanan --}}
-                <div class="col-3">
-                    <div class="form-group col-md-12">
-                        <label for="inputState">Choose Date :</label>
-                        <input class="form-control mr-sm-2" type="date" name="" id="">
-                    </div>
-
-                    <div class="donationstatus">
-                        <div class="form-group col-md-12">
-    
-                            <label for="inputState">Donation Type :</label>
-    
-                            <select id="inputState" class="form-control">
-                                <option selected>Donation Type 1</option>
-                                <option>Donation Type 2</option>
-                                <option>Donation Type 3</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="col-3"></div>
+@endsection
+@section('content')
+    <div class="container mt-3">
+        <div class="row w-50 m-auto text-center">
+            <div class="col">
+                <h2>Donation History</h3>
             </div>
-
-
-
         </div>
-
-        <br><br><br>
-
-        <div class="donationhistorycontent d-flex justify-content-around">
-            <div class="col-md-9">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-around">
-                        <div class="transactiondate">
-                            Transaction Date
-                        </div>
-
-                        <div class="requeststatus">
-                            <button class="btn btn-success">Request Confirmed (Status)</button>
-                        </div>
-                    </div>
-
-                    <div class="card-body d-flex justify-content-around ">
-                        <div class="bodyleftside">
-                            <img src="" alt="stuffimage">
-                        </div>
-                        
-                        <div class="bodymidside">
-                            <p class="card-text">
-                                StuffName
-                            </p>
-                
-                            <p class="card-text">
-                                StuffType
-                            </p>
-
-                            <p class="card-text">
-                                FoundationName
-                            </p>
-                        </div>
-
-                        <div class="bodyrightside">
-                            <div class="buttonhistorydetail">
-                                {{-- Route Login ini harusnya ke historydetailpage bukan ke loginpage --}}
-                                <a  href="{{ route('login') }}">
-                                    <button type="submit" class="historydetail_button">
-                                        {{ __('HistoryDetail') }}
-                                    </button>
-                                </a>
-                                
-                            </div>
-                        </div>
-                        
-                    </div>
+        <div class="row w-75 mx-auto mb-5">
+            {{-- sebelahkiri --}}
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="searchbox">Search :</label>
+                    <form class="form-inline m-0">
+                        <input class="form-control col" type="search" placeholder="Input Keyword" aria-label="Search"
+                            id="searchKeyword">
+                    </form>
+                </div>
+                <div class="form-group">
+                    <label for="inputState">Donation Status :</label>
+                    <select id="donationStatus" class="form-control">
+                    </select>
                 </div>
             </div>
-                
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="inputState">Choose Date :</label>
+                    <input class="form-control mr-sm-2" type="date" name="TransactionDate" id="transactionDate">
+                </div>
+                <div class="form-group">
+                    <label for="inputState">Donation Type :</label>
+                    <select id="donationType" class="form-control">
+                    </select>
+                </div>
+            </div>
+            <div class="col-6"></div>
+            <div class="col-6">
+                <button id="applyFilter" class="btn btn-primary float-right">Apply Filter</button>
+            </div>
         </div>
+        <div id="list-containter">
 
+        </div>
         <div class="paginationhistory d-flex justify-content-around mt-5 mb-5">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
@@ -167,11 +78,9 @@
                             <span class="sr-only">Previous</span>
                         </a>
                     </li>
-                    
                     <li class="page-item"><a class="page-link" href="#">1</a></li>
                     <li class="page-item"><a class="page-link" href="#">2</a></li>
                     <li class="page-item"><a class="page-link" href="#">3</a></li>
-
                     <li class="page-item">
                         <a class="page-link" href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
@@ -181,8 +90,119 @@
                 </ul>
             </nav>
         </div>
+    </div>
+    @include('DonationHistory.Misc.component-modal-donation-history')
+    @include('DonationHistory.Misc.component-list-donation')
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            banskuy.getReq('/getdonationtype')
+                .then(function(data) {
+                    var donationtype = data.msg;
+                    var option = document.getElementById("donationType");
+                    let newOption = new Option('All', '');
+                    option.add(newOption, undefined);
+                    donationtype.forEach(element => {
+                        let newOption = new Option(element.DonationTypeName,
+                            element.DonationTypeID);
+                        option.add(newOption, undefined);
 
-    @endsection
-        
-</body>
-</html>
+                    });
+                });
+            banskuy.getReq('/getdonationstatus')
+                .then(function(data) {
+                    var donationtype = data.msg;
+                    var option = document.getElementById("donationStatus");
+                    let newOption = new Option('All', '');
+                    option.add(newOption, undefined);
+                    donationtype.forEach(element => {
+                        let newOption = new Option(element.ApprovalStatusName,
+                            element.ApprovalStatusID);
+                        option.add(newOption, undefined);
+
+                    });
+                });
+            $("#applyFilter").on('click', function() {
+                $("#list-containter").empty();
+                var data = {
+                    keyword: $("#searchKeyword").val(),
+                    donationStatus: $("#donationStatus").val(),
+                    transactionDate: $("#transactionDate").val(),
+                    donationType: $("#donationType").val(),
+                    UserID: <?php echo '"' . Crypt::encrypt(Auth::id()) . '"'; ?>,
+                    _token: "<?php echo csrf_token(); ?>"
+                }
+                banskuy.postReq('/getdonationhistory', data)
+                    .then((response) => {
+                        var listDonation = response.payload;
+                        _.each(listDonation, function(donation, donationKey) {
+                            var data = {};
+                            if ((donationKey + 1) % 2 == 1) {
+                                data.headerColor = "bg-secondary";
+                                data.headerTextColor = "text-white";
+                            } else {
+                                data.headerColor = "";
+                                data.headerTextColor = "";
+                            }
+                            var transactionDate = new Date(donation.TransactionDate);
+                            var formattedDate = transactionDate.toString(
+                                "MMMM dS, yyyy");
+                            data.transactionDate = formattedDate;
+                            data.transactionID = donation.DonationTransactionID;
+                            data.status = donation.approval_status.ApprovalStatusName;
+                            switch (donation.approval_status.ApprovalStatusID) {
+                                case 1:
+                                    data.statusColor = 'btn-warning';
+                                    break;
+                                case 2:
+                                    data.statusColor = 'btn-primary';
+                                    break;
+                                case 3:
+                                    data.statusColor = 'btn-danger';
+                                    break;
+                                case 4:
+                                    data.statusColor = 'btn-warning';
+                                    break;
+                                case 5:
+                                    data.statusColor = 'btn-success';
+                                    break;
+                            }
+                            data.donationTitle = donation.DonationDescriptionName;
+                            data.donationType = donation.donation_type_detail
+                                .donation_type.DonationTypeName;
+                            data.foundationName = donation.foundation.FoundationName;
+                            var divtemplate = _.template($("#component-list-donation")
+                                .html());
+                            $("#list-containter").append(divtemplate({
+                                data: data
+                            }));
+                        });
+
+                    })
+                    .finally(function() {
+                        $(".historydetail_button").on('click', function() {
+                            // alert('tes');
+                            var transactionid = $(this).attr('data-id');
+                            var data = {
+                                TransactionID: transactionid,
+                                _token: "<?php echo csrf_token(); ?>"
+                            }
+                            banskuy.postReq('/gettransactiondetail', data)
+                                .then(function(response) {
+                                    var modal = _.template($(
+                                        "#component-modal-donation-history"
+                                    ).html());
+                                    $(".container").append(modal({
+                                        data: ''
+                                    }));
+                                    $('.modal').css('overflow-y', 'auto');
+                                    $("#donationhistorydetail").modal();
+                                });
+                        });
+                    });
+            });
+
+        });
+    </script>
+@endsection
