@@ -22,6 +22,8 @@ Route::get('/', function () {
 
 Route::get('/logout',function () {Auth::logout();});
 
+Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+
 Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
 
 
@@ -62,17 +64,18 @@ Route::get('/rafli', function () {
     
 });
 
+// ROUTE BUAT FOUNDATION PROFILE LOGIN DLL
 Route::get('/foundationlogin', function(){
     return view('/auth/foundationLogin');
 });
-
-Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
 
 Route::post('/loginfoundation', [App\Http\Controllers\Auth\LoginController::class, 'loginfoundation']);
 
 Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
 
 Route::get('/editfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'editfoundationprofile']);
+//BATAS ROUTE PROFILE FOUNDATION
+
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

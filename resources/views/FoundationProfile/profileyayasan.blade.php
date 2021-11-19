@@ -40,20 +40,15 @@
                 <div class="col-9">
                     <div class="row mt-5">
                         <div class="col-12">
-                            <h2>Yayasan Mutiara Bunda</h2>
+                            <h2>{{$foundation->Email}}</h2>
                         </div>
                         <div class="col-12">
-                            <small>Member since - March 2020</small>
+                            <small>Member since {{$foundation->RegisterDate}}</small>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <p align="justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio
-                                reprehenderit adipisci corporis! Eaque quod libero, delectus numquam consequuntur pariatur
-                                accusantium ipsum fugiat nisi. Aspernatur sit obcaecati cumque quis at enim. Lorem, ipsum
-                                dolor sit amet consectetur adipisicing elit. Porro fugit voluptatibus possimus? Vitae
-                                distinctio doloribus amet a deleniti quam nihil earum expedita ducimus quas! Debitis saepe
-                                minus veniam modi et.</p>
+                            <p align="justify">{{$foundation->Bio}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -64,7 +59,7 @@
                     <div class="row">
                         <div class="col">
                             @if (true)
-                                <button class="text-white py-1 px-3"
+                                <button class="text-white py-1 px-3 edit-foundation-profile"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit
                                     Profile</button>
                             @else
@@ -114,9 +109,26 @@
         </div>
     </section>
 
+    <div id="modal">
+        @include('Shared._popupConfirmed')
+    </div>
+
+    @endsection  
     @endsection
 
-    
+    @section('scripts')
+        <script type="text/javascript">
+            var foundation = <?php echo json_encode($foundation); ?>;
+            $(document).ready(function () {
+                if(!foundation.IsConfirmed){
+                    $("#confirmedModal").modal();
+                }
+                $(".edit-profile").on('click', function() {
+                    return location.href = '/editfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>;
+                });
+            });
+        </script>
     @endsection
+
 </body>
 </html>

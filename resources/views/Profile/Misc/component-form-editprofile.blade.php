@@ -161,10 +161,10 @@
             <label for="City">City<span class="text-danger">*</span></label>
         </div>
         <div class="col-6">
-            <select name="City" id="City" class="form-control @error('Province') is-invalid @enderror"
+            <select name="City" id="City" class="form-control @error('City') is-invalid @enderror"
                 required></select>
         </div>
-        @error('Province')
+        @error('City')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>
