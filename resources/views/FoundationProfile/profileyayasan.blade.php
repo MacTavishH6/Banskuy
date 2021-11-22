@@ -27,8 +27,6 @@
 <body>
     @extends('layouts.app')
 
-    @section('content')  
-
     @section('content')
     <section class="d-flex">
         <div class="container">
@@ -40,7 +38,7 @@
                 <div class="col-9">
                     <div class="row mt-5">
                         <div class="col-12">
-                            <h2>{{$foundation->Email}}</h2>
+                            <h2>{{$foundation->FoundationName}}</h2>
                         </div>
                         <div class="col-12">
                             <small>Member since {{$foundation->RegisterDate}}</small>
@@ -53,13 +51,13 @@
                     </div>
                     <div class="row">
                         <div class="col-12 mb-3" style="font-size:150%">
-                            <small>Jl. Dr. Wahidin Sudirohusodo No.25, Fatmawati, Jakarta Selatan</small>
+                            <small>{{$foundation->address ? $foundation->address->Address : ''}}</small>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             @if (true)
-                                <button class="text-white py-1 px-3 edit-foundation-profile"
+                                <button class="text-white py-1 px-3 edit-profile"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit
                                     Profile</button>
                             @else
@@ -113,22 +111,43 @@
         @include('Shared._popupConfirmed')
     </div>
 
-    @endsection  
     @endsection
 
     @section('scripts')
-        <script type="text/javascript">
-            var foundation = <?php echo json_encode($foundation); ?>;
-            $(document).ready(function () {
-                if(!foundation.IsConfirmed){
-                    $("#confirmedModal").modal();
-                }
-                $(".edit-profile").on('click', function() {
-                    return location.href = '/editfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>;
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var foundation;
+            banskuy.getReq('/getfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>)
+                .then(function(data) {
+                    foundation = data.payload;
+                })
+                .finally(function() {
+                    if (!foundation.FoundationName && !foundation.Address) {
+                        $("#confirmedModal").modal();
+                    }
+                    $(".edit-profile").on('click', function() {
+                        return location.href = '/editfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>;
+                    });
+                    $('#Bio').on('input', function() {
+                        if ($(this).val().length > 100) $(this).val($(this).val().substring(0, 100));
+                        $("#count-bio-word").html($(this).val().length + "/100");
+                        $("#hidBio").val($(this).val());
+                    });
+                    if (user.Bio) {
+                        $(".edit-bio").addClass("d-none");
+                    } else {
+                        $(".has-bio").addClass("d-none");
+                    }
+                    $("#btnEditBio").on('click', function() {
+                        $(".edit-bio").removeClass("d-none");
+                        $(".has-bio").addClass("d-none");
+                        $("#hidBio").val($("#Bio").val());
+                        $("#count-bio-word").html($("#hidBio").val().length + "/100");
+                    });
                 });
-            });
-        </script>
-    @endsection
+        });
+    </script>
+@endsection
 
 </body>
 </html>
