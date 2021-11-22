@@ -13,7 +13,7 @@ class UpdateMsfoundationAddAddressID extends Migration
      */
     public function up()
     {
-        Schema::table('msuserlevel', function (Blueprint $table) {
+        Schema::table('msfoundation', function (Blueprint $table) {
             $table->integer('AddressID')->unsigned()->nullable();
 
             $table->foreign("AddressID")->references("AddressID")->on("MsAddress");
