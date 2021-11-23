@@ -25,7 +25,11 @@ class Foundation extends Authenticatable
     }
 
     public function Address(){
-        return $this->hasOne(Address::class, 'AddressID');
+        return $this->hasOne(Address::class, 'AddressID', 'AddressID');
+    }
+
+    public function FoundationPhoto(){
+        return $this->hasOne(FoundationPhoto::class, 'PhotoID', 'PhotoID');
     }
 
     public function DonationTransaction(){
