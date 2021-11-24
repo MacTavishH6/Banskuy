@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use App\Models\Foundation;
 use App\Models\UserDocumentation;
+use App\Models\FoundationPhoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
+
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Support\Facades\Hash;
 
 class FoundationProfileController extends Controller
@@ -93,7 +97,6 @@ class FoundationProfileController extends Controller
         $foundation->Misi = $request->Misi;
         $foundation->updated_at = date('Y-m-d H:i:s');
         $address = Address::where('AddressID', $foundation->AddressID)->first();
-        
         if (!$address) {
             $address = new Address();
             $address->ID = $foundation->FoundationID;
@@ -103,7 +106,6 @@ class FoundationProfileController extends Controller
         $address->ProvinceID = $request->Province;
         $address->CityID = $request->City;
         $address->save();
-        dd($address);
         if($address->id){
             $foundation->AddressID = $address->id;
         }else {
@@ -112,6 +114,14 @@ class FoundationProfileController extends Controller
         $foundation->save();
         $request->session()->flash('toastsuccess', 'Profile updated successfully');
         return redirect()->action('App\Http\Controllers\FoundationProfileController@editfoundationprofile', ['id' => Crypt::encrypt($foundationid)]);
+    }
+
+    public function UpdateBio(Request $request)
+    {
+        $foundation = Foundation::where('FoundationID', $request->FoundationID)->first();
+        $foundation->Bio = $request->Bio;
+        $foundation->save();
+        return redirect()->back()->with('toastsuccess', 'Bio updated');
     }
 
     public function ChangePassword(Request $request){
@@ -133,5 +143,58 @@ class FoundationProfileController extends Controller
         return redirect()->action('App\Http\Controllers\FoundationProfileController@editfoundationprofile', ['id' => $request->FoundationID]);
     }
 
+    public function UpdateProfilePicture(Request $request)
+    {
+        $hashed = Hash::make(Crypt::decrypt($request->FoundationID));
+        $hashed = str_replace('\\',';',$hashed);
+        $hashed = str_replace('/',';',$hashed);
+        $filename = $hashed . '.' . $request->file('ProfilePicture')->getClientOriginalExtension();
+        $ftp = ftp_connect(env('FTP_SERVER'));
+        $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
+        $foundation = Foundation::where('FoundationID', Crypt::decrypt($request->FoundationID))->first();
+        if ($foundation->PhotoID) {
+            $photo = FoundationPhoto::where('PhotoID', $foundation->PhotoID)->first();
+            $photo->updated_at = date('Y-m-d H:i:s');
+        } else {
+            $photo = new FoundationPhoto();
+            $photo->created_at = date('Y-m-d H:i:s');
+        }
+        $path = $photo->Path;
+        if ($path && ftp_size($ftp, 'ProfilePicture/Yayasan/' . $path) > 0)
+            ftp_delete($ftp, 'ProfilePicture/Yayasan/' . $path);
+        ftp_close($ftp);
+        // Storage::disk('ftp')->delete('\\ProfilePicture\\Donatur\\' . $filename);
+        Storage::disk('ftp')->put('ProfilePicture/Yayasan/' . $filename, fopen($request->file('ProfilePicture'), 'r+'));
+
+        $photo->ID = $foundation->FoundationID;
+        $photo->Path = $filename;
+        $photo->Role = '1';
+        $photo->save();
+        if (!$foundation->PhotoID) $foundation->PhotoID = $photo->PhotoID;
+        $foundation->save();
+
+        $request->session()->flash('toastsuccess', 'Profile picture updated successfully');
+        return redirect()->action('App\Http\Controllers\FoundationProfileController@foundationprofile', ['id' => $request->FoundationID]);
+    }
+
+    public function DeleteProfilePhoto(Request $request)
+    {
+        $foundationid = Crypt::decrypt($request->FoundationID);
+        $ftp = ftp_connect(env('FTP_SERVER'));
+        $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
+        $foundation = Foundation::where('FoundationID', $foundationid)->first();
+        if ($foundation->PhotoID) {
+            $photo = FoundationPhoto::where('PhotoID', $foundation->PhotoID)->first();
+            $photo->updated_at = date('Y-m-d H:i:s');
+            $path = $photo->Path;
+            if ($path && ftp_size($ftp, 'ProfilePicture/Yayasan/' . $path) > 0)
+                ftp_delete($ftp, 'ProfilePicture/Yayasan/' . $path);
+            $photo->Path = '';
+            $photo->save();
+        }
+        ftp_close($ftp);
+        $request->session()->flash('toastsuccess', 'Profile picture has been deleted');
+        return redirect()->action('App\Http\Controllers\FoundationProfileController@foundationprofile', ['id' => $request->FoundationID]);
+    }
 
 }

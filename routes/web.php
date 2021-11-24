@@ -71,9 +71,21 @@ Route::get('/foundationlogin', function(){
 
 Route::post('/loginfoundation', [App\Http\Controllers\Auth\LoginController::class, 'loginfoundation']);
 Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
+
 Route::get('/editfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'editfoundationprofile']);
 Route::get('/getfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'getfoundationprofile']);
+
+Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
+Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
+Route::put('/changepassword', [App\Http\Controllers\FoundationProfileController::class, 'ChangePassword']);
+
 Route::put('/updatefoundationprofile', [App\Http\Controllers\FoundationProfileController::class, 'put']);
+Route::put('/updatefoundationbio', [App\Http\Controllers\FoundationProfileController::class, 'updatebio']);
+
+Route::Post('/UpdateFoundationProfilePicture', [App\Http\Controllers\FoundationProfileController::class, 'UpdateProfilePicture']);
+Route::delete('/deleteprofilephoto', [App\Http\Controllers\FoundationProfileController::class, 'DeleteProfilePhoto']);
+
+
 Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
 Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
 Route::put('/changepassword', [App\Http\Controllers\FoundationProfileController::class, 'ChangePassword']);
