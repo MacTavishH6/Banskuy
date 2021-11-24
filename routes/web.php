@@ -3,6 +3,10 @@
 use App\Http\Controllers\FoundationProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
+use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ReportController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -94,12 +98,23 @@ Route::put('/changepassword', [App\Http\Controllers\FoundationProfileController:
 //BATAS ROUTE PROFILE FOUNDATION
 
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Route::view('/Forum','Forum/Forum');
+Route::view('/EditProfile','Profile/editprofile');
 
-// Route::view('/ViewForum','Forum/ViewForum');
 
-// Route::view('/ViewThread','Forum/ViewThread');
+Route::get('/Forum',[ForumController::class,'Index']);
+Route::get('/Forum/{DonationTypeID}',[ForumController::class,'ForumWithCategory']);
+Route::get('/GetDonationCategoryDetail/{DonationTypeID}',[ForumController::class,'GetDonationCategoryDetail']);
+Route::post('/CreatePost',[ForumController::class,'CreatePost']);
 
-// Route::view('/Profile','Profile/profile');
+Route::get('/ViewPost/{id}',[ForumController::class,'PostDetail']);
+Route::post('/PostComment/{id}',[ForumController::class,'PostComment']);
+Route::post('/PostReply/{Postid}/{id}',[ForumController::class,'PostReply']);
+Route::get('/sendlike/{id}',[ForumController::class,'SendLike']);
+Route::get('/Delete',[ForumController::class,'TestDelete']);
+
+Route::get('/GetReportCategory',[ReportController::class,'GetReportCategory']);
+Route::post('/MakeReport/{id}',[ReportController::class,'MakeReport']);
+
+//  AutoRoute::init();
+
