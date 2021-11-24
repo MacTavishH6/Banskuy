@@ -4,6 +4,8 @@ require('./bootstrap');
 window._ = require('./underscore');
 require('./date');
 
+import 'jquery-ui/ui/widgets/datepicker.js';
+
 window.banskuy = {} || '';
 banskuy.ShowLoading = function (state) {
     if (state)

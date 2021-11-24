@@ -1,9 +1,8 @@
     <div class="row mt-4">
         <div class="col-3 text-center px-0">
-            <img src="{{env('FTP_URL')}}{{$foundation->FoundationPhoto?'ProfilePicture/Yayasan/'.$foundation->FoundationPhoto->Path:'assets/BinusUniv.png'}}" alt="FoundationPhotoProfile"
-                style="border-radius: 50%; border: 1px solid black; width: 130px; height: 130px;" onerror="this.onerror==null;this.src='{{env('FTP_URL')}}assets/BinusUniv.png'">
-            <p {{$foundation->FoundationPhoto?($foundation->FoundationPhoto->Path && $foundation->FoundationPhoto->Path != ''?'style="font-size: 15px;"':''):''}}><a href="" id="editphoto">Edit Photo</a>
-                @if($foundation->FoundationPhoto && $foundation->FoundationPhoto->Path && $foundation->FoundationPhoto->Path != '') | <a href="" id="deletephoto">Delete Photo</a></p> @endif
+            <img src="https://www.banskuy.com/banskuy.com/Basnkuy2022/assets/BinusUniv.png" alt="UsernamePhotoProfile"
+                style="border-radius: 50%; border: 1px solid black; width: 100px">
+            <p>Edit Photo</p>
         </div>
         <div class="col-9 mt-4">
             <h2>{{ $foundation->Username ? $foundation->Username : '-' }}</h2>

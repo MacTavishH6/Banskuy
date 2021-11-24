@@ -7,15 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Address extends Model
 {
     protected $table = "msaddress";
-    protected $primarykey = "AddressID";
-
-    protected $fillable = [
-        'Address',
-        'ProvinceID',
-        'CityID',
-        'updated_at',
-        'ID'
-    ];
+    protected $primaryKey = "AddressID";
 
     public function Province() {
         return $this->hasOne(Province::class,'ProvinceID','ProvinceID');

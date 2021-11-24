@@ -51,9 +51,23 @@
                 </div>
             </div>
             <div class="col-6">
-                <div class="form-group">
-                    <label for="inputState">Choose Date :</label>
-                    <input class="form-control mr-sm-2" type="date" name="TransactionDate" id="transactionDate">
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        <label for="from">Date Start</label>
+                        <input type="text" class="form-control" name="DateStart" id="from" placeholder="">
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for=""></label>
+                        <button id="resetfrom" class="btn btn-info mt-2 ml-n2 d-none"><span>x</span></button>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label for="to">Date End</label>
+                        <input type="text" class="form-control" name="DateEnd" id="to" placeholder="">
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for=""></label>
+                        <button id="resetto" class="btn btn-info mt-2 ml-n2 d-none"><span>x</span></button>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="inputState">Donation Type :</label>
@@ -97,6 +111,43 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            var dateFormat = "mm/dd/yy",
+                from = $("#from")
+                .datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    maxDate: '0'
+                })
+                .on("change", function() {
+                    to.datepicker("option", "minDate", getDate(this));
+                    if (this.value) {
+                        $("#resetfrom").removeClass('d-none');
+                    } else {
+                        $("#resetfrom").addClass('d-none');
+                    }
+                }),
+                to = $("#to").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    maxDate: '0'
+                })
+                .on("change", function() {
+                    if (this.value) {
+                        $("#resetto").removeClass('d-none');
+                    } else {
+                        $("#resetto").addClass('d-none');
+                    }
+                });
+            $("#resetto").on('click', function() {
+                $("#to").datepicker('setDate', null);
+                $("#resetto").addClass('d-none');
+            });
+            $("#resetfrom").on('click', function() {
+                $("#from").datepicker('setDate', null);
+                $("#resetfrom").addClass('d-none');
+            });
             banskuy.getReq('/getdonationtype')
                 .then(function(data) {
                     var donationtype = data.msg;
@@ -124,10 +175,19 @@
                     });
                 });
             $("#applyFilter").on('click', function() {
+                if (!$("#from").val() && $("#to").val()) {
+                    toastr.error("Tolong isi tanggal awal!");
+                    return;
+                } else if ($("#from").val() && !$("#to").val()) {
+                    toastr.error("Tolong isi tanggal akhir!");
+                    return;
+                }
                 $("#list-containter").empty();
                 var data = {
                     keyword: $("#searchKeyword").val(),
                     donationStatus: $("#donationStatus").val(),
+                    dateStart: $("#from").val(),
+                    dateEnd: $("#to").val(),
                     transactionDate: $("#transactionDate").val(),
                     donationType: $("#donationType").val(),
                     UserID: <?php echo '"' . Crypt::encrypt(Auth::id()) . '"'; ?>,
@@ -190,11 +250,37 @@
                             }
                             banskuy.postReq('/gettransactiondetail', data)
                                 .then(function(response) {
+                                    var transaction = response.payload;
+                                    console.log(transaction);
+                                    var data = {
+                                        DonationType: transaction.donation_type_detail
+                                            .donation_type.DonationTypeName,
+                                        Unit: transaction.donation_type_detail
+                                            .DonationTypeDetail,
+                                        DonationTransactionName: transaction
+                                            .DonationDescriptionName,
+                                        Status: transaction.approval_status
+                                            .ApprovalStatusName,
+                                        Quantity: transaction.Quantity,
+                                    };
+                                    switch (transaction.approval_status.ApprovalStatusID) {
+                                        case 5:
+                                            data.IsShow = '';
+                                            break;
+                                        default:
+                                            data.IsShow = 'd-none';
+                                            break;
+                                    }
+                                    var transactionDate = new Date(transaction
+                                        .TransactionDate);
+                                    var formattedDate = transactionDate.toString(
+                                        "MMMM dS, yyyy");
+                                    data.TransactionDate = formattedDate;
                                     var modal = _.template($(
                                         "#component-modal-donation-history"
                                     ).html());
                                     $(".container").append(modal({
-                                        data: ''
+                                        data: data
                                     }));
                                     $('.modal').css('overflow-y', 'auto');
                                     $("#donationhistorydetail").modal();
@@ -203,6 +289,17 @@
                     });
             });
 
+            function getDate(element) {
+                var date;
+                try {
+                    console.log(dateFormat);
+                    date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch (error) {
+                    date = null;
+                }
+
+                return date;
+            }
         });
     </script>
 @endsection
