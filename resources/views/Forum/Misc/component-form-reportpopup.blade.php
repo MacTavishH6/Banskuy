@@ -10,12 +10,13 @@
             <div class="modal-body mb-1">
                 <h3>Are you sure want to report this post?</h3>
                 <div class="mt-4">
-                    <form>
+                    <form method="POST" enctype="multipart/form-data" action="/MakeReport/{{$Post->PostID}}">
+                        @csrf
                         <div class="form-group w-100">
                             <div class="mt-2 mr-1">
                                 <h5>Type of violation</h5>
                             </div>
-                            <select class="form-control" id="ddlPostType">
+                            <select class="form-control" id="ddlReportType" name="ddlReportType">
                                 <option>Scamming</option>
                                 <option>Fraud</option>
                             </select>
@@ -25,7 +26,8 @@
                             <div>
                                 <h5>Report Detail</h5>
                             </div>
-                            <textarea class="form-control" id="txaPostDesc" rows="5"></textarea>
+                            <textarea class="form-control" id="txaReportDesc" name="txaReportDesc" rows="3" style="resize: none" placeholder="Description" maxlength="255"></textarea>
+                            <label class="float-right text-muted" id="lblDescLenght"></label>
                             <div>
                                 <h6 class="text-red">*Please gave us some information about the violation that
                                     occur</h6>

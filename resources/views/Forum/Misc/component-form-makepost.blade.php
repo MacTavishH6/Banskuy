@@ -14,7 +14,7 @@
                         src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png">
 
                     <div class="media-body mt-3">
-                        <h3>Fikri Fadillah</h3>
+                        <h3>{{Auth::user()->FirstName}} {{Auth::user()->LastName}}</h3>
                     </div>
                 </div>
 

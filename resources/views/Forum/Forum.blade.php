@@ -4,7 +4,6 @@
 
     {{-- css style start here --}}
     <style>
-        /* Slider Start Here */
 
 
         .btn{
@@ -85,7 +84,7 @@
 <div class="container" >
 
         {{-- SLIDER START HERE --}}
-        <div class="slider">
+        <div class="slider" style="margin-left: 15%">
             @include('Shared.Slider')
         </div>
         {{-- SLIDER END HERE --}}

@@ -40,7 +40,8 @@ class ForumController extends Controller
     public function CreatePost(Request $request){
         $Post = new Post;
         $Post->DonationTypeDetailID = $request->ddlDonationTypeDetail;
-        $Post->ID = 1;
+        $Post->DonationTypeID = $request->ddlDonationType;
+        $Post->ID = auth()->id();
         $Post->PostTypeID = $request->ddlPostType;
         if( $Post->PostTypeID == 1){
             $Post->PostType = "Donation Post";
@@ -51,7 +52,14 @@ class ForumController extends Controller
         $Post->PostDescription = $request->txaPostDesc;
         $Post->UploadDate = Carbon::now()->toDateTimeString();
         $Post->Quantity = $request->txtQuantity;
-        $Post->PostTitle = $request->txtPostTitle;  
+        $Post->PostTitle = $request->txtPostTitle;
+        if(Auth::guard('foundation')->check()){
+            $Post->RoleID = 2;
+        } 
+        else{
+            $Post->RoleID = 1;
+        }
+        
 
         $EncodeFile = Hash::make("img.".$Post->ID."1");
         $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
@@ -86,19 +94,19 @@ class ForumController extends Controller
 
     public function SendLike($id){
 
-        $ExistingLike = Like::where('PostID',$id)->where('ID',1)->first();
+        $ExistingLike = Like::where('PostID',$id)->where('ID',auth()->id())->first();
         if($ExistingLike != null){
             if($ExistingLike->LikePost == 1){
-                Like::where('PostID',$id)->where('ID',1)->update(['LikePost'=>0]);
+                Like::where('PostID',$id)->where('ID',auth()->id())->update(['LikePost'=>0]);
             }
             else{
-                Like::where('PostID',$id)->where('ID',1)->update(['LikePost'=>1]);
+                Like::where('PostID',$id)->where('ID',auth()->id())->update(['LikePost'=>1]);
             }
         }
         else{
             $Like = new Like;
             $Like->PostID = $id;
-            $Like->ID = 1;
+            $Like->ID = auth()->id();
             $Like->LikePost = 1;
             $Like->save();
         }
@@ -113,13 +121,15 @@ class ForumController extends Controller
         $Comment->PostID = $id;
         $Comment->CommentReplyID = 0;
         $Comment->OrderNumber = 1;
-        $Comment->ID = 1;
-        $Comment->Comment = $request->txtComment;
+        $Comment->ID = auth()->id();
+        $Comment->Comment = $request->text;
         $Comment->CommentDate = Carbon::Now()->toDateTimeString();
         
         try{
             $Comment->save();
-            return redirect('/ViewPost/'.$id);
+            $totalReplies = Comment::where('PostID',$id)->get()->count();
+            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'date' => date('d M Y',strtotime($Comment->created_at))];
+            return response()->json($response);
         }catch(Exception $ex){
             return redirect('/');
         }
@@ -132,15 +142,18 @@ class ForumController extends Controller
         $Comment->PostID = $idpost;
         $Comment->CommentReplyID = $id;
         $Comment->OrderNumber = $LastComment->OrderNumber + 1;
-        $Comment->ID = 1;
-        $Comment->Comment = $request->txtComment;
+        $Comment->ID = auth()->id();
+        $Comment->Comment = $request->text;
         $Comment->CommentDate = Carbon::Now()->toDateTimeString();
         
         try{
             $Comment->save();
-            $arr['Data'] = Post::where('PostID',$idpost)->first();
-            echo json_encode($arr);
-            exit;
+            $Comment->created_at = date('d M Y',strtotime($Comment->created_at));
+            $commentForm = Comment::where('CommentID',$id)->first();
+            $totalReplies = Comment::where('PostID',$idpost)->get()->count();
+
+            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'replyTo'=> $commentForm->User->FirstName." ".$commentForm->User->LastName,'date' => date('d M Y',strtotime($Comment->created_at))];
+        return response()->json($response);
 
         }catch(Exception $ex){
             return redirect('/');

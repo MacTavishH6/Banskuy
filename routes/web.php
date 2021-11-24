@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ReportController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -79,6 +81,7 @@ Route::get('/editfoundationprofile/{id}', [App\Http\Controllers\FoundationProfil
 
 Route::view('/EditProfile','Profile/editprofile');
 
+
 Route::get('/Forum',[ForumController::class,'Index']);
 Route::get('/Forum/{DonationTypeID}',[ForumController::class,'ForumWithCategory']);
 Route::get('/GetDonationCategoryDetail/{DonationTypeID}',[ForumController::class,'GetDonationCategoryDetail']);
@@ -89,6 +92,9 @@ Route::post('/PostComment/{id}',[ForumController::class,'PostComment']);
 Route::post('/PostReply/{Postid}/{id}',[ForumController::class,'PostReply']);
 Route::get('/sendlike/{id}',[ForumController::class,'SendLike']);
 Route::get('/Delete',[ForumController::class,'TestDelete']);
+
+Route::get('/GetReportCategory',[ReportController::class,'GetReportCategory']);
+Route::post('/MakeReport/{id}',[ReportController::class,'MakeReport']);
 
 //  AutoRoute::init();
 
