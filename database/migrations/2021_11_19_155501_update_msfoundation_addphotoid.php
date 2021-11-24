@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateMsfoundationAddAddressID extends Migration
+class UpdateMsfoundationAddphotoid extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,9 @@ class UpdateMsfoundationAddAddressID extends Migration
     public function up()
     {
         Schema::table('msfoundation', function (Blueprint $table) {
-            $table->integer('AddressID')->unsigned()->nullable();
+            $table->integer('PhotoID')->unsigned()->nullable();
 
-            $table->foreign("AddressID")->references("AddressID")->on("MsAddress");
+            $table->foreign('PhotoID')->references('PhotoID')->on('MsFoundationPhoto');
         });
     }
 

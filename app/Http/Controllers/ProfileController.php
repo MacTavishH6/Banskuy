@@ -112,6 +112,7 @@ class ProfileController extends Controller
         $address->CityID = $request->City;
         $address->save();
         $user->AddressID = $address->AddressID;
+        $user->save();
         $request->session()->flash('toastsuccess', 'Profile updated successfully');
         return redirect()->action('App\Http\Controllers\ProfileController@editprofile', ['id' => Crypt::encrypt($id)]);
     }
