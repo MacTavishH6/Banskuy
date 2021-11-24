@@ -33,9 +33,11 @@
     <section class="d-flex">
         <div class="container">
             <div class="row">
-                <div class="col-3">
-                    <img src="https://www.banskuy.com/banskuy.com/Basnkuy2022/assets/BinusUniv.png"
-                        alt="UsernamePhotoProfile" style="border-radius: 50%; border: 1px solid black;">
+                <div class="col-3 mt-4">
+                    <img src="{{ env('FTP_URL') }}{{ $foundation->FoundationPhoto ? 'ProfilePicture/Yayasan/' . $foundation->FoundationPhoto->Path : 'assets/BinusUniv.png' }}"
+                        alt="FoundationPhotoProfile"
+                        style="border-radius: 50%; border: 1px solid black; width: 250px; height: 250px;"
+                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/BinusUniv.png'">
                 </div>
                 <div class="col-9">
                     <div class="row mt-5">
@@ -46,9 +48,13 @@
                             <small>Member since {{$foundation->RegisterDate}}</small>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <p align="justify">{{$foundation->Bio}}</p>
+                    <div class="row mt-1">
+                        <div class="col-12 has-bio">
+                            <p align="justify">{{ $foundation->Bio }}</p>
+                        </div>
+                        <div class="col-12 edit-bio">
+                            <textarea name="Bio" id="Bio" class="form-control" rows="3"
+                                style="resize: none">{{ $foundation->Bio ? $foundation->Bio : '' }}</textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -59,7 +65,19 @@
                     <div class="row">
                         <div class="col">
                             @if (true)
-                                <button class="text-white py-1 px-3 edit-foundation-profile"
+                                <form action="/updatefoundationbio" class="form d-inline" method="post">
+                                    @csrf
+                                    @method("PUT")
+                                    <input type="hidden" name="FoundationID" value="{{ $foundation->FoundationID }}">
+                                    <input type="hidden" name="Bio" id="hidBio">
+                                    <button class="text-white py-1 px-3 edit-bio"
+                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Save
+                                        Bio</button>
+                                </form>
+                                <button class="text-white py-1 px-3 has-bio" id="btnEditBio"
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit Bio</button>
+
+                                <button class="text-white py-1 px-3 edit-profile"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit
                                     Profile</button>
                             @else
@@ -72,6 +90,9 @@
                                 <button class="text-white py-1 px-3"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Report</button>                                
                             @endif
+                        </div>
+                        <div class="col">
+                            <label id="count-bio-word" class="edit-bio float-right">0/100</label>
                         </div>
                     </div>
                 </div>
@@ -86,12 +107,10 @@
                         <a class="nav-link active" id="documentation-tab" data-toggle="tab" href="#documentation" role="tab"
                             aria-controls="documentation" aria-selected="false">Documentation</a>
                     </li>
-                    {{-- @if (true) --}}
-                        <li class="nav-item">
-                            <a class="nav-link" id="aboutus-tab" data-toggle="tab" href="#aboutus"
+                    <li class="nav-item">
+                        <a class="nav-link" id="aboutus-tab" data-toggle="tab" href="#aboutus"
                                 role="tab" aria-controls="aboutus" aria-selected="false">About Us</a>
-                        </li>
-                    {{-- @endif --}}
+                    </li>
                 </ul>
             </div>
         </div>
@@ -117,14 +136,36 @@
     @endsection
 
     @section('scripts')
-        <script type="text/javascript">
-            var foundation = <?php echo json_encode($foundation); ?>;
-            $(document).ready(function () {
-                if(!foundation.IsConfirmed){
-                    $("#confirmedModal").modal();
-                }
-                $(".edit-profile").on('click', function() {
-                    return location.href = '/editfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>;
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var foundation;
+            banskuy.getReq('/getfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>)
+                .then(function(data) {
+                    foundation = data.payload;
+                })
+                .finally(function() {
+                    if (!foundation.FoundationName && !foundation.Address) {
+                        $("#confirmedModal").modal();
+                    }
+                    $(".edit-profile").on('click', function() {
+                        return location.href = '/editfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>;
+                    });
+                    $('#Bio').on('input', function() {
+                        if ($(this).val().length > 100) $(this).val($(this).val().substring(0, 100));
+                        $("#count-bio-word").html($(this).val().length + "/100");
+                        $("#hidBio").val($(this).val());
+                    });
+                    if (foundation.Bio) {
+                        $(".edit-bio").addClass("d-none");
+                    } else {
+                        $(".has-bio").addClass("d-none");
+                    }
+                    $("#btnEditBio").on('click', function() {
+                        $(".edit-bio").removeClass("d-none");
+                        $(".has-bio").addClass("d-none");
+                        $("#hidBio").val($("#Bio").val());
+                        $("#count-bio-word").html($("#hidBio").val().length + "/100");
+                    });
                 });
             });
         </script>
