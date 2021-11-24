@@ -101,8 +101,8 @@ class ProfileController extends Controller
         $user->Email = $request->Email;
         $user->PhoneNumber = $request->PhoneNumber;
         $user->updated_at = date('Y-m-d H:i:s');
-        $address = Address::where('ID', $user->UserID)->first();
-        if (!$address) {
+        $address = Address::where('AddressID', $user->AddressID)->first();
+        if (!$user->AddressID || !$address) {
             $address = new Address();
             $address->ID = $user->UserID;
             $address->created_at = date('Y-m-d H:i:s');
