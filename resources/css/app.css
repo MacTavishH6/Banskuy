@@ -1,10 +1,13 @@
 .btn-banskuy {
-    border-radius: 10px; 
-    background-color: #9F51CF; 
-    border: none; 
-    transition:0.2s;
-  }
-  .btn-banskuy:hover {
-    background-color: #45C1A4;
-    box-shadow: 0px 0px 20px rgb(255,255,255);
-  }
+  border-radius: 10px;
+  background-color: #9F51CF;
+  border: none;
+  transition: 0.2s;
+}
+
+.btn-banskuy:hover {
+  background-color: #45C1A4;
+  box-shadow: 0px 0px 20px rgb(255, 255, 255);
+}
+
+@import '~jquery-ui/themes/base/all.css';
