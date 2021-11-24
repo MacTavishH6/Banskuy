@@ -27,8 +27,6 @@
 <body>
     @extends('layouts.app')
 
-    @section('content')  
-
     @section('content')
     <section class="d-flex">
         <div class="container">
@@ -42,7 +40,7 @@
                 <div class="col-9">
                     <div class="row mt-5">
                         <div class="col-12">
-                            <h2>{{$foundation->Email}}</h2>
+                            <h2>{{$foundation->FoundationName}}</h2>
                         </div>
                         <div class="col-12">
                             <small>Member since {{$foundation->RegisterDate}}</small>
@@ -59,12 +57,13 @@
                     </div>
                     <div class="row">
                         <div class="col-12 mb-3" style="font-size:150%">
-                            <small>Jl. Dr. Wahidin Sudirohusodo No.25, Fatmawati, Jakarta Selatan</small>
+                            <small>{{$foundation->address ? $foundation->address->Address : ''}}</small>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             @if (true)
+
                                 <form action="/updatefoundationbio" class="form d-inline" method="post">
                                     @csrf
                                     @method("PUT")
@@ -76,7 +75,6 @@
                                 </form>
                                 <button class="text-white py-1 px-3 has-bio" id="btnEditBio"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit Bio</button>
-
                                 <button class="text-white py-1 px-3 edit-profile"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit
                                     Profile</button>
@@ -132,7 +130,6 @@
         @include('Shared._popupConfirmed')
     </div>
 
-    @endsection  
     @endsection
 
     @section('scripts')
@@ -167,9 +164,9 @@
                         $("#count-bio-word").html($("#hidBio").val().length + "/100");
                     });
                 });
-            });
-        </script>
-    @endsection
+        });
+    </script>
+@endsection
 
 </body>
 </html>

@@ -64,14 +64,14 @@ Route::get('/rafli', function () {
     
 });
 
-// ROUTE BUAT FOUNDATION PROFILE LOGIN DLL
+// ROUTE BUAT FOUNDATION FOUNDATION-AN
 Route::get('/foundationlogin', function(){
     return view('/auth/foundationLogin');
 });
 
 Route::post('/loginfoundation', [App\Http\Controllers\Auth\LoginController::class, 'loginfoundation']);
-
 Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
+
 Route::get('/editfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'editfoundationprofile']);
 Route::get('/getfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'getfoundationprofile']);
 
@@ -86,7 +86,11 @@ Route::Post('/UpdateFoundationProfilePicture', [App\Http\Controllers\FoundationP
 Route::delete('/deleteprofilephoto', [App\Http\Controllers\FoundationProfileController::class, 'DeleteProfilePhoto']);
 
 
-Route::get('/editfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'editfoundationprofile']);
+Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
+Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
+Route::put('/changepassword', [App\Http\Controllers\FoundationProfileController::class, 'ChangePassword']);
+
+
 //BATAS ROUTE PROFILE FOUNDATION
 
 

@@ -8,7 +8,7 @@
 
 <div class="row justify-content-around">
     <div class="col-12">
-        <p style="font-size: 130%">Membantu mereka yang ingin dibantu untuk meraih masa depan</p>
+        <p style="font-size: 130%">{{$foundation->Visi}}</p>
     </div>
 </div>
 
@@ -24,8 +24,7 @@
 
 <div class="row justify-content-around">
     <div class="col-12">
-        <p style="font-size: 130%">1. Membangun Pendidikan dan Karakter</p>
-        <p style="font-size: 130%">2. Membimbing Anak Anak Agar Memiliki Masa Depan Yang Cerah</p>
+        <p style="font-size: 130%">{{$foundation->Misi}}</p>
     </div>
 </div>
 

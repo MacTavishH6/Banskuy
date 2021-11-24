@@ -10,7 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
+
 use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Support\Facades\Hash;
 
 class FoundationProfileController extends Controller
@@ -26,7 +28,7 @@ class FoundationProfileController extends Controller
     public function EditFoundationProfile($id){
         $foundationID = Crypt::decrypt($id);
         $foundation = Foundation::where('FoundationID', $foundationID)->with('Address')->first();
-
+        
         return view('FoundationProfile.editprofileyayasan', ['foundation' => $foundation]);
     }
 
