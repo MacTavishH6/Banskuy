@@ -31,6 +31,7 @@
 
     @section('content')
     <section class="d-flex">
+        {{-- Untuk Get --}}
         <div class="container">
             <div class="row">
                 <div class="col-3 mt-4">

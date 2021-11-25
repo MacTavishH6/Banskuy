@@ -59,6 +59,8 @@ Route::middleware(['auth:web'])->group(function () {
     Route::post('/getpostlist', [App\Http\Controllers\LOVController::class, 'PostList']);
 });
 
+// untuk get
+
 Route::get('/rafli', function () {
     return view('Transaction.transactionapproval');
     
