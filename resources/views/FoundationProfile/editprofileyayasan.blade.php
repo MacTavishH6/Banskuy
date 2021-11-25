@@ -20,6 +20,7 @@
 @endsection
 
 @section('content')
+    {{-- Untuk Get --}}
     <div class="container">
         <div class="row">
             
