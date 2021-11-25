@@ -50,6 +50,14 @@
                     <input type="hidden" name="UserID" value="{{ Crypt::encrypt($user->UserID) }}">
                     <div class="form-row py-1">
                         <div class="col-3">
+                            <label for="DonationType">Donation Type</label>
+                        </div>
+                        <div class="col-5">
+                            <select name="DonationType" class="form-control" id="DonationType" required></select>
+                        </div>
+                    </div>
+                    <div class="form-row py-1">
+                        <div class="col-3">
                             <label for="WithPost">With Post</label>
                         </div>
                         <div class="col-5">
@@ -69,22 +77,8 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-row py-1 d-none" id="select-post">
-                        <div class="col-3">
-                            <label for="SelectPost">Select Post</label>
-                        </div>
-                        <div class="col-5">
-                            <select name="SelectPost" class="form-control" id="SelectPost"></select>
-                        </div>
-                    </div>
-                    <div class="form-row py-1">
-                        <div class="col-3">
-                            <label for="DonationType">Donation Type</label>
-                        </div>
-                        <div class="col-5">
-                            <select name="DonationType" class="form-control" id="DonationType" required></select>
-                        </div>
-                    </div>
+
+
                     <div class="form-row py-1">
                         <div class="col-3">
                             <label for="Foundation">Foundation</label>
@@ -121,6 +115,14 @@
                         </div>
                         <div class="col-5">
                             <input type="text" name="City" id="City" class="form-control" disabled required>
+                        </div>
+                    </div>
+                    <div class="form-row py-1 d-none" id="select-post">
+                        <div class="col-3">
+                            <label for="SelectPost">Select Post</label>
+                        </div>
+                        <div class="col-5">
+                            <select name="SelectPost" class="form-control" id="SelectPost"></select>
                         </div>
                     </div>
                     <div class="form-row py-1 d-none" id="descriptionContainer">
@@ -213,6 +215,7 @@
                             $("#descriptionLabel").html('Donation Title');
                             break;
                     }
+                    CheckPostEnabled();
                 } else {
                     $("#descriptionContainer").addClass('d-none');
                 }
@@ -220,12 +223,18 @@
             });
             $("#searchfoundation").on('click', function() {
                 event.preventDefault();
+                if (!$("#DonationType").val()) {
+                    toastr.error("Tolong pilih Tipe Donasi dahulu!");
+                    return;
+                }
                 $("#table-foundation tbody").empty();
                 var searchtext = $("#Foundation").val();
                 var data = {
                     text: searchtext,
+                    donationType: '',
                     _token: "<?php echo csrf_token(); ?>"
                 }
+                if ($("input[name='WithPost']").val() == 1) data.donationType = $("#DonationType").val();
                 banskuy.postReq("{{ url('/getfoundationsearch') }}", data)
                     .then(function(data) {
                         var tbodystring;
@@ -285,12 +294,12 @@
                                 })
                                 .finally(function() {
                                     $("#modal-foundation").modal('hide');
+                                    CheckPostEnabled();
                                 });
                         });
                     })
             });
             $("#Unit").on('change', function() {
-                console.log($('#Unit').val());
                 if ($('#Unit').val()) $("#Quantity").prop('disabled', false);
                 else $("#Quantity").prop('disabled', true);
                 $("#Quantity").val('');
@@ -299,11 +308,15 @@
             $("input[name='WithPost']").change(function() {
                 if ($(this).val() == 1) {
                     $("#select-post").removeClass('d-none');
+                    CheckPostEnabled();
                     var data = {};
-                    banskuy.postReq('/getpostlist', data)
-                        .then(function(data) {
-                            console.log(data);
-                        });
+                    // banskuy.postReq('/getpostlist', data)
+                    //     .then(function(data) {
+                    //         $("#select-post").prop('disabled',true);
+                    //     })
+                    //     .finally(function () {
+
+                    //     });
                 } else if ($(this).val() == 2) {
                     $("#select-post").addClass('d-none');
                     $("#SelectPost").empty();
@@ -358,6 +371,11 @@
                 $("#Quantity").val('').prop('disabled', true);
             }
 
+        }
+
+        function CheckPostEnabled() {
+            if ($("#FoundationID").val() && $("#DonationType").val()) $("#SelectPost").prop('disabled', false);
+            else $("#SelectPost").prop('disabled', true);
         }
     </script>
 @endsection

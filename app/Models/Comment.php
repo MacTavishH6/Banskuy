@@ -11,4 +11,8 @@ class Comment extends Model
     public function Post(){
         return $this->hasOne(Post::class,'PostID','PostID');
     }
+    
+    public function User(){
+        return $this->hasOne(User::class,'UserID','ID');
+    }
 }

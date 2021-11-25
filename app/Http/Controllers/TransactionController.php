@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DonationTransaction;
 use App\Models\Foundation;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -18,16 +19,18 @@ class TransactionController extends Controller
     }
 
     public function DonationHistory()
-    {        
+    {
         return view('DonationHistory.donationhistory');
     }
 
     public function GetFoundationSearch(Request $request)
     {
+        // if($request->donationType) $post = Ppst::where()
         if ($request->text == 'all')
             $foundation = Foundation::get();
         else
             $foundation = Foundation::where('FoundationName', 'like', '%' . $request->text . '%')->get();
+        
         $foundationid = array();
         foreach ($foundation as $value) {
             $foundationid[] = ['key' => $value->FoundationID, 'value' => Crypt::encrypt($value->FoundationID)];
@@ -62,14 +65,42 @@ class TransactionController extends Controller
         return redirect()->action('App\Http\Controllers\TransactionController@DonationHistory');
     }
 
-    public function GetDonationHistory(Request $request){
+    public function GetDonationHistory(Request $request)
+    {
         $id = Crypt::decrypt($request->UserID);
-        $donationhistory = DonationTransaction::where('UserID', $id)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('Foundation')->get();
+        $donationhistory = DonationTransaction::where('UserID', $id)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('Foundation')->orderBy('TransactionDate', 'DESC')->get();
+        // echo ($donationhistory);
+        $donationhistory = $donationhistory->filter(function ($x) use ($request) {
+            if ($request->keyword) $x = (str_contains($x->DonationDescriptionName, $request->keyword) || str_contains($x->DonationTypeDetail->DonationType->DonationTypeName, $request->keyword) || str_contains($x->Foundation->FoundationName, $request->keyword)) ? $x : [];
+            // echo ($x);
+            // // echo ($x->ApprovalStatus);
+            // return;
+            if ($x && $request->donationStatus) $x = ($x->ApprovalStatus->ApprovalStatusID == $request->donationStatus) ? $x : [];
+
+            if ($x && $request->donationType) $x = ($x->DonationTypeDetail->DonationType->DonationTypeID == $request->donationType) ? $x : [];
+
+            if ($x && ($request->dateStart && $request->dateEnd)) {
+                $dateFrom = date('Y-m-d', strtotime($request->dateStart));
+                $dateTo = date('Y-m-d', strtotime($request->dateEnd));
+                $transactionDate = date('Y-m-d', strtotime($x->TransactionDate));
+                if (($transactionDate >= $dateFrom) && ($transactionDate <= $dateTo)) 
+                {
+                    $x = $x;
+                } else {
+                    $x = [];
+                }
+            }
+
+            return $x;
+        });
+        // echo ($donationhistory);
+        // return;
         $response = ['payload' => $donationhistory];
         return response()->json($response);
     }
 
-    public function GetDonationHistoryDetail(Request $request){
+    public function GetDonationHistoryDetail(Request $request)
+    {
         $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->first();
         $response = ['payload' => $donation];
         return response()->json($response);

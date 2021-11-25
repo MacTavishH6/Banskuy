@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use App\Models\Foundation;
 use App\Models\UserDocumentation;
-use App\Models\FoundationPhoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
 class FoundationProfileController extends Controller
@@ -26,7 +24,7 @@ class FoundationProfileController extends Controller
     public function EditFoundationProfile($id){
         $foundationID = Crypt::decrypt($id);
         $foundation = Foundation::where('FoundationID', $foundationID)->with('Address')->first();
-
+        
         return view('FoundationProfile.editprofileyayasan', ['foundation' => $foundation]);
     }
 
@@ -95,6 +93,7 @@ class FoundationProfileController extends Controller
         $foundation->Misi = $request->Misi;
         $foundation->updated_at = date('Y-m-d H:i:s');
         $address = Address::where('AddressID', $foundation->AddressID)->first();
+        
         if (!$address) {
             $address = new Address();
             $address->ID = $foundation->FoundationID;
@@ -104,6 +103,7 @@ class FoundationProfileController extends Controller
         $address->ProvinceID = $request->Province;
         $address->CityID = $request->City;
         $address->save();
+        dd($address);
         if($address->id){
             $foundation->AddressID = $address->id;
         }else {
@@ -112,14 +112,6 @@ class FoundationProfileController extends Controller
         $foundation->save();
         $request->session()->flash('toastsuccess', 'Profile updated successfully');
         return redirect()->action('App\Http\Controllers\FoundationProfileController@editfoundationprofile', ['id' => Crypt::encrypt($foundationid)]);
-    }
-
-    public function UpdateBio(Request $request)
-    {
-        $foundation = Foundation::where('FoundationID', $request->FoundationID)->first();
-        $foundation->Bio = $request->Bio;
-        $foundation->save();
-        return redirect()->back()->with('toastsuccess', 'Bio updated');
     }
 
     public function ChangePassword(Request $request){

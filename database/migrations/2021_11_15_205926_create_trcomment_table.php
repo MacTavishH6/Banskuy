@@ -15,7 +15,9 @@ class CreateTrcommentTable extends Migration
     {
         Schema::create('trcomment', function (Blueprint $table) {
             $table->increments('CommentID');
+            $table->integer('CommentReplyID')->nullable();
             $table->integer('PostID')->unsigned();
+            $table->integer('OrderNumber');
             $table->integer('ID');
             $table->string('Comment', 255);
             $table->date('CommentDate');
