@@ -42,6 +42,7 @@ class ForumController extends Controller
     public function CreatePost(Request $request){
         $Post = new Post;
         $Post->DonationTypeDetailID = $request->ddlDonationTypeDetail;
+
         $Post->DonationTypeID = $request->ddlDonationType;
         $Post->ID = auth()->id();
         $Post->PostTypeID = $request->ddlPostType;
@@ -55,13 +56,14 @@ class ForumController extends Controller
         $Post->UploadDate = Carbon::now()->toDateTimeString();
         $Post->Quantity = $request->txtQuantity;
         $Post->PostTitle = $request->txtPostTitle;
-        if(Auth::guard('foundation')->check()){
+       
+        if(Auth::guard('foundations')->check()){
             $Post->RoleID = 2;
         } 
         else{
             $Post->RoleID = 1;
         }
-        
+ 
 
         $EncodeFile = Hash::make("img.".$Post->ID."1");
         $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
@@ -69,14 +71,16 @@ class ForumController extends Controller
 
         try{
             //Save first to get PostID
+          
             $Post->save();
 
             //Upload to FTP
             Storage::disk('ftp')->put('Forum/Post/'.$Post->id.'/'.$EncodeFile,fopen($request->file('fuAttachment'),'r+'));
+           
             return redirect('/Forum');
         }
         catch(Exception $e){
-            return redirect('/');
+            return throw($e);
         }
     }
 
@@ -126,11 +130,19 @@ class ForumController extends Controller
         $Comment->ID = auth()->id();
         $Comment->Comment = $request->text;
         $Comment->CommentDate = Carbon::Now()->toDateTimeString();
+
+        $UserName = "";
+        if(Auth::guard('foundations')->check()){
+            $UserName = Auth::guard('foundations')->user()->FoundationName;
+        } 
+        else{
+            $UserName = Auth::user()->FirstName.' '.Auth::user()->LastName;
+        }
         
         try{
             $Comment->save();
             $totalReplies = Comment::where('PostID',$id)->get()->count();
-            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'date' => date('d M Y',strtotime($Comment->created_at))];
+            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'UserName'=>$UserName,'date' => date('d M Y',strtotime($Comment->created_at))];
             return response()->json($response);
         }catch(Exception $ex){
             return redirect('/');
@@ -147,6 +159,14 @@ class ForumController extends Controller
         $Comment->ID = auth()->id();
         $Comment->Comment = $request->text;
         $Comment->CommentDate = Carbon::Now()->toDateTimeString();
+
+        $UserName = "";
+        if(Auth::guard('foundations')->check()){
+            $UserName = Auth::guard('foundations')->user()->FoundationName;
+        } 
+        else{
+            $UserName = Auth::user()->FirstName.' '.Auth::user()->LastName;
+        }
         
         try{
             $Comment->save();
@@ -154,7 +174,7 @@ class ForumController extends Controller
             $commentForm = Comment::where('CommentID',$id)->first();
             $totalReplies = Comment::where('PostID',$idpost)->get()->count();
 
-            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'replyTo'=> $commentForm->User->FirstName." ".$commentForm->User->LastName,'date' => date('d M Y',strtotime($Comment->created_at))];
+            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'UserName' => $UserName,'replyTo'=> $commentForm->User->FirstName." ".$commentForm->User->LastName,'date' => date('d M Y',strtotime($Comment->created_at))];
         return response()->json($response);
 
         }catch(Exception $ex){
