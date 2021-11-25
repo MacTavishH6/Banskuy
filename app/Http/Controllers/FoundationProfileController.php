@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Foundation;
+use App\Models\FoundationPhoto;
 use App\Models\UserDocumentation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class FoundationProfileController extends Controller
 {
