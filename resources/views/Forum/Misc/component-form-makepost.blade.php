@@ -23,8 +23,8 @@
                         @csrf
                         <div class="form-inline mb-2">
                             <div class="form-group w-100">
-                                <div class="input-group w-50 p-1">
-                                    <div class="w-25 mt-2 mr-1">
+                                <div class="input-group p-1" style="width:40%">
+                                    <div class=" mt-2 mr-1" style="width: 30%">
                                         <h6>Post Type :</h6>
                                     </div>
                                     <select class="form-control" id="ddlPostType" name="ddlPostType">
@@ -33,11 +33,11 @@
                                     </select>
                                 </div>
 
-                                <div class="input-group w-50 p-1">
-                                    <div class="w-25 mt-2 mr-1">
+                                <div class="input-group p-1" style="width:60%">
+                                    <div class="mt-2 mr-1" style="width:30%">
                                         <h6>Donation Type :</h6>
                                     </div>
-                                    <select class="form-control" id="ddlDonationType" onchange="ChangeDonationTypeDetail(this)">
+                                    <select class="form-control" id="ddlDonationType" name="ddlDonationType" onchange="ChangeDonationTypeDetail(this)">
                                         @foreach ($DonationType as $item)
                                             <option value="{{$item->DonationTypeID}}">{{$item->DonationTypeName}}</option>
                                         @endforeach
@@ -63,8 +63,8 @@
                         <br>
                         <div class="form-inline mb-3">
                             <div class="form-group w-100">
-                                <div class="input-group w-50 p-1">
-                                    <div class="w-25 mt-2 mr-1">
+                                <div class="input-group p-1" style="width:40%">
+                                    <div class="mt-2 mr-1" style="width: 30%">
                                         <h6>Unit :</h6>
                                     </div>
                                     
@@ -77,8 +77,8 @@
                                     
                                 </div>
 
-                                <div class="input-group w-50 p-1">
-                                    <div class="w-25 mt-2 mr-1">
+                                <div class="input-group  p-1" style="width:60%">
+                                    <div class="mt-2 mr-1" style="width: 30%">
                                         <h6>Quantity :</h6>
                                     </div>
                                     <input class="form-control" type="number" id="txtQuantity" name="txtQuantity" >

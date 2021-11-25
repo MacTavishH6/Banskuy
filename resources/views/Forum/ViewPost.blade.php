@@ -60,7 +60,10 @@
                     var commentResponse = response.payload; 
                     console.log(commentResponse);
                     var Body = "";
-                    var Name = "{{Auth::user()->FirstName}} {{Auth::user()->LastName}}";
+                    var Name = response.UserName;
+                    
+                    
+                    //var Name = "{{Auth::user()->FirstName}} {{Auth::user()->LastName}}";
                             Body += "<div id=\"CommentSection" + commentResponse.CommentID +"\">";
                             Body += "<div class=\"media\">";
                             Body += "<img class=\"mr-3 mt-2    d-block rounded-circle\" style=\"height:50px;width:50px\" src=\"https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png\">"
@@ -120,7 +123,8 @@
                 data:{text:Comment,_token: "<?php echo csrf_token(); ?>"},
                 success:function(response){
                     var Reply = response.payload;
-                    var Name = "{{Auth::user()->FirstName}} {{Auth::user()->LastName}}";
+                    var Name = response.UserName;
+                    
                     var Body = "";
                     Body += "<div id=\"ReplySection\" class=\"ml-5\">";
                             Body += "<div class=\"media mb-2\">";
