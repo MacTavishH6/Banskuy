@@ -55,7 +55,7 @@ class ForumController extends Controller
         $Post->UploadDate = Carbon::now()->toDateTimeString();
         $Post->Quantity = $request->txtQuantity;
         $Post->PostTitle = $request->txtPostTitle;
-        if(Auth::guard('foundation')->check()){
+        if(Auth::guard('foundations')->check()){
             $Post->RoleID = 2;
         } 
         else{
