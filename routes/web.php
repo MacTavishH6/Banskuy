@@ -33,6 +33,7 @@ Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout
 Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
 
 
+
 Route::middleware(['auth:web,foundations'])->group(function () {
 
     Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
