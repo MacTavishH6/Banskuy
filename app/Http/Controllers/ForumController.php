@@ -9,6 +9,8 @@ use App\Models\Post;
 use App\Models\Like;
 use Carbon\Carbon;
 use App\Models\Comment;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
