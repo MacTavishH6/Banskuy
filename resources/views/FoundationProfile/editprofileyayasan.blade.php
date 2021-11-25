@@ -133,6 +133,7 @@
 @section('content')
     <div class="container">
         <div class="row">
+            
             <div class="col-4 p-0" style="width: 100vp;background-color: #AC8FFF;">
                 @include('FoundationProfile.foundationsidebar')
             </div>

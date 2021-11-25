@@ -177,6 +177,7 @@ class FoundationProfileController extends Controller
 
     public function DeleteProfilePhoto(Request $request)
     {
+        
         $foundationid = Crypt::decrypt($request->FoundationID);
         $ftp = ftp_connect(env('FTP_SERVER'));
         $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));

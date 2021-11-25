@@ -30,6 +30,7 @@
     @section('content')  
 
     @section('content')
+    
     <section class="d-flex">
         <div class="container">
             <div class="row">

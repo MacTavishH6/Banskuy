@@ -1,4 +1,5 @@
     <div class="row mt-4">
+        
         <div class="col-3 text-center px-0">
             <img src="{{env('FTP_URL')}}{{$foundation->FoundationPhoto?'ProfilePicture/Yayasan/'.$foundation->FoundationPhoto->Path:'assets/BinusUniv.png'}}" alt="FoundationPhotoProfile"
                 style="border-radius: 50%; border: 1px solid black; width: 130px; height: 130px;" onerror="this.onerror==null;this.src='{{env('FTP_URL')}}assets/BinusUniv.png'">
