@@ -12,12 +12,12 @@
         <div class="container ">
             <div class="row text-center">
                 <div class="col">
-                    <h3>Make Donation Request Now!</h3>
+                    <h3>Buat Permintaan Donasi Sekarang!</h3>
                 </div>
             </div>
             <div class="row text-center">
                 <div class="col">
-                    <h3>People In Need Is Waiting For You</h3>
+                    <h3>Orang yang membutuhkan menunggu anda!</h3>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
                     <input type="hidden" name="UserID" value="{{ Crypt::encrypt($user->UserID) }}">
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="DonationType">Donation Type</label>
+                            <label for="DonationType">Tipe Donasi</label>
                         </div>
                         <div class="col-5">
                             <select name="DonationType" class="form-control" id="DonationType" required></select>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="WithPost">With Post</label>
+                            <label for="WithPost">Dengan Post</label>
                         </div>
                         <div class="col-5">
                             <div class="form-check form-check-inline">
@@ -81,7 +81,7 @@
 
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="Foundation">Foundation</label>
+                            <label for="Foundation">Yayasan</label>
                         </div>
                         <div class="col-5">
                             <input type="text" name="Foundation" id="Foundation" class="form-control" required>
@@ -94,7 +94,7 @@
                     </div>
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="FoundationAddress">Foundation Address</label>
+                            <label for="FoundationAddress">Alamat Yayasan</label>
                         </div>
                         <div class="col-5">
                             <textarea class="form-control" name="FoundationAddress" id="FoundationAddress" rows="3"
@@ -103,7 +103,7 @@
                     </div>
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="FoundationAddress">Foundation Province</label>
+                            <label for="FoundationAddress">Provinsi Yayasan</label>
                         </div>
                         <div class="col-5">
                             <input type="text" name="Province" id="Province" class="form-control" disabled required>
@@ -111,7 +111,7 @@
                     </div>
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="FoundationAddress">Foundation City</label>
+                            <label for="FoundationAddress">Kota Yayasan</label>
                         </div>
                         <div class="col-5">
                             <input type="text" name="City" id="City" class="form-control" disabled required>
@@ -119,7 +119,7 @@
                     </div>
                     <div class="form-row py-1 d-none" id="select-post">
                         <div class="col-3">
-                            <label for="SelectPost">Select Post</label>
+                            <label for="SelectPost">Pilih Post</label>
                         </div>
                         <div class="col-5">
                             <select name="SelectPost" class="form-control" id="SelectPost"></select>
@@ -146,7 +146,7 @@
                     </div>
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="Quantity">Quantity</label>
+                            <label for="Quantity">Jumlah</label>
                         </div>
                         <div class="col-5">
                             <input type="text" name="Quantity" id="Quantity" class="form-control"
@@ -158,8 +158,7 @@
                         <div class="col-6"></div>
                         <div class="col-6 pr-2">
                             <button type="submit" class="float-right py-1 px-5"
-                                style="border-radius: 20px; background-color: #AC8FFF; border: none;">Make A
-                                Request</button>
+                                style="border-radius: 20px; background-color: #AC8FFF; border: none;">Buat Permintaan</button>
                         </div>
                     </div>
                 </form>
