@@ -24,13 +24,13 @@
                     
                     $newformat = date('M d, Y', $time);
                     ?>
-                    <p>Received Date: {{ $newformat }}</p>
+                    <p>Tanggal Diterima: {{ $newformat }}</p>
                     @if ($level->IsCurrentLevel && $level->GradeLevelID != '4')
-                        <p>Experience until Next Level:
+                        <p>Pengalaman sampai level selanjutnya:
                             {{ $level->Level->where('LevelID', $level->LevelID)->first()->Exp }}/<span
                                 id="nextlevelxp"></span> XP</p>
-                        <p>Next Level: <span id="nextlevelname" class="py-1 px-3"
-                                style="background-color: #AC8FFF; border-radius: 20px;">True Philanthropist</span></p>
+                        <p>Level selanjutnya: <span id="nextlevelname" class="py-1 px-3"
+                                style="background-color: #AC8FFF; border-radius: 20px;"></span></p>
                     @endif
                 </div>
             </div>

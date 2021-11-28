@@ -12,7 +12,7 @@
         }
 
         .container{
-            width:65%
+            width:100%
         }
         
         .card-header{
@@ -93,7 +93,8 @@
         <div class="PagePost">
             <div class="d-flex flex-row-reverse bd-highlight w-100 mb-3">
                 <div class="p-2">
-                    @if ($AllowedPost == 1)
+                    @if (true)
+                    {{-- @if ($AllowedPost == 1) --}}
                     <button type="button" class="btn btn-info px-2 pt-2" data-toggle="modal"
                         data-target="#mdlMakePost" >
                         <h6>Create a Post</h6>

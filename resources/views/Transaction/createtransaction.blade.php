@@ -169,7 +169,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Foundation List</h5>
+                    <h5 class="modal-title">List Yayasan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -179,10 +179,10 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Foundation Name</th>
-                                <th>Username</th>
-                                <th>Foundation Phone</th>
-                                <th>Action</th>
+                                <th>Nama Yayasan</th>
+                                <th>Nama Pengguna</th>
+                                <th>Telephone Yayasan</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -206,13 +206,13 @@
                     $("#descriptionContainer").removeClass('d-none');
                     switch (donType) {
                         case '1':
-                            $("#descriptionLabel").html('Donation Title');
+                            $("#descriptionLabel").html('Judul Transaksi');
                             break;
                         case '2':
-                            $("#descriptionLabel").html('Kind of Service');
+                            $("#descriptionLabel").html('Nama Jasa');
                             break;
                         case '3':
-                            $("#descriptionLabel").html('Donation Title');
+                            $("#descriptionLabel").html('Judul Transaksi');
                             break;
                     }
                     CheckPostEnabled();
@@ -333,6 +333,7 @@
             banskuy.postReq('/getpostlist', data)
                 .then(function(data) {
                     var SelectPost = document.getElementById('SelectPost');
+                    $(SelectPost).empty();
                     var listPost = data.msg;
                     let newOption = new Option('','');
                     SelectPost.add(newOption,undefined);

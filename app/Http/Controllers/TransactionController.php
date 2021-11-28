@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Auth;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class TransactionController extends Controller
 {
@@ -103,7 +104,7 @@ class TransactionController extends Controller
 
     public function GetDonationHistoryDetail(Request $request)
     {
-        $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->first();
+        $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('foundation')->first();
         $response = ['payload' => $donation];
         return response()->json($response);
     }
@@ -111,7 +112,7 @@ class TransactionController extends Controller
     //25 Nov 2021 - add fikri for redirecting from post
     public function MakeTransactionWithPost($id){
         $PostID = Crypt::decrypt($id);
-        $user = User::where('UserID',Auth::id())->with('UserLevel.LevelGrade')->with('Photo')->first();
+        $user = User::where('UserID',FacadesAuth::id())->with('UserLevel.LevelGrade')->with('Photo')->first();
         $Post = Post::where('PostID',$PostID)->first();
         $Foundation = Foundation::where('FoundationID',$Post->ID)->first();
         $StatusRedirect = 1;
