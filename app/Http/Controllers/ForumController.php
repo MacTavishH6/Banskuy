@@ -13,7 +13,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Document;
 
 class ForumController extends Controller
 {
@@ -23,8 +23,19 @@ class ForumController extends Controller
       
         $DonationType = $this->GetCategory();
         $DonationTypeDetail = DonationTypeDetail::all();
+
+        $AllowedPost = 1;
+        if(Auth::guard('foundations')->check()){
+            $Document = Document::where('FoundationID',Auth::guard('foundations')->user()->FoundationID)->where('ApprovalStatusID','2')->get();
+            if($Document->count() == 4){
+                $AllowedPost = 1;
+            }
+            else{
+                $AllowedPost = 0;
+            }
+        }
         
-        return view('/Forum/Forum',compact('DonationType','DonationTypeDetail'));
+        return view('/Forum/Forum',compact('DonationType','DonationTypeDetail','AllowedPost'));
     }
 
     public function ForumWithCategory($id){
@@ -76,11 +87,11 @@ class ForumController extends Controller
 
             //Upload to FTP
             Storage::disk('ftp')->put('Forum/Post/'.$Post->id.'/'.$EncodeFile,fopen($request->file('fuAttachment'),'r+'));
-           
+            $request->session()->flash('toastsuccess', 'Post Created');
             return redirect('/Forum');
         }
         catch(Exception $e){
-            return throw($e);
+            throw($e);
         }
     }
 
@@ -136,7 +147,7 @@ class ForumController extends Controller
             $UserName = Auth::guard('foundations')->user()->FoundationName;
         } 
         else{
-            $UserName = Auth::user()->FirstName.' '.Auth::user()->LastName;
+            $UserName = Auth::user()->FirstName.' '.Auth:: user()->LastName;
         }
         
         try{
@@ -148,6 +159,32 @@ class ForumController extends Controller
             return redirect('/');
         }
     }
+
+    public function PostCommentFromForum($id,Request $request){
+        $Comment = new Comment;
+        $Comment->PostID = $id;
+        $Comment->CommentReplyID = 0;
+        $Comment->OrderNumber = 1;
+        $Comment->ID = auth()->id();
+        $Comment->Comment = $request->text;
+        $Comment->CommentDate = Carbon::Now()->toDateTimeString();
+
+        $UserName = "";
+        if(Auth::guard('foundations')->check()){
+            $UserName = Auth::guard('foundations')->user()->FoundationName;
+        } 
+        else{
+            $UserName = Auth::user()->FirstName.' '.Auth:: user()->LastName;
+        }
+        
+        try{
+            $Comment->save();
+            return $this->PostDetail($id);
+        }catch(Exception $ex){
+            return redirect('/');
+        }
+    }
+
 
     public function PostReply($idpost,$id,Request $request){
 

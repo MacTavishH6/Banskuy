@@ -20,6 +20,10 @@ class Post extends Model
         return $this->hasOne(User::class,'UserID','ID');
     }
 
+    public function Foundation(){
+        return $this->hasOne(Foundation::class,'FoundationID','ID');
+    }
+
     public function Like(){
         return $this->hasMany(Like::class,'PostID','PostID');
     }

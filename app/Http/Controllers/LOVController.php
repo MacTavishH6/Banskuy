@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Province;
 use App\Models\City;
 use App\Models\DonationType;
+use App\Models\Post;
+use Illuminate\Support\Facades\Crypt;
 
 class LOVController extends Controller
 {
@@ -37,6 +39,10 @@ class LOVController extends Controller
     }
 
     public function PostList(Request $request){
-        
+        $FoundationID = Crypt::decrypt($request->UserID);
+
+        $listPost = Post::where('ID',$FoundationID)->get();
+
+        return response()->json(array('msg'=>$listPost),200);
     }
 }

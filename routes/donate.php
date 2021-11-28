@@ -12,6 +12,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/getprofile/{id}', [App\Http\Controllers\ProfileController::class, 'GetProfile']);
 
     Route::get('/makerequest/{id}', [App\Http\Controllers\TransactionController::class, 'MakeTransaction']);
+    Route::get('/makerequestwithpost/{id}', [App\Http\Controllers\TransactionController::class, 'MakeTransactionWithPost']);
     Route::post('/getfoundationsearch', [App\Http\Controllers\TransactionController::class, 'GetFoundationSearch']);
     Route::post('/getfoundationbyid', [App\Http\Controllers\TransactionController::class, 'GetFoundationByID']);
     Route::post('/requesttransaction', [App\Http\Controllers\TransactionController::class, 'RequestTransaction']);
