@@ -93,7 +93,7 @@
         <div class="PagePost">
             <div class="d-flex flex-row-reverse bd-highlight w-100 mb-3">
                 <div class="p-2"><button type="button" class="btn btn-info px-2 pt-2" data-toggle="modal"
-                        data-target="#mdlMakePost" data-backdrop="false" >
+                        data-target="#mdlMakePost" >
                         <h6>Create a Post</h6>
                     </button></div>
             </div>
