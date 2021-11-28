@@ -80,7 +80,7 @@ class ForumController extends Controller
             return redirect('/Forum');
         }
         catch(Exception $e){
-            return throw($e);
+            throw($e);
         }
     }
 

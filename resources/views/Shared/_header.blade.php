@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
-            BanSkuy
+            <img src="{{env("FTP_URL")}}assets/LogoBanskuy.png" alt="" srcset="" style="width: 180px;">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar"
             aria-controls="header-navbar" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

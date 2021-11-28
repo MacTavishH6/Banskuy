@@ -118,7 +118,7 @@
 
                 <div class="card-body d-flex justify-content-around ">
                     <div class="bodyleftside">
-                        <img src="https://www.banskuy.com/banskuy.com/Basnkuy2022/assets/BinusUniv.png"
+                        <img src="{{env("FTP_URL")}}assets/BinusUniv.png"
                             alt="UsernamePhotoProfile" style="border: 1px solid black; width: 75px">
                     </div>
 

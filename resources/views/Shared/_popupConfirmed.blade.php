@@ -2,13 +2,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Please Edit your Profile</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Segera Sunting Profile Anda</h5>
       </div>
       <div class="modal-body">
-        <p>You must edit your profile first in order to use our system.</p>
+        <p>Anda harus melakukan sunting profil jika ingin menggunakan sistem kami.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn-banskuy text-white edit-profile" class="btn btn-primary">Edit Profile</button>
+        <button type="button" class="btn-banskuy text-white edit-profile" class="btn btn-primary">Sunting Profil</button>
       </div>
     </div>
   </div>

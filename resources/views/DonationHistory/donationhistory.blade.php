@@ -31,21 +31,21 @@
     <div class="container mt-3">
         <div class="row w-50 m-auto text-center">
             <div class="col">
-                <h2>Donation History</h3>
+                <h2>Riwayat Donasi</h3>
             </div>
         </div>
         <div class="row w-75 mx-auto mb-5">
             {{-- sebelahkiri --}}
             <div class="col-6">
                 <div class="form-group">
-                    <label for="searchbox">Search :</label>
+                    <label for="searchbox">Pencarian :</label>
                     <form class="form-inline m-0">
                         <input class="form-control col" type="search" placeholder="Input Keyword" aria-label="Search"
                             id="searchKeyword">
                     </form>
                 </div>
                 <div class="form-group">
-                    <label for="inputState">Donation Status :</label>
+                    <label for="inputState">Status Donasi :</label>
                     <select id="donationStatus" class="form-control">
                     </select>
                 </div>
@@ -53,7 +53,7 @@
             <div class="col-6">
                 <div class="form-row">
                     <div class="form-group col-md-5">
-                        <label for="from">Date Start</label>
+                        <label for="from">Tanggal Awal :</label>
                         <input type="text" class="form-control" name="DateStart" id="from" placeholder="">
                     </div>
                     <div class="form-group col-md-1">
@@ -61,7 +61,7 @@
                         <button id="resetfrom" class="btn btn-info mt-2 ml-n2 d-none"><span>x</span></button>
                     </div>
                     <div class="form-group col-md-5">
-                        <label for="to">Date End</label>
+                        <label for="to">Tanggal Akhir :</label>
                         <input type="text" class="form-control" name="DateEnd" id="to" placeholder="">
                     </div>
                     <div class="form-group col-md-1">
@@ -70,14 +70,14 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputState">Donation Type :</label>
+                    <label for="inputState">Tipe Donasi :</label>
                     <select id="donationType" class="form-control">
                     </select>
                 </div>
             </div>
             <div class="col-6"></div>
             <div class="col-6">
-                <button id="applyFilter" class="btn btn-primary float-right">Apply Filter</button>
+                <button id="applyFilter" class="btn btn-primary float-right">Terapkan Filter</button>
             </div>
         </div>
         <div id="list-containter">
@@ -262,6 +262,7 @@
                                         Status: transaction.approval_status
                                             .ApprovalStatusName,
                                         Quantity: transaction.Quantity,
+                                        Foundation: transaction.foundation.FoundationName
                                     };
                                     switch (transaction.approval_status.ApprovalStatusID) {
                                         case 5:
