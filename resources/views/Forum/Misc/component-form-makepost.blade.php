@@ -10,12 +10,28 @@
             <div class="modal-body mb-1">
                 <div class="media mb-2">
                     {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
-                    <img class="mr-3 d-block rounded-circle" style="height:75px;width:75px"
-                        src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png">
 
-                    <div class="media-body mt-3">
-                        <h3>{{Auth::user()->FirstName}} {{Auth::user()->LastName}}</h3>
-                    </div>
+                        @if (Auth::guard('foundations')->check())
+                        <img src="{{ env('FTP_URL') }}{{ Auth::guard('foundations')->user()->FoundationPhoto ? 'ProfilePicture/Yayasan/' . Auth::guard('foundations')->user()->FoundationPhoto->Path : 'assets/Smiley.png' }}"
+                        alt="FoundationPhotoProfile" class="mr-3 d-block rounded-circle"
+                        style="height:75px;width:75px"
+                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
+                        <div class="media-body mt-3">
+                            <h3>{{Auth::guard('foundations')->user()->FoundationName}}</h3>
+                        </div>
+                        
+                        @else
+                        <img src="{{ env('FTP_URL') }}{{ Auth::user()->Photo ? 'ProfilePicture/Donatur/' . Auth::user()->Photo->Path : 'assets/Smiley.png' }}"
+                        alt="UsernamePhotoProfile" class="mr-3 d-block rounded-circle"
+                        style="height:75px;width:75px"
+                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
+                            
+                            <div class="media-body mt-3">
+                                <h3>{{Auth::user()->FirstName}} {{Auth::user()->LastName}}</h3>
+                            </div>
+                            
+                        @endif
+                    
                 </div>
 
                 <div>
@@ -28,8 +44,11 @@
                                         <h6>Post Type :</h6>
                                     </div>
                                     <select class="form-control" id="ddlPostType" name="ddlPostType">
-                                        <option value="1">Donation Post</option>
+                                        @if (Auth::guard('foundations')->check())
                                         <option value="2">Request Post</option>
+                                        @else
+                                        <option value="1">Donation Post</option>
+                                        @endif
                                     </select>
                                 </div>
 

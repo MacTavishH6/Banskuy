@@ -217,21 +217,41 @@
             <div class="card-header">
                 <div class="media mb-3">
                     {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
-                    <img class="mr-3 d-block rounded-circle" style="height:75px;width:75px"
-                        src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png">
+                        @if (Auth::guard('foundations')->check())
+                        <img src="{{ env('FTP_URL') }}{{ Auth::guard('foundations')->user()->FoundationPhoto ? 'ProfilePicture/Yayasan/' . Auth::guard('foundations')->user()->FoundationPhoto->Path : 'assets/Smiley.png' }}"
+                        alt="FoundationPhotoProfile" class="mr-3 d-block rounded-circle"
+                        style="height:75px;width:75px"
+                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
+
+                        
+                        @else
+                        <img src="{{ env('FTP_URL') }}{{ Auth::user()->Photo ? 'ProfilePicture/Donatur/' . Auth::user()->Photo->Path : 'assets/Smiley.png' }}"
+                        alt="UsernamePhotoProfile" class="mr-3 d-block rounded-circle"
+                        style="height:75px;width:75px"
+                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
+
+                        
+                        @endif
 
                     <div class="media-body mt-3">
                         <div class="d-flex">
                             <div class="mr-auto">
-                                <h4>{{$Post->PostTitle}}</h4>
+                                <h2>{{$Post->PostTitle}}</h2>
                             </div>
                             <div class="mr-2">
                                 <button type="submit" class="btn btn-warning pb-2 pt-1 px-1">
                                     Contact Author</button>
                             </div>
                             <div class="mr-2">
-                                <button type="submit" class="btn btn-primary pb-2 pt-1 px-1">Open For
-                                    Donation</button>
+                                @if ($Post->PostTypeID == 1)
+                                    <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
+                                        Ask For Donation
+                                    </a> 
+                                    @else
+                                    <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($Post->PostID)}}">
+                                        Open For Donation
+                                    </a> 
+                                    @endif
                             </div>
                             <div><button id="btnMakeReport" type="button" class="btn btn-danger pb-2 pt-1 px-3" data-toggle="modal"
                                     data-target="#mdlMakeReport" onclick="btnMakeReportOnClick()">
@@ -240,7 +260,11 @@
                         </div>
                         <div class="d-flex">
                             <div class="mr-2">
-                                <h5 style="font-weight: normal">{{$Post->User->FirstName}} {{$Post->User->LastName}}</h5>
+                                @if (Auth::guard('foundations')->check())
+                                <h5 style="font-weight: normal">{{Auth::guard('foundations')->user()->FoundationName}}</h5>
+                                @else
+                                <h5 style="font-weight: normal">{{Auth::user()->FirstName}} {{Auth::user()->LastName}}</h5>
+                                @endif
                             </div>
                             <div class="text-muted">
                                 <small>{{date('d M Y',strtotime($Post->created_at))}} at {{date('h:i A',strtotime($Post->created_at))}}</small>
@@ -255,7 +279,7 @@
                         {{$Post->PostDescription}}
                     </div>
                     <div class="p-2 bd-highlight">
-                        <img class="w-75 h-50" src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/Post/{{$Post->PostID}}/{{$Post->PostPicture}}">
+                        <img class="w-75 h-50" src="{{ env('FTP_URL') }}Forum/Post/{{$Post->PostID}}/{{$Post->PostPicture}}">
                     </div>
                     <div class="p-2 bd-highlight">
                         <div class="d-flex border-bottom">

@@ -49,6 +49,7 @@ Route::middleware(['auth:web,foundations'])->group(function () {
 
     Route::get('/ViewPost/{id}', [ForumController::class, 'PostDetail']);
     Route::post('/PostComment/{id}', [ForumController::class, 'PostComment']);
+    Route::post('/PostCommentFromForum/{id}', [ForumController::class, 'PostCommentFromForum']);
     Route::post('/PostReply/{Postid}/{id}', [ForumController::class, 'PostReply']);
     Route::get('/sendlike/{id}', [ForumController::class, 'SendLike']);
     Route::get('/Delete', [ForumController::class, 'TestDelete']);

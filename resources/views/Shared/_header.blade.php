@@ -37,7 +37,7 @@
                     </li>
                 @endauth
                 <li class="nav-item">
-                    <a class="nav-link" href="">{{ __('Forum') }}</a>
+                    <a class="nav-link" href="/Forum">{{ __('Forum') }}</a>
                 </li>
 
                 <!-- Authentication Links -->

@@ -92,10 +92,16 @@
         {{-- LIST POST START HERE --}}
         <div class="PagePost">
             <div class="d-flex flex-row-reverse bd-highlight w-100 mb-3">
-                <div class="p-2"><button type="button" class="btn btn-info px-2 pt-2" data-toggle="modal"
+                <div class="p-2">
+                    @if ($AllowedPost == 1)
+                    <button type="button" class="btn btn-info px-2 pt-2" data-toggle="modal"
                         data-target="#mdlMakePost" >
                         <h6>Create a Post</h6>
-                    </button></div>
+                    </button>
+                    @else
+                    <p style="color: red">*Please compleate your document before making a post</p>
+                    @endif
+                </div>
             </div>
 
             
