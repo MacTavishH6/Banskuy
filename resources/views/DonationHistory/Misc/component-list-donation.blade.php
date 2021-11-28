@@ -58,7 +58,7 @@
                 <div class="col-3">
                     <div class="buttonhistorydetail">
                         <button type="button" id="btnHistoryDetail" data-id="<%=data.transactionID%>" class="historydetail_button">
-                            {{ __('HistoryDetail') }}
+                            {{ __('Detail Transaksi') }}
                         </button>
                     </div>
                 </div>

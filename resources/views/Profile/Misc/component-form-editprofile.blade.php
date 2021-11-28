@@ -1,4 +1,9 @@
 <div class="row">
+    <div class="col">
+        <h2>Sunting Profil</h2>
+    </div>
+</div>
+<div class="row">
     <div class="col-3 text-center px-0">
         <img src="{{env('FTP_URL')}}{{$user->Photo?'ProfilePicture/Donatur/'.$user->Photo->Path:'assets/Smiley.png'}}" alt="UsernamePhotoProfile"
             style="border-radius: 50%; border: 1px solid black; width: 130px; height: 130px;" onerror="this.onerror==null;this.src='{{env('FTP_URL')}}assets/Smiley.png'">

@@ -15,7 +15,7 @@
     <input type="hidden" name="FoundationID" value="{{ Crypt::encrypt($foundation->FoundationID) }}">
     <div class="form-row py-1">
         <div class="col-2">
-            <label for="FoundationName">Foundation Name</label>
+            <label for="FoundationName">Nama Yayasan</label>
         </div>
         <div class="col-6">
             <input type="text" name="FoundationName" id="FoundationName" class="form-control"
@@ -30,7 +30,7 @@
     </div>
     <div class="form-row py-1">
         <div class="col-2">
-            <label for="Username">Username</label>
+            <label for="Username">Nama Pengguna</label>
         </div>
         <div class="col-6">
             <input type="text" name="Username" id="Username" value="{{ old('Username') ? old('Username') : $foundation->Username }}" 
@@ -58,7 +58,7 @@
     </div>
     <div class="form-row py-1">
         <div class="col-2">
-            <label for="FoundationPhone">Phone Number</label>
+            <label for="FoundationPhone">Nomor Telephone</label>
         </div>
         <div class="col-6">
             <input type="tel" name="FoundationPhone" id="FoundationPhone"
@@ -102,7 +102,7 @@
     </div>
     <div class="form-row py-1">
         <div class="col-2">
-            <label for="Address">Address</label>
+            <label for="Address">Alamat</label>
         </div>
         <div class="col-6">
             <textarea name="Address" id="Address" style="resize: none;" class="form-control @error('Address') is-invalid @enderror" required>{{ old('Address') ? old('Address') : ($foundation->Address ? $foundation->Address->Address : '') }}</textarea>
@@ -115,7 +115,7 @@
     </div>
     <div class="form-row py-1">
         <div class="col-2">
-            <label for="Country">Country</label>
+            <label for="Country">Negara</label>
         </div>
         <div class="col-6">
             <select name="Country" id="Country" class="form-control @error('Country') is-invalid @enderror" required>
@@ -130,7 +130,7 @@
     </div>
     <div class="form-row py-1">
         <div class="col-2">
-            <label for="Province">Province</label>
+            <label for="Province">Provinsi</label>
         </div>
         <div class="col-6">
             <select name="Province" id="Province" class="form-control @error('Province') is-invalid @enderror"
@@ -144,7 +144,7 @@
     </div>
     <div class="form-row py-1">
         <div class="col-2">
-            <label for="City">City</label>
+            <label for="City">Kota</label>
         </div>
         <div class="col-6">
             <select name="City" id="City" class="form-control @error('City') is-invalid @enderror"
@@ -160,7 +160,7 @@
         <div class="col-2"></div>
         <div class="col-6 pr-2">
             <button type="submit" class="float-right py-1 px-5 text-white"
-                style="border-radius: 20px; background-color: #AC8FFF; border: none;">Save</button>
+                style="border-radius: 20px; background-color: #AC8FFF; border: none;">Simpan</button>
         </div>
     </div>
 </form>

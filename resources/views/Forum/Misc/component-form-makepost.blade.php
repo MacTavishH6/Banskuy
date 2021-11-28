@@ -20,7 +20,7 @@
                             <h3>{{Auth::guard('foundations')->user()->FoundationName}}</h3>
                         </div>
                         
-                        @else
+                        @elseif(Auth::check())
                         <img src="{{ env('FTP_URL') }}{{ Auth::user()->Photo ? 'ProfilePicture/Donatur/' . Auth::user()->Photo->Path : 'assets/Smiley.png' }}"
                         alt="UsernamePhotoProfile" class="mr-3 d-block rounded-circle"
                         style="height:75px;width:75px"

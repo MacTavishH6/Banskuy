@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col">
-        <h2>Change Password</h2>
+        <h2>Ganti Password</h2>
     </div>
 </div>
 <form action="/changepassword" method="POST">

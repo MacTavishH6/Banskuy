@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ReportController;
+use Illuminate\Support\Facades\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,23 +19,18 @@ use App\Http\Controllers\ReportController;
 |
 */
 
-Auth::routes();
-
 Route::get('/', function () {
     return redirect('/landingpage');
-});
-
-Route::get('/logout', function () {
-    Auth::logout();
 });
 
 Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
 
 Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
+Route::get('/Forum', [ForumController::class, 'Index']);
+Route::get('/Forum/{DonationTypeID}', [ForumController::class, 'ForumWithCategory']);
 
 
-
-Route::middleware(['auth:web,foundations'])->group(function () {
+Route::middleware(['auth:web,donates,foundations'])->group(function () {
 
     Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
     Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
@@ -42,8 +38,6 @@ Route::middleware(['auth:web,foundations'])->group(function () {
     Route::get('/getdonationstatus', [App\Http\Controllers\LOVController::class, 'DonationStatus']);
     Route::post('/getpostlist', [App\Http\Controllers\LOVController::class, 'PostList']);
 
-    Route::get('/Forum', [ForumController::class, 'Index']);
-    Route::get('/Forum/{DonationTypeID}', [ForumController::class, 'ForumWithCategory']);
     Route::get('/GetDonationCategoryDetail/{DonationTypeID}', [ForumController::class, 'GetDonationCategoryDetail']);
     Route::post('/CreatePost', [ForumController::class, 'CreatePost']);
 

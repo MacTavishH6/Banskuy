@@ -1,10 +1,25 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
+Route::get('/login', function () {
+    return redirect('/foundationlogin');
+});
+
+Route::get('/register', function () {
+    return redirect('/foundationregister');
+});
+
+Route::post('/registerfoundation', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register.foundation');
+
 Route::get('/foundationlogin', function () {
     return view('/auth/foundationLogin');
+});
+
+Route::get('/foundationregister', function () {
+    return view('/auth/foundationRegister');
 });
 
 Route::post('/loginfoundation', [App\Http\Controllers\Auth\LoginController::class, 'loginfoundation']);
