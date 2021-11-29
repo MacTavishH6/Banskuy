@@ -28,10 +28,11 @@ Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout
 Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
 Route::get('/Forum', [ForumController::class, 'Index']);
 Route::get('/Forum/{DonationTypeID}', [ForumController::class, 'ForumWithCategory']);
+Route::get('/ViewPost/{id}', [ForumController::class, 'PostDetail']);
 
 
 
-Route::middleware(['auth:web,donates,foundations'])->group(function () {
+Route::middleware(['auth:web,foundations'])->group(function () {
 
 
     Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);

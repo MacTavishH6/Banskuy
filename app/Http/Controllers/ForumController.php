@@ -215,16 +215,19 @@ class ForumController extends Controller
         $UserName = "";
         if(Auth::guard('foundations')->check()){
             $UserName = Auth::guard('foundations')->user()->FoundationName;
+            $Comment->RoleID = 2;
         } 
         else{
             $UserName = Auth::user()->FirstName.' '.Auth:: user()->LastName;
+            $Comment->RoleID = 1;
         }
         
         try{
             $Comment->save();
+    
             return $this->PostDetail($id);
         }catch(Exception $ex){
-            return redirect('/');
+            throw $ex;
         }
     }
 
