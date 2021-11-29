@@ -233,6 +233,29 @@ class FoundationProfileController extends Controller
         }
     }
 
+    public function ReUploadDocument(Request $request){
+        if($request->hasFile('reuploadDocument')){
+            $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('reuploadDocument')->getClientOriginalName());
+            $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
+            $FoundationID = Auth::guard('foundations')->user()->FoundationID;
+            $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',$request->txtDocumentTypeIDPopUp)->first();
+    
+                if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
+                    $ExistingDocument->DocumentName = $request->file('reuploadDocument')->getClientOriginalName();
+                    $ExistingDocument->Path = $EncodeFile;
+                    $ExistingDocument->save();
+                }
+                else{
+                    $request->session()->flash('toastfailed', 'Error when upload document');
+                    return redirect()->back();
+                
+                }
+            Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('reuploadDocument'),'r+'));
+            $request->session()->flash('toastfailed', 'Upload dokumen berhasil');
+            return response()->json('');
+        }
+    }
+
     public function UploadDocument(Request $request){
         if($this->ValidateDocument($request)){
             //Upload to FTP
@@ -360,6 +383,8 @@ class FoundationProfileController extends Controller
 
             }
 
+
+
             $request->session()->flash('toastsuccess', 'Document has been updated');
             return redirect()->back();
             
@@ -376,6 +401,7 @@ class FoundationProfileController extends Controller
 
         $Document = Document::where('FoundationID',$FoundationID)->get();
 
+        $ListDocument[] = array();
         foreach($Document as $Val){
             $ListDocument[] = ['FoundationID' => Crypt::encrypt($Val->FoundationID),'DocumentName' => $Val->DocumentType->DocumentTypeName,'DocumentTypeID' => $Val->DocumentTypeID,'DocumentStatusID' => $Val->ApprovalStatusID, 'DocumentStatus' => $Val->ApprovalStatus->ApprovalStatusName ];
         }
@@ -391,10 +417,12 @@ class FoundationProfileController extends Controller
         
         $DocumentDetail = 
         ['DocumentType'=> $Document->DocumentType->DocumentTypeName,
+        'DocumentTypeID'=> $Document->DocumentType->DocumentTypeID,
         'DocumentName' => $Document->DocumentName,
         'UploadDate' => $Document->UploadDate,
         'ReviewDate' => $Document->ReviewDate,
         'ReviewStatus' => $Document->ApprovalStatus->ApprovalStatusName,
+        'ReviewStatusID' => $Document->ApprovalStatus->ApprovalStatusID,
         'ReviewDescription' => $Document->Description 
         ];
 
