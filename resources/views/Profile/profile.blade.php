@@ -148,7 +148,7 @@
                     user = data.payload;
                 })
                 .finally(function() {
-                    if (!user.FullName && !user.LastName && !user.Address) {
+                    if (!user.IsConfirmed) {
                         $("#confirmedModal").modal();
                     }
                     $(".edit-profile").on('click', function() {

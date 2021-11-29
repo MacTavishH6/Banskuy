@@ -142,7 +142,7 @@
                     foundation = data.payload;
                 })
                 .finally(function() {
-                    if (!foundation.FoundationName && !foundation.Address) {
+                    if (!foundation.IsConfirmed) {
                         $("#confirmedModal").modal();
                     }
                     $(".edit-profile").on('click', function() {

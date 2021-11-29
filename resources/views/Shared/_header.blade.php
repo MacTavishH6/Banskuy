@@ -23,7 +23,7 @@
                                 href="/makerequest/{{ Crypt::encrypt(Auth::id()) }}">{{ __('Ayo berdonasi!') }}</a>
                         </li>
                     @else
-                        @if (!str_contains($_SERVER['HTTP_HOST'], 'foundation'))
+                        @if (!str_contains($_SERVER['HTTP_HOST'], 'foundation.'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('login')}}">{{ __('Ayo berdonasi!') }}</a>
                             </li>
@@ -71,12 +71,12 @@
                     </li>
                 @else
                     @if (!Request::is('login') && !Request::is('foundationlogin'))
-                        @if (str_contains($_SERVER['HTTP_HOST'], 'donate'))
+                        @if (str_contains($_SERVER['HTTP_HOST'], 'donate.'))
                             <li class="nav-item">
                                 <a class="nav-link"
                                     href="{{ route('login') }}">{{ __('Masuk') }}</a>
                             </li>
-                        @elseif(str_contains($_SERVER['HTTP_HOST'],'foundation'))
+                        @elseif(str_contains($_SERVER['HTTP_HOST'],'foundation.'))
                             <li class="nav-item">
                                 <a class="nav-link" href="/foundationlogin">{{ __('Masuk') }}</a>
                             </li>
@@ -84,13 +84,13 @@
                     @endif
 
                     @if (Request::is('index'))
-                        @if (str_contains($_SERVER['HTTP_HOST'], 'donate'))
+                        @if (str_contains($_SERVER['HTTP_HOST'], 'donate.'))
                             <li class="nav-item">
                                 <a class="nav-link text-white py-1 px-3"
                                     style="background-color: #AC8FFF; border-radius: 20px;"
                                     href="{{ route('login') }}">{{ __('Masuk') }}</a>
                             </li>
-                        @elseif(str_contains($_SERVER['HTTP_HOST'],'foundation'))
+                        @elseif(str_contains($_SERVER['HTTP_HOST'],'foundation.'))
                             <li class="nav-item">
                                 <a class="nav-link text-white py-1 px-3"
                                     style="background-color: #AC8FFF; border-radius: 20px;"
