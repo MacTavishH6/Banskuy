@@ -28,9 +28,12 @@ Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout
 Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
 Route::get('/Forum', [ForumController::class, 'Index']);
 Route::get('/Forum/{DonationTypeID}', [ForumController::class, 'ForumWithCategory']);
+Route::get('/ViewPost/{id}', [ForumController::class, 'PostDetail']);
 
 
-Route::middleware(['auth:web,donates,foundations'])->group(function () {
+
+Route::middleware(['auth:web,foundations'])->group(function () {
+
 
     Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
     Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
@@ -38,10 +41,11 @@ Route::middleware(['auth:web,donates,foundations'])->group(function () {
     Route::get('/getdonationstatus', [App\Http\Controllers\LOVController::class, 'DonationStatus']);
     Route::post('/getpostlist', [App\Http\Controllers\LOVController::class, 'PostList']);
 
+
     Route::get('/GetDonationCategoryDetail/{DonationTypeID}', [ForumController::class, 'GetDonationCategoryDetail']);
     Route::post('/CreatePost', [ForumController::class, 'CreatePost']);
 
-    Route::get('/ViewPost/{id}', [ForumController::class, 'PostDetail']);
+    
     Route::post('/PostComment/{id}', [ForumController::class, 'PostComment']);
     Route::post('/PostCommentFromForum/{id}', [ForumController::class, 'PostCommentFromForum']);
     Route::post('/PostReply/{Postid}/{id}', [ForumController::class, 'PostReply']);

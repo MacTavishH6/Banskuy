@@ -14,6 +14,9 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
+use Auth;
+use App\Models\Document;
 
 class FoundationProfileController extends Controller
 {
@@ -197,5 +200,235 @@ class FoundationProfileController extends Controller
         $request->session()->flash('toastsuccess', 'Profile picture has been deleted');
         return redirect()->action('App\Http\Controllers\FoundationProfileController@foundationprofile', ['id' => $request->FoundationID]);
     }
+
+    public function DeleteDocument($DocumentTypeID){
+        $FoundationID = Auth::guard('foundations')->user()->FoundationID;
+        $ftp = ftp_connect(env('FTP_SERVER'));
+        $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
+        $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',$DocumentTypeID)->first();
+        if ($ExistingDocument != null) {
+            $path = $ExistingDocument->Path;
+            if ($path && ftp_size($ftp, env('FTP_URL').'DocumentYayasan/' . $path) > 0)
+                ftp_delete($ftp, 'DocumentYayasan/' . $path);
+        }
+        else{
+            ftp_close($ftp);
+            return false;
+        }
+
+        ftp_close($ftp);
+        return true;
+    }
+
+
+    //27 Nov 2021 - Fikri for document
+
+    public function ValidateDocument(Request $request){
+        
+        if($request->hasFile('OwnerIdentityCard') || $request->hasFile('FoundationCertificate') || $request->hasFile('FoundationOperationalPermit') || $request->hasFile('FoundationRegistrationPermit')){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function ReUploadDocument(Request $request){
+        if($request->hasFile('reuploadDocument')){
+            $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('reuploadDocument')->getClientOriginalName());
+            $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
+            $FoundationID = Auth::guard('foundations')->user()->FoundationID;
+            $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',$request->txtDocumentTypeIDPopUp)->first();
+    
+                if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
+                    $ExistingDocument->DocumentName = $request->file('reuploadDocument')->getClientOriginalName();
+                    $ExistingDocument->Path = $EncodeFile;
+                    $ExistingDocument->save();
+                }
+                else{
+                    $request->session()->flash('toastfailed', 'Error when upload document');
+                    return redirect()->back();
+                
+                }
+            Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('reuploadDocument'),'r+'));
+            $request->session()->flash('toastfailed', 'Upload dokumen berhasil');
+            return response()->json('');
+        }
+    }
+
+    public function UploadDocument(Request $request){
+        if($this->ValidateDocument($request)){
+            //Upload to FTP
+            if($request->hasFile('OwnerIdentityCard')){
+                $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('OwnerIdentityCard')->getClientOriginalName());
+                $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
+                $FoundationID = Auth::guard('foundations')->user()->FoundationID;
+                $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',1)->first();
+                if($ExistingDocument == null){
+                    $Document = new Document();
+                    $Document->FoundationID = $FoundationID;
+                    $Document->DocumentTypeID = 1;
+                    $Document->DocumentName = $request->file('OwnerIdentityCard')->getClientOriginalName();
+                    $Document->ApprovalStatusID = 1;
+                    $Document->UploadDate = Carbon::now();
+                    $Document->ReviewDate = Carbon::now();
+                    $Document->Path = $EncodeFile;
+                    $Document->save();
+                }
+                else{
+                    if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
+                        $ExistingDocument->DocumentName = $request->file('OwnerIdentityCard')->getClientOriginalName();
+                        $ExistingDocument->Path = $EncodeFile;
+                        $ExistingDocument->save();
+                    }
+                    else{
+                        $request->session()->flash('toastfailed', 'Error when upload document');
+                        return redirect()->back();
+                    }
+                }
+                
+                Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('OwnerIdentityCard'),'r+'));              
+
+
+            }
+            if($request->hasFile('FoundationCertificate')){
+                $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('FoundationCertificate')->getClientOriginalName());
+                $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
+                $FoundationID = Auth::guard('foundations')->user()->FoundationID;
+                $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',2)->first();
+                if($ExistingDocument == null){
+                    $Document = new Document();
+                    $Document->FoundationID = $FoundationID;
+                    $Document->DocumentTypeID = 2;
+                    $Document->DocumentName = $request->file('FoundationCertificate')->getClientOriginalName();
+                    $Document->ApprovalStatusID = 1;
+                    $Document->UploadDate = Carbon::now();
+                    $Document->ReviewDate = Carbon::now();
+                    $Document->Path = $EncodeFile;
+                    $Document->save();
+                }
+                else{
+                    if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
+                        $ExistingDocument->DocumentName = $request->file('FoundationCertificate')->getClientOriginalName();
+                        $ExistingDocument->Path = $EncodeFile;
+                        $ExistingDocument->save();
+                    }
+                    else{
+                        $request->session()->flash('toastfailed', 'Error when upload document');
+                        return redirect()->back();
+                    }
+                }
+                Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationCertificate'),'r+'));
+
+            }
+            if($request->hasFile('FoundationOperationalPermit')){
+                $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('FoundationOperationalPermit')->getClientOriginalName());
+                $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
+                $FoundationID = Auth::guard('foundations')->user()->FoundationID;
+                $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',3)->first();
+                if($ExistingDocument == null){
+                    $Document = new Document();
+                    $Document->FoundationID = $FoundationID;
+                    $Document->DocumentTypeID = 3;
+                    $Document->DocumentName = $request->file('FoundationOperationalPermit')->getClientOriginalName();
+                    $Document->ApprovalStatusID = 1;
+                    $Document->UploadDate = Carbon::now();
+                    $Document->ReviewDate = Carbon::now();
+                    $Document->Path = $EncodeFile;
+                    $Document->save();
+                }
+                else{
+                    if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
+                        $ExistingDocument->DocumentName = $request->file('FoundationOperationalPermit')->getClientOriginalName();
+                        $ExistingDocument->Path = $EncodeFile;
+                        $ExistingDocument->save();
+                    }
+                    else{
+                        $request->session()->flash('toastfailed', 'Error when upload document');
+                        return redirect()->back();
+                    }
+                }
+                Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationOperationalPermit'),'r+'));
+
+            }
+
+            if($request->hasFile('FoundationRegistrationPermit')){
+                $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('FoundationRegistrationPermit')->getClientOriginalName());
+                $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
+                $FoundationID = Auth::guard('foundations')->user()->FoundationID;
+                $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',4)->first();
+                if($ExistingDocument == null){
+                    $Document = new Document();
+                    $Document->FoundationID = $FoundationID;
+                    $Document->DocumentTypeID = 4;
+                    $Document->DocumentName = $request->file('FoundationRegistrationPermit')->getClientOriginalName();
+                    $Document->ApprovalStatusID = 1;
+                    $Document->UploadDate = Carbon::now();
+                    $Document->ReviewDate = Carbon::now();
+                    $Document->Path = $EncodeFile;
+                    $Document->save();
+                }
+                else{
+                    if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
+                        $ExistingDocument->DocumentName = $request->file('FoundationRegistrationPermit')->getClientOriginalName();
+                        $ExistingDocument->Path = $EncodeFile;
+                        $ExistingDocument->save();
+                    }
+                    else{
+                        $request->session()->flash('toastfailed', 'Error when upload document');
+                        return redirect()->back();
+                    }
+                }
+                Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationRegistrationPermit'),'r+'));
+
+            }
+
+
+
+            $request->session()->flash('toastsuccess', 'Document has been updated');
+            return redirect()->back();
+            
+        }
+        else{
+            $request->session()->flash('toastfailed', 'Please upload the document');
+            return redirect()->back();
+        }
+    }
+
+
+    public function GetListDocument(Request $request){
+        $FoundationID = Auth::guard('foundations')->user()->FoundationID;
+
+        $Document = Document::where('FoundationID',$FoundationID)->get();
+
+        $ListDocument[] = array();
+        foreach($Document as $Val){
+            $ListDocument[] = ['FoundationID' => Crypt::encrypt($Val->FoundationID),'DocumentName' => $Val->DocumentType->DocumentTypeName,'DocumentTypeID' => $Val->DocumentTypeID,'DocumentStatusID' => $Val->ApprovalStatusID, 'DocumentStatus' => $Val->ApprovalStatus->ApprovalStatusName ];
+        }
+
+        $response = array('payload'=>$ListDocument);
+        return response()->json($response);
+    }
+
+    public function GetDocumentDetail(Request $request){
+        $FoundationID = Crypt::decrypt($request->FoundationID);
+
+        $Document = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',$request->TypeID)->first();
+        
+        $DocumentDetail = 
+        ['DocumentType'=> $Document->DocumentType->DocumentTypeName,
+        'DocumentTypeID'=> $Document->DocumentType->DocumentTypeID,
+        'DocumentName' => $Document->DocumentName,
+        'UploadDate' => $Document->UploadDate,
+        'ReviewDate' => $Document->ReviewDate,
+        'ReviewStatus' => $Document->ApprovalStatus->ApprovalStatusName,
+        'ReviewStatusID' => $Document->ApprovalStatus->ApprovalStatusID,
+        'ReviewDescription' => $Document->Description 
+        ];
+
+        $response = ['payload' => $DocumentDetail];
+        return response()->json($response);
+    }
+
 
 }
