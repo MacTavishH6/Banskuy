@@ -43,4 +43,8 @@ Route::middleware(['auth:foundations'])->group(function () {
 
     Route::Post('/UpdateFoundationProfilePicture', [App\Http\Controllers\FoundationProfileController::class, 'UpdateProfilePicture']);
     Route::delete('/deleteprofilephoto', [App\Http\Controllers\FoundationProfileController::class, 'DeleteProfilePhoto']);
+    Route::post('/UpdateDocument',[App\Http\Controllers\FoundationProfileController::class, 'UploadDocument']); 
+    Route::post('/ReUploadDocument',[App\Http\Controllers\FoundationProfileController::class, 'ReUploadDocument']); 
+    Route::post('/GetListDocument',[App\Http\Controllers\FoundationProfileController::class, 'GetListDocument']); 
+    Route::post('/GetDocumentDetail',[App\Http\Controllers\FoundationProfileController::class, 'GetDocumentDetail']); 
 });
