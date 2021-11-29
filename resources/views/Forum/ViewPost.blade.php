@@ -62,11 +62,11 @@
                     var Body = "";
                     var Name = response.UserName;
                     
-                    
-                    //var Name = "{{Auth::user()->FirstName}} {{Auth::user()->LastName}}";
                             Body += "<div id=\"CommentSection" + commentResponse.CommentID +"\">";
                             Body += "<div class=\"media\">";
-                            Body += "<img class=\"mr-3 mt-2    d-block rounded-circle\" style=\"height:50px;width:50px\" src=\"https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png\">"
+                                Body += "<img class=\"mr-3 mt-2    d-block rounded-circle\" style=\"height:50px;width:50px\" src=\""+response.PhotoPath+"\">";
+
+                            
                             Body += "<div class=\"border mt-2 w-100\">";
                             Body += "<div class=\"media-body p-3\">";
                             Body += "<div class=\"d-flex \">";
@@ -86,7 +86,7 @@
                             $('#formComment').remove();
                             $('#CollapseComment').append(Body);
                             $('#CollapseComment').append(tempTxtCommentSection);
-                            var closeText = "<h6 class=\"text-muted\">Close "+response.totalReplies +" replies <i class=\"fa fa-angle-up\"></i></h6>";
+                            var closeText = "<h6 class=\"text-muted\">Tutup "+response.totalReplies +" komentar <i class=\"fa fa-angle-up\"></i></h6>";
                             $('#btnShowReplies').html(closeText);
                     }
                 });
@@ -128,7 +128,8 @@
                     var Body = "";
                     Body += "<div id=\"ReplySection\" class=\"ml-5\">";
                             Body += "<div class=\"media mb-2\">";
-                            Body += "<img class=\"mr-3 mt-2   d-block rounded-circle\" style=\"height:50px;width:50px\" src=\"https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png\">"
+
+                            Body += "<img class=\"mr-3 mt-2    d-block rounded-circle\" style=\"height:50px;width:50px\" src=\""+response.PhotoPath+"\">"
                             Body += "<div class=\"border mt-2 w-100\">";
                             Body += "<div class=\"media-body p-3\">";
                             Body += "<div class=\"d-flex\">";
@@ -142,7 +143,7 @@
                             Body += "</div>";    
                             Body += "</div>";
                             $('#CommentSection' + $CommentID).append(Body);
-                            var closeText = "<h6 class=\"text-muted\">Close "+response.totalReplies +" replies <i class=\"fa fa-angle-up\"></i></h6>";
+                            var closeText = "<h6 class=\"text-muted\">Tutup "+response.totalReplies +" komentar <i class=\"fa fa-angle-up\"></i></h6>";
                             $('#btnShowReplies').html(closeText);
                 }
             });
@@ -155,11 +156,11 @@
         function btnShowRepliesOnClick(){
             if($('#CollapseComment').css('display') == 'none'){
                 $('#CollapseComment').css("display","block");
-                var closeText = "<h6 class=\"text-muted\">Close "+{{count($Post->Comment)}}+" replies <i class=\"fa fa-angle-up\"></i></h6>";
+                var closeText = "<h6 class=\"text-muted\">Tutup "+{{count($Post->Comment)}}+" komentar <i class=\"fa fa-angle-up\"></i></h6>";
                 $('#btnShowReplies').html(closeText);
             }
             else{
-                var openText = "<h6 class=\"text-muted\">See "+{{count($Post->Comment)}}+" replies <i class=\"fa fa-angle-down\"></i></h6>";
+                var openText = "<h6 class=\"text-muted\">Lihat "+{{count($Post->Comment)}}+" komentar <i class=\"fa fa-angle-down\"></i></h6>";
                 $('#btnShowReplies').html(openText);
                 $('#CollapseComment').css("display","none");
             }
@@ -174,7 +175,7 @@
             Body += "<div class=\"form-inline\">"
             Body += "<div class=\"form-group w-100 ml-5\" >"
             Body += "<input type=\"text\" class=\"form-control w-75 mr-3\" style=\"height: 28px;font-size:10pt\"";
-            Body += "placeholder=\"Leave a comment...\" id=\"txtReplyComment" + $id +"\" name=\"txtReplyComment\">";
+            Body += "placeholder=\"Tinggalkan komentar...\" id=\"txtReplyComment" + $id +"\" name=\"txtReplyComment\">";
             Body += "<button type=\"button\" id=\"btnSendReply1\" onclick=\"btnSendReply("+ $PostID + "," + $id+ ")\" class=\"btn btn-primary px-3 py-1\" style=\"font-size:10pt\">Send</button>";                                   
             Body += "</div>";
             Body += "</div>";
@@ -217,15 +218,15 @@
             <div class="card-header">
                 <div class="media mb-3">
                     {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
-                        @if (Auth::guard('foundations')->check())
-                        <img src="{{ env('FTP_URL') }}{{ Auth::guard('foundations')->user()->FoundationPhoto ? 'ProfilePicture/Yayasan/' . Auth::guard('foundations')->user()->FoundationPhoto->Path : 'assets/Smiley.png' }}"
+                        @if ($Post->RoleID == 2)
+                        <img src="{{ env('FTP_URL') }}{{ $Post->Foundation->FoundationPhoto  ? 'ProfilePicture/Yayasan/' . $Post->Foundation->FoundationPhoto->Path : 'assets/Smiley.png'  }}"
                         alt="FoundationPhotoProfile" class="mr-3 d-block rounded-circle"
                         style="height:75px;width:75px"
                         onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
 
                         
                         @else
-                        <img src="{{ env('FTP_URL') }}{{ Auth::user()->Photo ? 'ProfilePicture/Donatur/' . Auth::user()->Photo->Path : 'assets/Smiley.png' }}"
+                        <img src="{{ env('FTP_URL') }}{{ $Post->User->Photo ? 'ProfilePicture/Donatur/' . $Post->User->Photo->Path : 'assets/Smiley.png' }}"
                         alt="UsernamePhotoProfile" class="mr-3 d-block rounded-circle"
                         style="height:75px;width:75px"
                         onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
@@ -238,32 +239,35 @@
                             <div class="mr-auto">
                                 <h2>{{$Post->PostTitle}}</h2>
                             </div>
+                            @if (Auth::check() || Auth::guard('foundations')->check())
                             <div class="mr-2">
                                 <button type="submit" class="btn btn-warning pb-2 pt-1 px-1">
                                     Contact Author</button>
                             </div>
                             <div class="mr-2">
-                                @if ($Post->PostTypeID == 1)
-                                    <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
-                                        Ask For Donation
-                                    </a> 
-                                    @else
-                                    <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($Post->PostID)}}">
-                                        Open For Donation
-                                    </a> 
-                                    @endif
+                                @if ($Post->PostType == 1)
+                                <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
+                                    Ask For Donation
+                                </a>   
+                                @else
+                                <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($Post->PostID)}}">
+                                    Open For Donation
+                                </a> 
+                                @endif
+                                    
                             </div>
                             <div><button id="btnMakeReport" type="button" class="btn btn-danger pb-2 pt-1 px-3" data-toggle="modal"
                                     data-target="#mdlMakeReport" onclick="btnMakeReportOnClick()">
                                     Report
                                 </button></div>
+                                @endif
                         </div>
                         <div class="d-flex">
                             <div class="mr-2">
-                                @if (Auth::guard('foundations')->check())
-                                <h5 style="font-weight: normal">{{Auth::guard('foundations')->user()->FoundationName}}</h5>
+                                @if ($Post->RoleID == 2)
+                                <h5 style="font-weight: normal">{{$Post->Foundation->FoundationName}}</h5>
                                 @else
-                                <h5 style="font-weight: normal">{{Auth::user()->FirstName}} {{Auth::user()->LastName}}</h5>
+                                <h5 style="font-weight: normal">{{$Post->User->FirstName}} {{$Post->User->LastName}}</h5>
                                 @endif
                             </div>
                             <div class="text-muted">
@@ -283,19 +287,21 @@
                     </div>
                     <div class="p-2 bd-highlight">
                         <div class="d-flex border-bottom">
+                            @if (Auth::check() || Auth::guard('foundations')->check())
                             <div class="p-2">
                                     <button class="btn btn-link" onclick="btnLikeOnClick({{$Post->PostID}})" id="btnLike">
                                     <i class="fa fa-thumbs-up fa-2x"></i>
                                     </button> 
                                     
                             </div>
+                            @endif
                             <div class="mr-auto mt-3 pt-1">
                                 <label id="lblLike">{{count($Like)}} Like</label>
                             </div>
                             <div class="p-3 ">
                                 <button type="button" class="btn btn-link" style="text-decoration: none"
                                    id="btnShowReplies" onclick="btnShowRepliesOnClick()">
-                                    <h6 class="text-muted">Close {{count($Post->Comment)}} replies <i class="fa fa-angle-up"></i></h6>
+                                    <h6 class="text-muted">Tutup {{count($Post->Comment)}} komentar <i class="fa fa-angle-up"></i></h6>
                                 </button>
                             </div>
                         </div>
@@ -310,23 +316,35 @@
                             <div id="CommentSection{{$Comment->CommentID}}">
                                 <div class="media">
                                     {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
+                                    @if ($Comment->User->RoleID == 1)
                                     <img class="mr-3 mt-2    d-block rounded-circle" style="height:50px;width:50px"
-                                        src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png">
+                                    src="{{ env('FTP_URL') }}{{ $Comment->User->Photo  ? 'ProfilePicture/Yayasan/' . $Comment->User->Photo->Path : 'assets/Smiley.png'  }}"> 
+                                    @else
+                                    <img class="mr-3 mt-2    d-block rounded-circle" style="height:50px;width:50px"
+                                    src="{{ env('FTP_URL') }}{{ $Comment->Foundation->FoundationPhoto  ? 'ProfilePicture/Yayasan/' . $Comment->Foundation->FoundationPhoto->Path : 'assets/Smiley.png'  }}"> 
+                                    @endif
+                                    
                                     <div class="border mt-2 w-100">
                                         <div class="media-body p-3">
                                             <div class="d-flex ">
                                                 <div class="p-1">
+                                                    
+                                                    @if ($Comment->User->RoleID == 1)
                                                     <h5 style="font-weight: normal">{{$Comment->User->FirstName}} {{$Comment->User->LastName}}</h5>
+                                                    @else
+
+                                                    <h5 style="font-weight: normal">{{$Comment->Foundation->FoundationName}}</h5>
+                                                    @endif
                                                 </div>
                                                 <div class="p-1 text-muted mr-auto">
                                                     <small>{{date('d M Y',strtotime($Comment->created_at))}}</small> 
                                                 </div>
                                                 <div>
-           
+                                                    @if (Auth::check() || Auth::guard('foundations')->check())
                                                         <button id="btnReplyComment" class="btn btn-link" onclick="btnReplyCommentOnClick({{$Comment->CommentID}},{{$Post->PostID}})">
                                                             <h6>Reply</h6>
                                                         </button>
-                         
+                                                    @endif
                                                 </div>
                                             </div>
                                             <h6>{{$Comment->Comment}}</h6>
@@ -342,7 +360,7 @@
                                     <div class="media mb-2">
                                         {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
                                         <img class="mr-3 mt-2   d-block rounded-circle" style="height:50px;width:50px"
-                                            src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png">
+                                        src="{{ env('FTP_URL') }}{{ $Post->Foundation->FoundationPhoto  ? 'ProfilePicture/Yayasan/' . $Post->Foundation->FoundationPhoto->Path : 'assets/Smiley.png' }}">
                                         <div class="border mt-2 w-100">
                                             <div class="media-body p-3">
                                                 <div class="d-flex ">
@@ -367,6 +385,7 @@
                         </div> 
                             @endif
                             @endforeach
+                            @if (Auth::check() || Auth::guard('foundations')->check())
                             <div class="p-2 bd-higlight mb-2 mt-4" id="formComment">
                                 {{-- <form method="POST" enctype="multipart/form-data" action="" >
                                     @csrf --}}
@@ -380,7 +399,7 @@
                                     </div>
                                 {{-- </form> --}}
                             </div>
-
+                            @endif
 
                         </div>
                     </div>

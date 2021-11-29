@@ -12,12 +12,14 @@
         }
 
         .container{
-            width:65%
+            width:100%
         }
         
         .card-header{
             max-height: 70px;
         }
+
+        a.PostTitle:hover, a.PostTitle:active {font-size: 110%;}
     </style>
 
     {{-- css style end here --}}
@@ -39,10 +41,11 @@
                 
                 $('#lblDescLenght').text(TextLength + "/255");
              });
-        });
-        
 
-        
+             if({{$AllowedPost}} == 0){
+                 $('#mdlAlert').modal();
+             }
+        });
     </script>
 
 <script>
@@ -96,10 +99,10 @@
                     @if ($AllowedPost == 1)
                     <button type="button" class="btn btn-info px-2 pt-2" data-toggle="modal"
                         data-target="#mdlMakePost" >
-                        <h6>Create a Post</h6>
+                        <h6>Buat post</h6>
                     </button>
-                    @else
-                    <p style="color: red">*Please compleate your document before making a post</p>
+                    @elseif(Auth::guard('foundations')->check())
+                    <p style="color: red">*Harap lengkapi dokumen di menu profile sebelum membuat post</p>
                     @endif
                 </div>
             </div>
@@ -116,7 +119,7 @@
                                             <a href="/Forum/{{$ItemType->DonationTypeID}}" style="text-decoration: none"><h4>{{$ItemType->DonationTypeName}}</h4></a>
                                         </div>
                                         <div>
-                                            <button class="btn btn-link" style="text-decoration: none;" onclick="btnShowPostOnClick({{$ItemType->DonationTypeID}})">
+                                            <button style="text-decoration: none;border:none;decoration:none;background:none;" onclick="btnShowPostOnClick({{$ItemType->DonationTypeID}})">
                                                 <h2 class="font-weight-bold">-</h2>
                                             </button>
                                         </div>
@@ -149,6 +152,10 @@
 
         <div >
             @include('Forum.Misc.component-form-makepost')
+        </div>
+
+        <div >
+            @include('Forum.Misc.component-form-popupalert')
         </div>
 
         {{-- POP UP CREATE POST End HERE --}}
