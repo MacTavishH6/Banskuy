@@ -151,9 +151,9 @@
             <div class="col-md-6">
                 <div class="row">
                      @if (str_contains($_SERVER['HTTP_HOST'], 'donate.'))
-                    <div class="col-6 text-center"><a href="http://donate.{{env("APP_URL")}}/login" class="btn-banskuy">Donatur</a></div>
+                    <div class="col-6 text-center"><a href="https://donate.{{env("APP_URL")}}/login" class="btn-banskuy">Donatur</a></div>
                     @endif
-                    <div class="col-6 text-center"><a href="http://foundation.{{env("APP_URL")}}/login" class="btn-banskuy">Yayasan</a></div>
+                    <div class="col-6 text-center"><a href="https://foundation.{{env("APP_URL")}}/login" class="btn-banskuy">Yayasan</a></div>
                 </div>
                 
             </div>
