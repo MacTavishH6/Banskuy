@@ -15,4 +15,7 @@ class Comment extends Model
     public function User(){
         return $this->hasOne(User::class,'UserID','ID');
     }
+    public function Foundation(){
+        return $this->hasOne(Foundation::class,'FoundationID','ID');
+    }
 }
