@@ -21,9 +21,90 @@
             color: black;
         }
 
-        .historydetail_button:hover {
-            box-shadow: 0px 5px 20px rgb(153, 121, 39);
+        #formprogress {
+            text-align: center;
+            position: relative;
+            margin-top: 20px
         }
+
+        .text {
+            color: #2F8D46;
+            font-weight: normal
+        }
+
+        #progressbar {
+            margin-bottom: 30px;
+            overflow: hidden;
+            color: lightgrey
+        }
+
+        #progressbar .active {
+            color: #2F8D46
+        }
+
+        #progressbar li {
+            list-style-type: none;
+            font-size: 15px;
+            width: 25%;
+            float: left;
+            position: relative;
+            font-weight: 400;
+            z-index: 2;
+        }
+
+        #progressbar #step1:before {
+            content: "1"
+        }
+
+        #progressbar #step2:before {
+            content: "2"
+        }
+
+        #progressbar #step3:before {
+            content: "3"
+        }
+
+        #progressbar #step4:before {
+            content: "4"
+        }
+
+        #progressbar li:before {
+            width: 50px;
+            height: 50px;
+            line-height: 45px;
+            display: block;
+            font-size: 20px;
+            color: #ffffff;
+            background: lightgray;
+            border-radius: 50%;
+            margin: 0 auto 10px auto;
+            padding: 2px
+        }
+
+        #progressbar li:after {
+            content: '';
+            width: 100%;
+            height: 2px;
+            background-color: lightgray;
+            position: absolute;
+            left: -27%;
+            top: 25px;
+            z-index: -1;
+        }
+
+        #progressbar li.active:before,
+        #progressbar li.active:after {
+            background: #2F8D46
+        }
+
+        #progressbar li:first-child:before,
+        #progressbar li:first-child:after {
+            content: none;
+        }
+
+        /* #progressbar li.active+li:after {
+            background: #2F8D46
+        } */
 
     </style>
 @endsection
@@ -104,6 +185,9 @@
                 </ul>
             </nav>
         </div>
+    </div>
+    <div class="modalcontainer">
+
     </div>
     @include('DonationHistory.Misc.component-modal-donation-history')
     @include('DonationHistory.Misc.component-list-donation')
@@ -196,9 +280,10 @@
                 banskuy.postReq('/getdonationhistory', data)
                     .then((response) => {
                         var listDonation = response.payload;
+                        var counter = 1;
                         _.each(listDonation, function(donation, donationKey) {
                             var data = {};
-                            if ((donationKey + 1) % 2 == 1) {
+                            if ((counter++) % 2 == 1) {
                                 data.headerColor = "bg-secondary";
                                 data.headerTextColor = "text-white";
                             } else {
@@ -207,7 +292,7 @@
                             }
                             var transactionDate = new Date(donation.TransactionDate);
                             var formattedDate = transactionDate.toString(
-                                "MMMM dS, yyyy");
+                                "d MMMM yyyy");
                             data.transactionDate = formattedDate;
                             data.transactionID = donation.DonationTransactionID;
                             data.status = donation.approval_status.ApprovalStatusName;
@@ -262,7 +347,8 @@
                                         Status: transaction.approval_status
                                             .ApprovalStatusName,
                                         Quantity: transaction.Quantity,
-                                        Foundation: transaction.foundation.FoundationName
+                                        Foundation: transaction.foundation
+                                            .FoundationName
                                     };
                                     switch (transaction.approval_status.ApprovalStatusID) {
                                         case 5:
@@ -277,14 +363,44 @@
                                     var formattedDate = transactionDate.toString(
                                         "MMMM dS, yyyy");
                                     data.TransactionDate = formattedDate;
+                                    $(".modalcontainer").empty();
                                     var modal = _.template($(
                                         "#component-modal-donation-history"
                                     ).html());
-                                    $(".container").append(modal({
+                                    $(".modalcontainer").append(modal({
                                         data: data
                                     }));
                                     $('.modal').css('overflow-y', 'auto');
                                     $("#donationhistorydetail").modal();
+
+                                    var opacity;
+                                    var current;
+                                    switch (transaction.approval_status.ApprovalStatusID) {
+                                        case 1:
+                                            current = 1;
+                                            break;
+                                        case 4:
+                                            current = 2;
+                                            break;
+                                        case 5:
+                                            current = 3;
+                                            break;
+
+                                    }
+                                    setProgressBar(current);
+
+                                    function setProgressBar(currentStep) {
+                                        for (var i = 1; i <= currentStep; i++) {
+                                            $("#progressbar li#step" + i).addClass(
+                                                'active');
+                                            if (currentStep == 3) $("#progressbar li#step" +
+                                                (i + 1)).addClass('active');
+                                        }
+                                    }
+
+                                    $(".submit").click(function() {
+                                        return false;
+                                    })
                                 });
                         });
                     });

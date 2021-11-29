@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
+
 Auth::routes();
 
 Route::middleware(['auth:web'])->group(function () {
@@ -34,9 +35,9 @@ Route::middleware(['auth:web'])->group(function () {
 
     Route::get('/nextlevel/{id}', [App\Http\Controllers\LevelController::class, 'GetNextLevelInfo']);
 
-    Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
-    Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
-    Route::get('/getdonationtype', [App\Http\Controllers\LOVController::class, 'DonationType']);
-    Route::get('/getdonationstatus', [App\Http\Controllers\LOVController::class, 'DonationStatus']);
-    Route::post('/getpostlist', [App\Http\Controllers\LOVController::class, 'PostList']);
+    // Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
+    // Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
+    // Route::get('/getdonationtype', [App\Http\Controllers\LOVController::class, 'DonationType']);
+    // Route::get('/getdonationstatus', [App\Http\Controllers\LOVController::class, 'DonationStatus']);
+    // Route::post('/getpostlist', [App\Http\Controllers\LOVController::class, 'PostList']);
 });

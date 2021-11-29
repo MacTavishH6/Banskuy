@@ -9,6 +9,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    @include('DonationHistory.Misc.component-modal-progress')
                     <div class="d-flex justify-content-around">
                         <div class="col-md-9">
                             <div class="card">
@@ -50,7 +51,7 @@
                                         
                                         <div class="col-6">
                                             <label class=" d-block">Nama Penerima</label>
-                                            <label class=""><%=data.Quantity%> <%=data.Unit%></label>
+                                            <label class=""><%=data.Foundation%></label>
                                         </div>
                                     </div>
                                     

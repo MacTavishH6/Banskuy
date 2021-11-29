@@ -36,7 +36,8 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
-
+        $this->mapDonateRoutes();
+        $this->mapFoundationRoutes();
         $this->routes(function () {
             Route::prefix('api')
                 ->middleware('api')
@@ -47,9 +48,6 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
-
-        $this->mapDonateRoutes();
-        $this->mapFoundationRoutes();
     }
 
     /**
@@ -71,7 +69,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapDonateRoutes()
     {
-        Route::middleware(['web', 'donates'])
+        Route::domain('donate.'.env('APP_URL'))->middleware(['web','donates'])
             ->namespace($this->namespace)
             ->group(base_path('routes/donate.php'));
     }
@@ -83,7 +81,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapFoundationRoutes()
     {
-        Route::middleware(['web', 'foundations'])
+        Route::domain('foundation.' . env('APP_URL'))->middleware(['web', 'foundations'])
             ->namespace($this->namespace)
             ->group(base_path('routes/foundations.php'));
     }
