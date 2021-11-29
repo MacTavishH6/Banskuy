@@ -45,13 +45,25 @@
             margin-right: 5%;
         }
 
+        .btn-banskuy {
+            padding: 20px 40px;
+            font-size: 2vw;
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-banskuy:hover {
+            text-decoration: none;
+
+        }
+
     </style>
 @endsection
 
 @section('content')
     <div class="backgroundstyle">
         <div class="backgroundcolor1 d-flex">
-            <div class="col-6 text-center" style="color: white">
+            <div class="col-8 text-center" style="color: white">
                 <div class="" style="font-size: 750%">
                     <b>Banskuy</b>
                 </div>
@@ -74,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="col-6"></div>
+            <div class="col-4"></div>
         </div>
 
         <br><br>
@@ -84,21 +96,27 @@
 
         <div class="donationstuffcontainer d-flex">
             <div class="card" style="margin:1%; background-color: #18171f; border-radius: 20px">
-                <img class="text-center" src="{{ env('FTP_URL') }}assets/uang.png" alt="image"
-                    style="max-width:200px; color: white">
+                <div class="text-center my-2">
+                    <img class="" src="{{ env('FTP_URL') }}assets/uang.jpg" alt="image"
+                        style="max-width:200px; color: white">
+                </div>
                 <div class="container text-center" style="color: white">
                     <h2><b>Uang</b></h2> <br>
-                    <p style="font-size: 140%">Anda dapat mendonasikan uang anda dengan mentranfser uang and ke rekening
+                    <p style="font-size: 140%" align="justify">Anda dapat mendonasikan uang anda dengan mentranfser uang and
+                        ke rekening
                         Yayasan atau langsung.</p>
                     <br><br>
                 </div>
             </div>
             <div class="card" style="margin:1%; background-color: #18171f; border-radius: 20px">
-                <img class="text-center" src="{{ env('FTP_URL') }}assets/barang.png" alt="image"
-                    style="max-width:200px; color: white">
+                <div class="text-center my-2">
+                    <img class="text-center" src="{{ env('FTP_URL') }}assets/barang.jpg" alt="image"
+                        style="max-width:200px; color: white">
+                </div>
                 <div class="container text-center" style="color: white">
                     <h2><b>Barang Bekas</b></h2> <br>
-                    <p style="font-size: 140%">Anda memiliki barang bekas dalam keadaan masih layak pakai ? Kamu dapat
+                    <p style="font-size: 140%" align="justify">Anda memiliki barang bekas dalam keadaan masih layak pakai ?
+                        Kamu dapat
                         mendonasikannya, sederhana namun sangat berharga</p>
                     <br><br>
                 </div>
@@ -108,7 +126,8 @@
                     style="max-width:200px; color: white">
                 <div class="container text-center" style="color: white">
                     <h2><b>Pelayanan Masyarakat</b></h2> <br>
-                    <p style="font-size: 140%">Menolong orang lain adalah hal yang sederhana, jika anda memiliki waktu
+                    <p style="font-size: 140%" align="justify">Menolong orang lain adalah hal yang sederhana, jika anda
+                        memiliki waktu
                         luang, anda dapat menolong mereka.</p>
                     <br><br>
                 </div>
@@ -125,9 +144,24 @@
 
         <br>
 
-        <div class="text-center pb-4" style="font-size: 300%; color: white">
-            <b>Apa yang mereka katakan tentang kita :</b>
+        <div class="d-flex mx-5 py-5" style="height: 10vw; background-color: #18171f; border-radius: 20px">
+            <div class="col-md-6 text-center">
+                <h2 class="text-white">Masuk sekarang! Masuk Sebagai :</h2>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                     @if (str_contains($_SERVER['HTTP_HOST'], 'donate.'))
+                    <div class="col-6 text-center"><a href="http://donate.{{env("APP_URL")}}/login" class="btn-banskuy">Donatur</a></div>
+                    @endif
+                    <div class="col-6 text-center"><a href="http://foundation.{{env("APP_URL")}}/login" class="btn-banskuy">Yayasan</a></div>
+                </div>
+                
+            </div>
         </div>
+
+        {{-- <div class="text-center pb-4" style="font-size: 300%; color: white">
+            <b>Apa yang mereka katakan tentang kita :</b>
+        </div> --}}
 
         <div>
 

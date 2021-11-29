@@ -101,6 +101,7 @@ class ProfileController extends Controller
         $user->Email = $request->Email;
         $user->PhoneNumber = $request->PhoneNumber;
         $user->updated_at = date('Y-m-d H:i:s');
+        $user->IsConfirmed = 1;
         $address = Address::where('AddressID', $user->AddressID)->first();
         if (!$user->AddressID || !$address) {
             $address = new Address();

@@ -96,6 +96,7 @@ class FoundationProfileController extends Controller
         $foundation->Visi = $request->Visi;
         $foundation->Misi = $request->Misi;
         $foundation->updated_at = date('Y-m-d H:i:s');
+        $foundation->IsConfirmed = 1;
         $address = Address::where('AddressID', $foundation->AddressID)->first();
         if (!$address) {
             $address = new Address();
