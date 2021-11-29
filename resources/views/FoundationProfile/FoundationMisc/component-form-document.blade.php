@@ -220,7 +220,7 @@
                         $('#lblDocumentReviewDescPopup').text(Result.ReviewDescription);
                         $('#txtDocumentTypeIDPopUp').val(Result.DocumentTypeID);
                         
-                        if(Result.ReviewStatusID == 1){
+                        if(Result.ReviewStatusID == 3){
                             $('#divReuploadDocument').removeClass('d-none');
                             $('#divReuploadDocument').removeClass('d-flex');
 
