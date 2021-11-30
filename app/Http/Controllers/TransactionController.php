@@ -169,8 +169,6 @@ class TransactionController extends Controller
         return response()->json($response);
     }
 
-}
-
     //25 Nov 2021 - add fikri for redirecting from post
     public function MakeTransactionWithPost($id){
         $PostID = Crypt::decrypt($id);

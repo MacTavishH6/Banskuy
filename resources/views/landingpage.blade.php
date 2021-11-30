@@ -144,20 +144,22 @@
 
         <br>
 
-        <div class="d-flex mx-5 py-5" style="height: 10vw; background-color: #18171f; border-radius: 20px">
-            <div class="col-md-6 text-center">
-                <h2 class="text-white">Masuk sekarang! Masuk Sebagai :</h2>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                     @if (str_contains($_SERVER['HTTP_HOST'], 'donate.'))
-                    <div class="col-6 text-center"><a href="https://donate.{{env("APP_URL")}}/login" class="btn-banskuy">Donatur</a></div>
-                    @endif
-                    <div class="col-6 text-center"><a href="https://foundation.{{env("APP_URL")}}/login" class="btn-banskuy">Yayasan</a></div>
+        @if (!Auth::guard('foundations')->check() && !Auth::check())
+            <div class="d-flex mx-5 py-5" style="height: 10vw; background-color: #18171f; border-radius: 20px">
+                <div class="col-md-6 text-center">
+                    <h2 class="text-white">Masuk sekarang! Masuk Sebagai :</h2>
                 </div>
-                
+                <div class="col-md-6">
+                    <div class="row">
+                            <div class="col-6 text-center"><a href="https://donate.{{ env('APP_URL') }}/login"
+                                    class="btn-banskuy">Donatur</a></div>
+                        <div class="col-6 text-center"><a href="https://foundation.{{ env('APP_URL') }}/login"
+                                class="btn-banskuy">Yayasan</a></div>
+                    </div>
+
+                </div>
             </div>
-        </div>
+        @endif
 
         {{-- <div class="text-center pb-4" style="font-size: 300%; color: white">
             <b>Apa yang mereka katakan tentang kita :</b>
