@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Document;
 
 class FoundationProfileController extends Controller
