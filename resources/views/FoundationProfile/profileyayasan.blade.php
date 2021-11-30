@@ -59,14 +59,23 @@
                         <label id="count-bio-word" class="edit-bio float-right">0/100</label>
                     </div>
                     <div class="row">
-                        <div class="col-12 mb-3 mt-3" style="font-size:150%">
-                            <small>{{$foundation->address ? $foundation->address->Address : ''}}</small>
+                        <div class="col-12 mt-3" style="font-size:150%">
+                            <small>
+                                {{$foundation->address ? $foundation->address->Address : ''}}
+                                ,
+                                <label for="City" id="City"></label>
+                                ,
+                                <label for="Province" id="Province"></label>
+                            </small>
+                        </div>
+                        <div class="col-12 mb-4" style="font-size:100%">
+                            <span>Telepon Yayasan : {{$foundation->FoundationPhone ? $foundation->FoundationPhone : ''}}</span>    
+                            <span>, Email Yayasan : {{$foundation->Email ? $foundation->Email : ''}}</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             @if (true)
-
                                 <form action="/updatefoundationbio" class="form d-inline" method="post">
                                     @csrf
                                     @method("PUT")
@@ -79,8 +88,9 @@
                                 <button class="text-white py-1 px-3 has-bio" id="btnEditBio"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting Bio</button>
                                 <button class="text-white py-1 px-3 edit-profile"
-                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting
-                                    Profil</button>
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting Profil</button>
+                                <button class="text-white py-1 px-3 donation-approval"
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Donation Approval</button>
                             @else
                                 <button class="text-white py-1 px-3"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Kontak</button>
@@ -140,6 +150,8 @@
             banskuy.getReq('/getfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>)
                 .then(function(data) {
                     foundation = data.payload;
+                    $("#Province").html(foundation.address ? (foundation.address.province ? foundation.address.province.ProvinceName : '') : '');
+                    $("#City").html(foundation.address ? (foundation.address.city ? foundation.address.city.CityName : '') : '');
                 })
                 .finally(function() {
                     if (!foundation.IsConfirmed) {
@@ -147,6 +159,9 @@
                     }
                     $(".edit-profile").on('click', function() {
                         return location.href = '/editfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>;
+                    });
+                    $(".donation-approval").on('click', function() {
+                        return location.href = '/donationapproval/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>;
                     });
                     $('#Bio').on('input', function() {
                         if ($(this).val().length > 100) $(this).val($(this).val().substring(0, 100));

@@ -137,7 +137,8 @@
                 @include('FoundationProfile.foundationsidebar')
             </div>
             <div class="tab-content col-8" id="myTabContent">
-                <div class="tab-pane fade show active" id="editprofileyayasan" role="tabpanel" aria-labelledby="editprofileyayasan-tab">
+                <div class="tab-pane fade show active" id="editprofileyayasan" role="tabpanel"
+                    aria-labelledby="editprofileyayasan-tab">
                     @include('FoundationProfile.FoundationMisc.component-form-editprofileyayasan')
                 </div>
                 <div class="tab-pane fade" id="changepassword" role="tabpanel" aria-labelledby="changepassword-tab">
@@ -166,7 +167,8 @@
                         @csrf
                         @method('POST')
                         <div class="file-upload">
-                            <input type="hidden" name="FoundationID" value="{{ Crypt::encrypt($foundation->FoundationID) }}">
+                            <input type="hidden" name="FoundationID"
+                                value="{{ Crypt::encrypt($foundation->FoundationID) }}">
                             <button class="file-upload-btn" type="button"
                                 onclick="$('.file-upload-input').trigger( 'click' )">Tambahkan Foto</button>
 
@@ -208,7 +210,8 @@
                         @method('DELETE')
                         <div class="form-row">
                             <label>Anda yakin ingin menghapus foto profil ?</label>
-                            <input type="hidden" name="FoundationID" value="{{ Crypt::encrypt($foundation->FoundationID) }}">
+                            <input type="hidden" name="FoundationID"
+                                value="{{ Crypt::encrypt($foundation->FoundationID) }}">
                         </div>
                         <div class="form-row">
                             <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Batal</button>
@@ -235,53 +238,54 @@
                 .finally(function() {
                     banskuy.getReq('/getprovince')
                         .then(function(data) {
-                            var option = document.getElementById("Province");
+                            var optionProvince = document.getElementById("Province");
                             let newOption = new Option('', '');
-                            option.add(newOption, undefined);
+                            optionProvince.add(newOption, undefined);
                             data.msg.forEach(element => {
                                 let newOption = new Option(element.ProvinceName,
                                     element.ProvinceID);
-                                option.add(newOption, undefined);
+                                optionProvince.add(newOption, undefined);
                             });
                             if (foundation.address) {
-                                $(option).val(foundation.address.ProvinceID);
+                                $(optionProvince).val(foundation.address.ProvinceID);
                             }
-                            if ($(option).val()) {
+                            if ($(optionProvince).val()) {
                                 $("#City").prop("disabled", false);
                                 $("#City").empty();
-                                banskuy.getReq('/getcity/' + $(option).val())
+                                banskuy.getReq('/getcity/' + $(optionProvince).val())
                                     .then(function(data) {
-                                        var option = document.getElementById(
+                                        var optionCity = document.getElementById(
                                             "City");
                                         let newOption = new Option('', '');
-                                        option.add(newOption, undefined);
+                                        optionCity.add(newOption, undefined);
                                         data.msg.forEach(element => {
                                             let newOption = new Option(
                                                 element
                                                 .CityName, element
                                                 .CityID);
-                                            option.add(newOption,
+                                            optionCity.add(newOption,
                                                 undefined);
                                         });
                                         if (foundation.address) {
-                                            $(option).val(foundation.address.CityID);
+                                            $(optionCity).val(foundation.address.CityID);
                                         }
                                     })
                             } else {
                                 $("#City").prop("disabled", true);
+                                $("#City").empty();
                             }
-                            $(option).on('change', function() {
+                            $(optionProvince).on('change', function() {
                                 if ($(this).val()) {
                                     $("#City").prop("disabled", false);
                                     $("#City").empty();
                                     banskuy.getReq('/getcity/' + $(this).val())
                                         .then(function(data) {
-                                            var option = document
+                                            var optionCity = document
                                                 .getElementById(
                                                     "City");
                                             let newOption = new Option(
                                                 '', '');
-                                            option.add(newOption,
+                                            optionCity.add(newOption,
                                                 undefined);
                                             data.msg.forEach(
                                                 element => {
@@ -292,13 +296,13 @@
                                                             element
                                                             .CityID
                                                         );
-                                                    option.add(
+                                                    optionCity.add(
                                                         newOption,
                                                         undefined
                                                     );
                                                 });
                                             if (foundation.address) {
-                                                $(option).val(foundation
+                                                $(optionCity).val(foundation
                                                     .address.CityID);
                                                 // console.log(option);
                                             }
@@ -355,4 +359,3 @@
         });
     </script>
 @endsection
-

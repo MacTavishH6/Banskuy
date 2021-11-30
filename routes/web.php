@@ -23,7 +23,7 @@ Route::get('/', function () {
     return redirect('/landingpage');
 });
 
-Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
 
 Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, 'index']);
 Route::get('/Forum', [ForumController::class, 'Index']);

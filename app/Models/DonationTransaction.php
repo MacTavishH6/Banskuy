@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class DonationTransaction extends Model
 {
     protected $table = 'trdonationtransaction';
+    protected $primaryKey = 'DonationTransactionID';
 
     public function User(){
         return $this->belongsTo(User::class,'UserID','UserID');

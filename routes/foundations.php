@@ -25,15 +25,11 @@ Route::get('/foundationregister', function () {
 Route::post('/loginfoundation', [App\Http\Controllers\Auth\LoginController::class, 'loginfoundation']);
 
 Route::middleware(['auth:foundations'])->group(function () {
-    Route::get('/rafli', function () {
-        return view('Transaction.transactionapproval');
-    });
 
-    Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
+    // Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
 
     Route::get('/editfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'editfoundationprofile']);
     Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
-    Route::get('/editfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'editfoundationprofile']);
     Route::get('/getfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'getfoundationprofile']);
 
     Route::put('/changepassword', [App\Http\Controllers\FoundationProfileController::class, 'ChangePassword']);
@@ -43,8 +39,20 @@ Route::middleware(['auth:foundations'])->group(function () {
 
     Route::Post('/UpdateFoundationProfilePicture', [App\Http\Controllers\FoundationProfileController::class, 'UpdateProfilePicture']);
     Route::delete('/deleteprofilephoto', [App\Http\Controllers\FoundationProfileController::class, 'DeleteProfilePhoto']);
+
+    
+    Route::get('/donationapproval/{id}', [App\Http\Controllers\TransactionController::class, 'DonationApproval']);
+    Route::post(
+        '/getdonationapproval',
+        [App\Http\Controllers\TransactionController::class, 'GetDonationApproval']
+    );
+    Route::post('/getdonationapprovaldetail', [App\Http\Controllers\TransactionController::class, 'GetDonationApprovalDetail']);
+    Route::post('/updateapprovalstatus', [App\Http\Controllers\TransactionController::class, 'AcceptRejectDonationTransaction']);
+    
+
     Route::post('/UpdateDocument',[App\Http\Controllers\FoundationProfileController::class, 'UploadDocument']); 
     Route::post('/ReUploadDocument',[App\Http\Controllers\FoundationProfileController::class, 'ReUploadDocument']); 
     Route::post('/GetListDocument',[App\Http\Controllers\FoundationProfileController::class, 'GetListDocument']); 
     Route::post('/GetDocumentDetail',[App\Http\Controllers\FoundationProfileController::class, 'GetDocumentDetail']); 
+
 });
