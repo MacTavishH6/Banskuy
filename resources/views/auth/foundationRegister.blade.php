@@ -117,10 +117,10 @@
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('register.foundation') }}">
                             @csrf
 
-                            <input type="hidden" id="hidRegisterAs" name="registerAs" value="1">
+                            <input type="hidden" id="hidRegisterAs" name="registerAs" value="2">
 
                             {{-- <div class="buttonuserchosen">
                                 <button class="userchosen_button" name="btnFoundation" style="color: white"> Register as
@@ -132,7 +132,7 @@
 
                             <div class="form-group row">
                                 <label for="email" class="col-md-6 mx-auto col-form-label"
-                                    style="font-size: 150%">{{ __('Mendaftar sebagai Donatur') }}</label>
+                                    style="font-size: 150%">{{ __('Mendaftar sebagai Yayasan') }}</label>
                             </div>
 
                             <br>
@@ -221,7 +221,7 @@
                             {{-- BUTTON REGISTER BAWAAN BOOTSTRAP --}}
                             <div class="buttonregister form-group row mb-0">
                                 {{-- <div class="col-md-6 offset-md-4"> --}}
-                                <button id="btnRegister" type="submit" class="userchosen_button" style="color: white">
+                                <button id="btnRegister" disabled type="submit" class="disabled" style="color: white">
                                     {{ __('Mendaftar') }}
                                 </button>
                                 {{-- </div> --}}

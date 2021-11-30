@@ -12,12 +12,12 @@
         <div class="container ">
             <div class="row text-center">
                 <div class="col">
-                    <h3>Make Donation Request Now!</h3>
+                    <h3>Buat Permintaan Donasi Sekarang!</h3>
                 </div>
             </div>
             <div class="row text-center">
                 <div class="col">
-                    <h3>People In Need Is Waiting For You</h3>
+                    <h3>Orang yang membutuhkan menunggu anda!</h3>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
                     <input type="hidden" name="UserID" value="{{ Crypt::encrypt($user->UserID) }}">
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="DonationType">Donation Type</label>
+                            <label for="DonationType">Tipe Donasi</label>
                         </div>
                         <div class="col-5">
                             <select name="DonationType" class="form-control" id="DonationType" required></select>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="WithPost">With Post</label>
+                            <label for="WithPost">Dengan Post</label>
                         </div>
                         <div class="col-5">
                             <div class="form-check form-check-inline">
@@ -81,7 +81,7 @@
 
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="Foundation">Foundation</label>
+                            <label for="Foundation">Yayasan</label>
                         </div>
                         <div class="col-5">
                             <input type="text" name="Foundation" id="Foundation" class="form-control" required>
@@ -94,7 +94,7 @@
                     </div>
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="FoundationAddress">Foundation Address</label>
+                            <label for="FoundationAddress">Alamat Yayasan</label>
                         </div>
                         <div class="col-5">
                             <textarea class="form-control" name="FoundationAddress" id="FoundationAddress" rows="3"
@@ -103,7 +103,7 @@
                     </div>
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="FoundationAddress">Foundation Province</label>
+                            <label for="FoundationAddress">Provinsi Yayasan</label>
                         </div>
                         <div class="col-5">
                             <input type="text" name="Province" id="Province" class="form-control" disabled required>
@@ -111,7 +111,7 @@
                     </div>
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="FoundationAddress">Foundation City</label>
+                            <label for="FoundationAddress">Kota Yayasan</label>
                         </div>
                         <div class="col-5">
                             <input type="text" name="City" id="City" class="form-control" disabled required>
@@ -119,7 +119,7 @@
                     </div>
                     <div class="form-row py-1 d-none" id="select-post">
                         <div class="col-3">
-                            <label for="SelectPost">Select Post</label>
+                            <label for="SelectPost">Pilih Post</label>
                         </div>
                         <div class="col-5">
                             <select name="SelectPost" class="form-control" id="SelectPost"></select>
@@ -146,7 +146,7 @@
                     </div>
                     <div class="form-row py-1">
                         <div class="col-3">
-                            <label for="Quantity">Quantity</label>
+                            <label for="Quantity">Jumlah</label>
                         </div>
                         <div class="col-5">
                             <input type="text" name="Quantity" id="Quantity" class="form-control"
@@ -158,8 +158,7 @@
                         <div class="col-6"></div>
                         <div class="col-6 pr-2">
                             <button type="submit" class="float-right py-1 px-5"
-                                style="border-radius: 20px; background-color: #AC8FFF; border: none;">Make A
-                                Request</button>
+                                style="border-radius: 20px; background-color: #AC8FFF; border: none;">Buat Permintaan</button>
                         </div>
                     </div>
                 </form>
@@ -170,7 +169,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Foundation List</h5>
+                    <h5 class="modal-title">List Yayasan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -180,10 +179,10 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Foundation Name</th>
-                                <th>Username</th>
-                                <th>Foundation Phone</th>
-                                <th>Action</th>
+                                <th>Nama Yayasan</th>
+                                <th>Nama Pengguna</th>
+                                <th>Telephone Yayasan</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -200,25 +199,27 @@
     <script>
         $(document).ready(function() {
             bindDonationType();
+            
             $("#DonationType").on('change', function() {
                 if ($(this).val()) {
                     var donType = $(this).val();
                     $("#descriptionContainer").removeClass('d-none');
                     switch (donType) {
                         case '1':
-                            $("#descriptionLabel").html('Donation Title');
+                            $("#descriptionLabel").html('Judul Transaksi');
                             break;
                         case '2':
-                            $("#descriptionLabel").html('Kind of Service');
+                            $("#descriptionLabel").html('Nama Jasa');
                             break;
                         case '3':
-                            $("#descriptionLabel").html('Donation Title');
+                            $("#descriptionLabel").html('Judul Transaksi');
                             break;
                     }
                     CheckPostEnabled();
                 } else {
                     $("#descriptionContainer").addClass('d-none');
                 }
+                
                 bindDonationTypeDetail();
             });
             $("#searchfoundation").on('click', function() {
@@ -273,6 +274,174 @@
                                 UserID: foundationid,
                                 _token: "<?php echo csrf_token(); ?>"
                             }
+                            
+                            banskuy.postReq("{{ url('/getfoundationbyid') }}", data)
+                                .then(function(data) {
+                                    
+                                    var foundation = data.payload;
+
+                                    $("#FoundationID").val(data
+                                        .foundationid);
+                                    $("#Foundation").val(foundation
+                                        .FoundationName)
+                                    $("#FoundationAddress").val(foundation
+                                        .address ? foundation.address
+                                        .Address : '');
+                                    $("#Province").val(foundation.address ?
+                                        (foundation.address.province ?
+                                            foundation.address.province
+                                            .ProvinceName : '') : '');
+                                    $("#City").val(foundation.address ? (
+                                        foundation.address.city ?
+                                        foundation.address.city
+                                        .CityName : '') : '');
+                                })
+                                .finally(function() {
+                                    $("#modal-foundation").modal('hide');
+                                    CheckPostEnabled();
+                                    bindListPost($("#FoundationID").val());
+                                });
+                        });
+                    })
+            });
+            $("#Unit").on('change', function() {
+                if ($('#Unit').val()) $("#Quantity").prop('disabled', false);
+                else $("#Quantity").prop('disabled', true);
+                $("#Quantity").val('');
+            });
+
+            $("input[name='WithPost']").change(function() {
+                if ($(this).val() == 1) {
+                    $("#select-post").removeClass('d-none');
+                    CheckPostEnabled();
+                    
+                    
+                } else if ($(this).val() == 2) {
+                    $("#select-post").addClass('d-none');
+                }
+            });
+       
+        });
+
+        function bindListPost($id){
+            //var id = $('#FoundationID').val();
+            //console.log(id);
+            var data = {
+                        UserID: $id,
+                        _token: "<?php echo csrf_token(); ?>"
+                    }
+            banskuy.postReq('/getpostlist', data)
+                .then(function(data) {
+                    var SelectPost = document.getElementById('SelectPost');
+                    $(SelectPost).empty();
+                    var listPost = data.msg;
+                    let newOption = new Option('','');
+                    SelectPost.add(newOption,undefined);
+                    console.log(data.msg);
+                    listPost.forEach(element=>{
+                        // let newOption = new Option(element.PostTitle,element.PostID);
+                        // SelectPost.add(newOption,undefined);
+
+                        if(element.PostID == {{isset($Post) ? $Post->PostID : 0}})
+                            $('#SelectPost').append('<option value ='+element.PostID+' selected>'+element.PostTitle+'</option>');
+                            else
+                            $('#SelectPost').append('<option value ='+element.PostID+'>'+element.PostTitle+'</option>');
+
+                    });
+                })
+                .finally(function () {
+
+                });
+        }
+
+        function bindDonationType() {
+            banskuy.getReq('/getdonationtype')
+                .then(function(data) {
+                    var donationtype = data.msg;
+                    var option = document.getElementById("DonationType");
+                    let newOption = new Option('', '');
+                    option.add(newOption, undefined);
+                    donationtype.forEach(element => {
+                        // let newOption = new Option(element.DonationTypeName,
+                        //     element.DonationTypeID);
+                        //option.add(newOption, undefined);
+                            if(element.DonationTypeID == {{isset($Post) ? $Post->DonationTypeID : 0}})
+                            $('#DonationType').append('<option value ='+element.DonationTypeID+' selected>'+element.DonationTypeName+'</option>');
+                            else
+                            $('#DonationType').append('<option value ='+element.DonationTypeID+'>'+element.DonationTypeName+'</option>');
+
+                    });
+                })
+                .finally(function() {
+                    bindDonationTypeDetail();
+                });
+        }
+
+        function bindDonationTypeDetail() {
+            $("#Unit").empty().trigger('change');
+            if ($("#DonationType").val()) {
+                $("#Unit").prop('disabled', false);
+                banskuy.getReq('/getdonationtype')
+                    .then(function(data) {
+                        var donationtype = data.msg;
+                        console.log(donationtype);
+                        var donationtypeval = $("#DonationType").val();
+                        var donationtypedetail = donationtype.find(function(x) {
+                            return x.DonationTypeID == donationtypeval
+                        }).donation_type_detail;
+                        var optiondetail = document.getElementById("Unit");
+                        let newOptionDetail = new Option('', '');
+                        optiondetail.add(newOptionDetail, undefined);
+                        console.log(donationtypedetail);
+                        donationtypedetail.forEach(element2 => {
+                            // let newOptionDetail = new Option(element2.DonationTypeDetail,
+                            //     element2.DonationTypeDetailID);
+                            // optiondetail.add(newOptionDetail, undefined);
+                            if(element2.DonationTypeDetailID == {{isset($Post) ? $Post->DonationTypeDetailID : 0}})
+                            {
+                                $('#Unit').append('<option value ='+element2.DonationTypeDetailID+' selected>'+element2.DonationTypeDetail+'</option>');
+                                $("#Quantity").val('').prop('disabled', false);
+                            }
+                            else
+                            $('#Unit').append('<option value ='+element2.DonationTypeDetailID+'>'+element2.DonationTypeDetail+'</option>');
+                        });
+                    });
+            } else {
+                $("#Unit").prop('disabled', true);
+                $("#Quantity").val('').prop('disabled', true);
+            }
+
+        }
+
+        function CheckPostEnabled() {
+            if ($("#FoundationID").val() && $("#DonationType").val()) $("#SelectPost").prop('disabled', false);
+            else $("#SelectPost").prop('disabled', true);
+        }
+        
+        $(window).on('load',function(){
+            if({{$StatusRedirect}} == 1){
+                $('#WithPostYes').prop("checked",true);
+                $("#select-post").removeClass('d-none');
+                var donType = '{{isset($Post) ? $Post->DonationTypeID : 0}}';
+ 
+                    $("#descriptionContainer").removeClass('d-none');
+                    switch (donType) {
+                        case '1':
+                            $("#descriptionLabel").html('Donation Title');
+                            break;
+                        case '2':
+                            $("#descriptionLabel").html('Kind of Service');
+                            break;
+                        case '3':
+                            $("#descriptionLabel").html('Donation Title');
+                            break;
+                    }
+                
+                var FoundationID = '{{isset($Post) ? Crypt::encrypt($Post->ID) : 1}}';
+                var data = {
+                                UserID: FoundationID,
+                                _token: "<?php echo csrf_token(); ?>"
+                            }
                             banskuy.postReq("{{ url('/getfoundationbyid') }}", data)
                                 .then(function(data) {
                                     var foundation = data.payload;
@@ -296,86 +465,12 @@
                                     $("#modal-foundation").modal('hide');
                                     CheckPostEnabled();
                                 });
-                        });
-                    })
-            });
-            $("#Unit").on('change', function() {
-                if ($('#Unit').val()) $("#Quantity").prop('disabled', false);
-                else $("#Quantity").prop('disabled', true);
-                $("#Quantity").val('');
-            });
-
-            $("input[name='WithPost']").change(function() {
-                if ($(this).val() == 1) {
-                    $("#select-post").removeClass('d-none');
-                    CheckPostEnabled();
-                    var data = {};
-                    // banskuy.postReq('/getpostlist', data)
-                    //     .then(function(data) {
-                    //         $("#select-post").prop('disabled',true);
-                    //     })
-                    //     .finally(function () {
-
-                    //     });
-                } else if ($(this).val() == 2) {
-                    $("#select-post").addClass('d-none');
-                    $("#SelectPost").empty();
-                }
-            });
-        });
-
-        function bindDonationType() {
-            banskuy.getReq('/getdonationtype')
-                .then(function(data) {
-                    var donationtype = data.msg;
-                    var option = document.getElementById("DonationType");
-                    let newOption = new Option('', '');
-                    option.add(newOption, undefined);
-                    donationtype.forEach(element => {
-                        let newOption = new Option(element.DonationTypeName,
-                            element.DonationTypeID);
-                        option.add(newOption, undefined);
-
-                    });
-                })
-                .finally(function() {
-                    bindDonationTypeDetail();
-                });
-
-        }
-
-        function bindDonationTypeDetail() {
-            $("#Unit").empty().trigger('change');
-            if ($("#DonationType").val()) {
-                $("#Unit").prop('disabled', false);
-                banskuy.getReq('/getdonationtype')
-                    .then(function(data) {
-                        var donationtype = data.msg;
-                        console.log(donationtype);
-                        var donationtypeval = $("#DonationType").val();
-                        var donationtypedetail = donationtype.find(function(x) {
-                            return x.DonationTypeID == donationtypeval
-                        }).donation_type_detail;
-                        var optiondetail = document.getElementById("Unit");
-                        let newOptionDetail = new Option('', '');
-                        optiondetail.add(newOptionDetail, undefined);
-                        console.log(donationtypedetail);
-                        donationtypedetail.forEach(element2 => {
-                            let newOptionDetail = new Option(element2.DonationTypeDetail,
-                                element2.DonationTypeDetailID);
-                            optiondetail.add(newOptionDetail, undefined);
-                        });
-                    });
-            } else {
-                $("#Unit").prop('disabled', true);
-                $("#Quantity").val('').prop('disabled', true);
+                                
             }
-
-        }
-
-        function CheckPostEnabled() {
-            if ($("#FoundationID").val() && $("#DonationType").val()) $("#SelectPost").prop('disabled', false);
-            else $("#SelectPost").prop('disabled', true);
-        }
+            CheckPostEnabled();
+            $("#SelectPost").prop('disabled', false);
+            bindListPost('{{Crypt::encrypt(isset($Post) ? $Post->ID : 0)}}');
+            
+        });
     </script>
 @endsection

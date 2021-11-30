@@ -63,19 +63,19 @@
                                     <input type="hidden" name="UserID" value="{{ $user->UserID }}">
                                     <input type="hidden" name="Bio" id="hidBio">
                                     <button class="text-white py-1 px-3 edit-bio"
-                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Save
+                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Simpan
                                         Bio</button>
                                 </form>
                                 <button class="text-white py-1 px-3 has-bio" id="btnEditBio"
-                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit Bio</button>
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Suntung Bio</button>
 
                                 <button class="text-white py-1 px-3 edit-profile"
-                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit
-                                    Profile</button>
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting
+                                    Profil</button>
                             @else
                                 <button class="text-white py-1 px-3"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;"
-                                    data-toggle="modal" data-target="#mdlMakeReport">Report</button>
+                                    data-toggle="modal" data-target="#mdlMakeReport">Laporkan</button>
 
                                 {{-- POP UP CREATE POST START HERE --}}
                                 <div class="slider">
@@ -103,12 +103,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="documentation-tab" data-toggle="tab" href="#documentation" role="tab"
-                            aria-controls="documentation" aria-selected="false">Documentation</a>
+                            aria-controls="documentation" aria-selected="false">Dokumentasi</a>
                     </li>
                     @if (true)
                         <li class="nav-item">
                             <a class="nav-link" id="leveltracking-tab" data-toggle="tab" href="#leveltracking"
-                                role="tab" aria-controls="leveltracking" aria-selected="false">Level Tracking</a>
+                                role="tab" aria-controls="leveltracking" aria-selected="false">Jelajah Level</a>
                         </li>
                     @endif
                 </ul>
@@ -148,7 +148,7 @@
                     user = data.payload;
                 })
                 .finally(function() {
-                    if (!user.FullName && !user.LastName && !user.Address) {
+                    if (!user.IsConfirmed) {
                         $("#confirmedModal").modal();
                     }
                     $(".edit-profile").on('click', function() {

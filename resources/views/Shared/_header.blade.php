@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
-            BanSkuy
+            <img src="{{env("FTP_URL")}}assets/LogoBanskuy.png" alt="" srcset="" style="width: 180px;">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar"
             aria-controls="header-navbar" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -20,12 +20,12 @@
                     @if (Auth::check())
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="/makerequest/{{ Crypt::encrypt(Auth::id()) }}">{{ __('Let\'s Donate!') }}</a>
+                                href="/makerequest/{{ Crypt::encrypt(Auth::id()) }}">{{ __('Ayo berdonasi!') }}</a>
                         </li>
                     @else
-                        @if (!str_contains($_SERVER['HTTP_HOST'], 'foundation'))
+                        @if (!str_contains($_SERVER['HTTP_HOST'], 'foundation.'))
                             <li class="nav-item">
-                                <a class="nav-link" href="/login">{{ __('Let\'s Donate!') }}</a>
+                                <a class="nav-link" href="{{route('login')}}">{{ __('Ayo berdonasi!') }}</a>
                             </li>
                         @endif
                     @endif
@@ -33,11 +33,11 @@
 
                 @if (Auth::guard('foundations')->check() || Auth::check())
                     <li class="nav-item">
-                        <a class="nav-link" href="/donationhistory">{{ __('Check Your Progress Here!') }}</a>
+                        <a class="nav-link" href="/donationhistory">{{ __('Check Progress Anda di sini!') }}</a>
                     </li>
                 @endauth
                 <li class="nav-item">
-                    <a class="nav-link" href="">{{ __('Forum') }}</a>
+                    <a class="nav-link" href="/Forum">{{ __('Forum') }}</a>
                 </li>
 
                 <!-- Authentication Links -->
@@ -47,54 +47,54 @@
                             <a class="nav-link"
                                 href="/foundationprofile/{{ Crypt::encrypt(Auth::guard('foundations')->id()) }}">
                                 {{ Auth::guard('foundations')->user()->Username ? Auth::guard('foundations')->user()->Username : Auth::guard('foundations')->user()->Email }}
-                                Profile
+                                Profil
                             </a>
                         @elseif(Auth::check())
                             <a class="nav-link" href="/profile/{{ Crypt::encrypt(Auth::id()) }}">
                                 {{ Auth::user()->Username ? Auth::user()->Username : Auth::user()->Email }}
-                                Profile
+                                Profil
                             </a>
                         @endif
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white py-1 px-3"
-                            style="background-color: #AC8FFF; border-radius: 20px;" href="{{ route('logout') }}"
+                            style="background-color: #AC8FFF; border-radius: 20px;" href="{{ '/logout' }}"
                             onclick="event.preventDefault();
                                                                                                     document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
+                            {{ __('Keluar') }}
                         </a>
 
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                        <form id="logout-form" action="{{ '/logout' }}" method="POST"
                             class="d-none">
                             @csrf
                         </form>
                     </li>
                 @else
                     @if (!Request::is('login') && !Request::is('foundationlogin'))
-                        @if (str_contains($_SERVER['HTTP_HOST'], 'donate'))
+                        @if (str_contains($_SERVER['HTTP_HOST'], 'donate.'))
                             <li class="nav-item">
                                 <a class="nav-link"
-                                    href="{{ route('login') }}">{{ __('Login Now') }}</a>
+                                    href="{{ route('login') }}">{{ __('Masuk') }}</a>
                             </li>
-                        @elseif(str_contains($_SERVER['HTTP_HOST'],'foundation'))
+                        @elseif(str_contains($_SERVER['HTTP_HOST'],'foundation.'))
                             <li class="nav-item">
-                                <a class="nav-link" href="/foundationlogin">{{ __('Login Now') }}</a>
+                                <a class="nav-link" href="/foundationlogin">{{ __('Masuk') }}</a>
                             </li>
                         @endif
                     @endif
 
                     @if (Request::is('index'))
-                        @if (str_contains($_SERVER['HTTP_HOST'], 'donate'))
+                        @if (str_contains($_SERVER['HTTP_HOST'], 'donate.'))
                             <li class="nav-item">
                                 <a class="nav-link text-white py-1 px-3"
                                     style="background-color: #AC8FFF; border-radius: 20px;"
-                                    href="{{ route('login') }}">{{ __('Login Now') }}</a>
+                                    href="{{ route('login') }}">{{ __('Masuk') }}</a>
                             </li>
-                        @elseif(str_contains($_SERVER['HTTP_HOST'],'foundation'))
+                        @elseif(str_contains($_SERVER['HTTP_HOST'],'foundation.'))
                             <li class="nav-item">
                                 <a class="nav-link text-white py-1 px-3"
                                     style="background-color: #AC8FFF; border-radius: 20px;"
-                                    href="/foundationlogin">{{ __('Login Now') }}</a>
+                                    href="/foundationlogin">{{ __('Masuk') }}</a>
                             </li>
                         @endif
                     @endif
@@ -102,7 +102,7 @@
                     @if (Request::is('login') || Request::is('foundationlogin'))
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ route('register') }}">{{ __('Register Now') }}</a>
+                                href="{{ Request::is('login')?route('register'):'/foundationregister' }}">{{ __('Daftar Sekarang') }}</a>
                         </li>
                     @endif
 

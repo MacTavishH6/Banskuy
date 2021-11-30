@@ -43,7 +43,7 @@
                             <h2>{{$foundation->FoundationName}}</h2>
                         </div>
                         <div class="col-12">
-                            <small>Member since {{$foundation->RegisterDate}}</small>
+                            <small>Anggota sejak {{$foundation->RegisterDate}}</small>
                         </div>
                     </div>
                     <div class="row mt-1">
@@ -82,22 +82,24 @@
                                     <input type="hidden" name="FoundationID" value="{{ $foundation->FoundationID }}">
                                     <input type="hidden" name="Bio" id="hidBio">
                                     <button class="text-white py-1 px-3 edit-bio"
-                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Save
+                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Simpan
                                         Bio</button>
                                 </form>
                                 <button class="text-white py-1 px-3 has-bio" id="btnEditBio"
-                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit Bio</button>
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting Bio</button>
                                 <button class="text-white py-1 px-3 edit-profile"
-                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Edit
-                                    Profile</button>
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting Profil</button>
                                 <button class="text-white py-1 px-3 donation-approval"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Donation Approval</button>
                             @else
                                 <button class="text-white py-1 px-3"
-                                    style="border-radius: 20px; background-color: #53FF37; border: none;">Goods Needed</button>
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Kontak</button>
 
                                 <button class="text-white py-1 px-3"
-                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Report</button>                                
+                                    style="border-radius: 20px; background-color: #53FF37; border: none;">Donasi dibutuhkan</button>
+
+                                <button class="text-white py-1 px-3"
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Laporkan</button>                                
                             @endif
                         </div>
                         
@@ -112,11 +114,11 @@
                 <ul class="nav text-center" id="myTab" role="tablist">                    
                     <li class="nav-item">
                         <a class="nav-link active" id="documentation-tab" data-toggle="tab" href="#documentation" role="tab"
-                            aria-controls="documentation" aria-selected="false">Documentation</a>
+                            aria-controls="documentation" aria-selected="false">Dokumentasi</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="aboutus-tab" data-toggle="tab" href="#aboutus"
-                                role="tab" aria-controls="aboutus" aria-selected="false">About Us</a>
+                                role="tab" aria-controls="aboutus" aria-selected="false">Tentang Kami</a>
                     </li>
                 </ul>
             </div>
@@ -152,7 +154,7 @@
                     $("#City").html(foundation.address ? (foundation.address.city ? foundation.address.city.CityName : '') : '');
                 })
                 .finally(function() {
-                    if (!foundation.FoundationName && !foundation.Address) {
+                    if (!foundation.IsConfirmed) {
                         $("#confirmedModal").modal();
                     }
                     $(".edit-profile").on('click', function() {

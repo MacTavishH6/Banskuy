@@ -56,6 +56,7 @@
                     <label for="from">Date Start</label>
                     <input type="text" class="form-control" name="DateStart" id="from" placeholder="">
                 </div>
+
                 <div class="form-group col-md-1">
                     <label for=""></label>
                     <button id="resetfrom" class="btn btn-info mt-2 ml-n2 d-none"><span>x</span></button>
@@ -63,6 +64,39 @@
                 <div class="form-group col-md-5">
                     <label for="to">Date End</label>
                     <input type="text" class="form-control" name="DateEnd" id="to" placeholder="">
+
+
+                <div class="card-body d-flex justify-content-around ">
+                    <div class="bodyleftside">
+                        <img src="{{env("FTP_URL")}}assets/BinusUniv.png"
+                            alt="UsernamePhotoProfile" style="border: 1px solid black; width: 75px">
+                    </div>
+
+                    <div class="bodymidside">
+                        <p class="card-text">
+                            StuffName
+                        </p>
+
+                        <p class="card-text">
+                            StuffType
+                        </p>
+
+                        <p class="card-text">
+                            Fikri Nich
+                        </p>
+                    </div>
+
+                    <div class="bodyrightside">
+                        <div class="buttonhistorydetail">
+                            {{-- Route Login ini harusnya ke historydetailpage bukan ke loginpage --}}
+                            <a href="{{ route('login') }}">
+                                <button type="submit" class="historydetail_button">
+                                    {{ __('Detail') }}
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="form-group col-md-1">
                     <label for=""></label>

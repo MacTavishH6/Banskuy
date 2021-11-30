@@ -13,7 +13,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Document;
 
 class ForumController extends Controller
 {
@@ -23,25 +23,55 @@ class ForumController extends Controller
       
         $DonationType = $this->GetCategory();
         $DonationTypeDetail = DonationTypeDetail::all();
+
+        $AllowedPost = 0;
+        if(Auth::guard('foundations')->check()){
+            $Document = Document::where('FoundationID',Auth::guard('foundations')->user()->FoundationID)->where('ApprovalStatusID','2')->get();
+            if($Document->count() == 4 && Auth::guard('foundations')->User()->IsConfirmed == 1){
+                $AllowedPost = 1;
+            }
+            else{
+                $AllowedPost = 0;
+            }
+        }
+        else if(Auth::check()){
+            $AllowedPost = 1;
+        }
         
-        return view('/Forum/Forum',compact('DonationType','DonationTypeDetail'));
+        return view('/Forum/Forum',compact('DonationType','DonationTypeDetail','AllowedPost'));
     }
 
     public function ForumWithCategory($id){
         $DonationType = $this->GetCategory()->where('DonationTypeID',$id);
         $DonationTypeDetail = DonationTypeDetail::all();
-        return view('/Forum/Forum',compact('DonationType','DonationTypeDetail'));
+
+        $AllowedPost = 0;
+        if(Auth::guard('foundations')->check()){
+            $Document = Document::where('FoundationID',Auth::guard('foundations')->user()->FoundationID)->where('ApprovalStatusID','2')->get();
+            if($Document->count() == 4){
+                $AllowedPost = 1;
+            }
+            else{
+                $AllowedPost = 0;
+            }
+        }
+        else if(Auth::check()){
+            $AllowedPost = 1;
+        }
+        return view('/Forum/Forum',compact('DonationType','DonationTypeDetail','AllowedPost'));
     }
 
     public function PostDetail($id){
         $Post = Post::where('PostID',$id)->first();
         $Like = Like::where('PostID',$id)->where('LikePost',1)->get();
+        
         return view('/Forum/ViewPost',compact('Post','Like'));
     }
 
     public function CreatePost(Request $request){
         $Post = new Post;
         $Post->DonationTypeDetailID = $request->ddlDonationTypeDetail;
+
         $Post->DonationTypeID = $request->ddlDonationType;
         $Post->ID = auth()->id();
         $Post->PostTypeID = $request->ddlPostType;
@@ -55,13 +85,14 @@ class ForumController extends Controller
         $Post->UploadDate = Carbon::now()->toDateTimeString();
         $Post->Quantity = $request->txtQuantity;
         $Post->PostTitle = $request->txtPostTitle;
+
         if(Auth::guard('foundations')->check()){
             $Post->RoleID = 2;
         } 
         else{
             $Post->RoleID = 1;
         }
-        
+ 
 
         $EncodeFile = Hash::make("img.".$Post->ID."1");
         $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
@@ -69,14 +100,16 @@ class ForumController extends Controller
 
         try{
             //Save first to get PostID
+          
             $Post->save();
 
             //Upload to FTP
             Storage::disk('ftp')->put('Forum/Post/'.$Post->id.'/'.$EncodeFile,fopen($request->file('fuAttachment'),'r+'));
+            $request->session()->flash('toastsuccess', 'Post Created');
             return redirect('/Forum');
         }
         catch(Exception $e){
-            return redirect('/');
+            throw($e);
         }
     }
 
@@ -124,18 +157,80 @@ class ForumController extends Controller
         $Comment->CommentReplyID = 0;
         $Comment->OrderNumber = 1;
         $Comment->ID = auth()->id();
+        
+        if(Auth::guard('foundations')->check()){
+            $Comment->RoleID = 2;
+        } 
+        else{
+            $Comment->RoleID = 1;
+        }
         $Comment->Comment = $request->text;
         $Comment->CommentDate = Carbon::Now()->toDateTimeString();
+
+        $UserName = "";
+        $PhotoPath = "";
+        
+       
+        if(Auth::guard('foundations')->check()){
+            $UserName = Auth::guard('foundations')->user()->FoundationName;
+            if(Auth::guard('foundations')->user()->FoundationPhoto){
+                $PhotoPath = env('FTP_URL').'ProfilePicture/Yayasan/' .Auth::guard('foundations')->user()->FoundationPhoto->Path;
+            }
+            else{
+                $PhotoPath = env('FTP_URL') . 'assets/Smiley.png';
+            }
+        } 
+        else{
+            $UserName = Auth::user()->FirstName.' '.Auth:: user()->LastName;
+            if(Auth::guard('foundations')->user()->FoundationPhoto){
+                $PhotoPath = env('FTP_URL').'ProfilePicture/Donatur/' .Auth::user()->Photo->Path;
+            }
+            else{
+                $PhotoPath = env('FTP_URL') . 'assets/Smiley.png';
+            }
+        
+        }
+   
+        
         
         try{
             $Comment->save();
             $totalReplies = Comment::where('PostID',$id)->get()->count();
-            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'date' => date('d M Y',strtotime($Comment->created_at))];
+            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'UserName'=>$UserName,'date' => date('d M Y',strtotime($Comment->created_at)), 'PhotoPath' => $PhotoPath];
             return response()->json($response);
         }catch(Exception $ex){
             return redirect('/');
         }
     }
+
+    public function PostCommentFromForum($id,Request $request){
+        $Comment = new Comment;
+        $Comment->PostID = $id;
+        $Comment->CommentReplyID = 0;
+        $Comment->OrderNumber = 1;
+        $Comment->ID = auth()->id();
+        $Comment->Comment = $request->text;
+        $Comment->CommentDate = Carbon::Now()->toDateTimeString();
+
+        $UserName = "";
+        if(Auth::guard('foundations')->check()){
+            $UserName = Auth::guard('foundations')->user()->FoundationName;
+            $Comment->RoleID = 2;
+        } 
+        else{
+            $UserName = Auth::user()->FirstName.' '.Auth:: user()->LastName;
+            $Comment->RoleID = 1;
+        }
+        
+        try{
+            $Comment->save();
+    
+            return $this->PostDetail($id);
+        }catch(Exception $ex){
+            throw $ex;
+        }
+    }
+
 
     public function PostReply($idpost,$id,Request $request){
 
@@ -145,8 +240,36 @@ class ForumController extends Controller
         $Comment->CommentReplyID = $id;
         $Comment->OrderNumber = $LastComment->OrderNumber + 1;
         $Comment->ID = auth()->id();
+        if(Auth::guard('foundations')->check()){
+            $Comment->RoleID = 2;
+        } 
+        else{
+            $Comment->RoleID = 1;
+        }
         $Comment->Comment = $request->text;
         $Comment->CommentDate = Carbon::Now()->toDateTimeString();
+
+        $UserName = "";
+        $PhotoPath = "";
+        if(Auth::guard('foundations')->check()){
+            $UserName = Auth::guard('foundations')->user()->FoundationName;
+            if(Auth::guard('foundations')->user()->FoundationPhoto){
+                $PhotoPath = env('FTP_URL').'ProfilePicture/Yayasan/' .Auth::guard('foundations')->user()->FoundationPhoto->Path;
+            }
+            else{
+                $PhotoPath = env('FTP_URL') . 'assets/Smiley.png';
+            }
+        } 
+        else{
+            $UserName = Auth::user()->FirstName.' '.Auth:: user()->LastName;
+            if(Auth::guard('foundations')->user()->FoundationPhoto){
+                $PhotoPath = env('FTP_URL').'ProfilePicture/Donatur/' .Auth::user()->Photo->Path;
+            }
+            else{
+                $PhotoPath = env('FTP_URL') . 'assets/Smiley.png';
+            }
+        
+        }
         
         try{
             $Comment->save();
@@ -154,7 +277,7 @@ class ForumController extends Controller
             $commentForm = Comment::where('CommentID',$id)->first();
             $totalReplies = Comment::where('PostID',$idpost)->get()->count();
 
-            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'replyTo'=> $commentForm->User->FirstName." ".$commentForm->User->LastName,'date' => date('d M Y',strtotime($Comment->created_at))];
+            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'UserName' => $UserName,'replyTo'=> $commentForm->User->FirstName." ".$commentForm->User->LastName,'date' => date('d M Y',strtotime($Comment->created_at)),'PhotoPath' => $PhotoPath];
         return response()->json($response);
 
         }catch(Exception $ex){

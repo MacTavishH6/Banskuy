@@ -10,12 +10,28 @@
             <div class="modal-body mb-1">
                 <div class="media mb-2">
                     {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
-                    <img class="mr-3 d-block rounded-circle" style="height:75px;width:75px"
-                        src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png">
 
-                    <div class="media-body mt-3">
-                        <h3>{{Auth::user()->FirstName}} {{Auth::user()->LastName}}</h3>
-                    </div>
+                        @if (Auth::guard('foundations')->check())
+                        <img src="{{ env('FTP_URL') }}{{ Auth::guard('foundations')->user()->FoundationPhoto ? 'ProfilePicture/Yayasan/' . Auth::guard('foundations')->user()->FoundationPhoto->Path : 'assets/Smiley.png' }}"
+                        alt="FoundationPhotoProfile" class="mr-3 d-block rounded-circle"
+                        style="height:75px;width:75px"
+                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
+                        <div class="media-body mt-3">
+                            <h3>{{Auth::guard('foundations')->user()->FoundationName}}</h3>
+                        </div>
+                        
+                        @elseif(Auth::check())
+                        <img src="{{ env('FTP_URL') }}{{ Auth::user()->Photo ? 'ProfilePicture/Donatur/' . Auth::user()->Photo->Path : 'assets/Smiley.png' }}"
+                        alt="UsernamePhotoProfile" class="mr-3 d-block rounded-circle"
+                        style="height:75px;width:75px"
+                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
+                            
+                            <div class="media-body mt-3">
+                                <h3>{{Auth::user()->FirstName}} {{Auth::user()->LastName}}</h3>
+                            </div>
+                            
+                        @endif
+                    
                 </div>
 
                 <div>
@@ -23,21 +39,24 @@
                         @csrf
                         <div class="form-inline mb-2">
                             <div class="form-group w-100">
-                                <div class="input-group w-50 p-1">
-                                    <div class="w-25 mt-2 mr-1">
+                                <div class="input-group p-1" style="width:40%">
+                                    <div class=" mt-2 mr-1" style="width: 30%">
                                         <h6>Post Type :</h6>
                                     </div>
                                     <select class="form-control" id="ddlPostType" name="ddlPostType">
-                                        <option value="1">Donation Post</option>
+                                        @if (Auth::guard('foundations')->check())
                                         <option value="2">Request Post</option>
+                                        @else
+                                        <option value="1">Donation Post</option>
+                                        @endif
                                     </select>
                                 </div>
 
-                                <div class="input-group w-50 p-1">
-                                    <div class="w-25 mt-2 mr-1">
+                                <div class="input-group p-1" style="width:60%">
+                                    <div class="mt-2 mr-1" style="width:30%">
                                         <h6>Donation Type :</h6>
                                     </div>
-                                    <select class="form-control" id="ddlDonationType" onchange="ChangeDonationTypeDetail(this)">
+                                    <select class="form-control" id="ddlDonationType" name="ddlDonationType" onchange="ChangeDonationTypeDetail(this)">
                                         @foreach ($DonationType as $item)
                                             <option value="{{$item->DonationTypeID}}">{{$item->DonationTypeName}}</option>
                                         @endforeach
@@ -63,8 +82,8 @@
                         <br>
                         <div class="form-inline mb-3">
                             <div class="form-group w-100">
-                                <div class="input-group w-50 p-1">
-                                    <div class="w-25 mt-2 mr-1">
+                                <div class="input-group p-1" style="width:40%">
+                                    <div class="mt-2 mr-1" style="width: 30%">
                                         <h6>Unit :</h6>
                                     </div>
                                     
@@ -77,8 +96,8 @@
                                     
                                 </div>
 
-                                <div class="input-group w-50 p-1">
-                                    <div class="w-25 mt-2 mr-1">
+                                <div class="input-group  p-1" style="width:60%">
+                                    <div class="mt-2 mr-1" style="width: 30%">
                                         <h6>Quantity :</h6>
                                     </div>
                                     <input class="form-control" type="number" id="txtQuantity" name="txtQuantity" >

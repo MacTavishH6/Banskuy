@@ -6,24 +6,24 @@
             <div class="row">
                 <div class="col-4">
                     <h5 class="font-weight-bold">BanSkuy</h5>
-                    <p align="justify">BanSkuy is an online platform that is engaged in donations and distribution of information about social foundations and charity</p>
+                    <p align="justify">BanSkuy adalah platform online yang bergerak dalam donasi dan distribusi informasi tentang yayasan sosial dan amal.</p>
                 </div>
                 <div class="col-2"></div>
                 <div class="col-2">
                     <h5 class="font-weight-bold">BanSkuy</h5>
-                    <p><a>About Us</a></p>
-                    <p><a>Contact Us</a></p>
+                    <p><a>Tentang Kami</a></p>
+                    <p><a>Kontak Kami</a></p>
                     <p><a>Call Center</a></p>
-                    <p><a>Location</a></p>
+                    <p><a>Lokasi</a></p>
                 </div>
                 <div class="col-2">
-                    <h5 class="font-weight-bold">Donation Product</h5>
-                    <p><a>Money</a></p>
-                    <p><a>Second Hand Goods</a></p>
-                    <p><a>Community Service</a></p>
+                    <h5 class="font-weight-bold">Produk Donasi</h5>
+                    <p><a>Uang</a></p>
+                    <p><a>Barang Bekas</a></p>
+                    <p><a>Pelayanan Masyarakat</a></p>
                 </div>
                 <div class="col-2">
-                    <h5 class="font-weight-bold">Social Media</h5>
+                    <h5 class="font-weight-bold">Media Sosial</h5>
                     <p><a>Facebook</a></p>
                     <p><a>Instagram</a></p>
                     <p><a>Telegram</a></p>
@@ -32,7 +32,7 @@
             </div>
             <div class="pt-5 w-25 m-auto">
                 <div class="d-flex justify-content-around">
-                    <p><h2 class="text-white font-weight-bold">BanSkuy</h2></p>
+                    <p><img src="{{env("FTP_URL")}}assets/LogoBanskuy.png" alt="" srcset="" ></p>
                     <p><img src="{{env('FTP_URL')}}assets/BinusUniv.png" alt="BinusSOCS" style="width: 100px; height: 72px;"></p>
                     <p><img src="{{env('FTP_URL')}}assets/BinusSOCS.png " alt="BinusSOCS" style="width: 100px; height: 72px;"></p>
                 </div>

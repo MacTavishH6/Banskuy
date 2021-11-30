@@ -156,7 +156,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content ">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Upload Profile Photo</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Unggah Foto Profil</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -168,25 +168,25 @@
                         <div class="file-upload">
                             <input type="hidden" name="FoundationID" value="{{ Crypt::encrypt($foundation->FoundationID) }}">
                             <button class="file-upload-btn" type="button"
-                                onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+                                onclick="$('.file-upload-input').trigger( 'click' )">Tambahkan Foto</button>
 
                             <div class="image-upload-wrap">
                                 <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*"
                                     name="ProfilePicture" />
                                 <div class="drag-text">
-                                    <h3>Photo Preview</h3>
+                                    <h3>Pratinjau Foto</h3>
                                 </div>
                             </div>
                             <div class="file-upload-content">
                                 <img class="file-upload-image" src="#" alt="your image" />
                                 <div class="image-title-wrap">
-                                    <button type="button" onclick="removeUpload()" class="remove-image">Remove <span
-                                            class="image-title">Uploaded Image</span></button>
+                                    <button type="button" onclick="removeUpload()" class="remove-image">Hapus <span
+                                            class="image-title">Foto Terunggah</span></button>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn-banskuy text-white">Upload</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn-banskuy text-white">Unggah</button>
                     </form>
                 </div>
             </div>
@@ -196,7 +196,7 @@
         <div class="modal-dialog">
             <div class="modal-content ">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Delete Profile Photo</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Hapus Foto Profil</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -207,12 +207,12 @@
                         @csrf
                         @method('DELETE')
                         <div class="form-row">
-                            <label>Are you sure you want to delete Profile Photo ?</label>
+                            <label>Anda yakin ingin menghapus foto profil ?</label>
                             <input type="hidden" name="FoundationID" value="{{ Crypt::encrypt($foundation->FoundationID) }}">
                         </div>
                         <div class="form-row">
-                            <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-danger text-white">Delete</button>
+                            <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger text-white">Hapus</button>
                         </div>
                     </form>
                 </div>

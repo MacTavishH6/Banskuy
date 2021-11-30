@@ -23,7 +23,7 @@
                 <div class="col-7">
                     <div class="row">
                         <div class="col-4">
-                            <label for="">Donation Title</label>
+                            <label for="">Judul Donasi</label>
                         </div>
                         <div class="col-1">:</div>
                         <div class="col">
@@ -34,7 +34,7 @@
                     </div>
                     <div class="row">
                         <div class="col-4">
-                            <label for="">Donation Type</label>
+                            <label for="">Tipe Donasi</label>
                         </div>
                         <div class="col-1">:</div>
                         <div class="col">
@@ -45,7 +45,7 @@
                     </div>
                     <div class="row">
                         <div class="col-4">
-                            <label for="">Foundation Name</label>
+                            <label for="">Nama Yayasan</label>
                         </div>
                         <div class="col-1">:</div>
                         <div class="col">
@@ -58,7 +58,7 @@
                 <div class="col-3">
                     <div class="buttonhistorydetail">
                         <button type="button" id="btnHistoryDetail" data-id="<%=data.transactionID%>" class="historydetail_button">
-                            {{ __('HistoryDetail') }}
+                            {{ __('Detail Transaksi') }}
                         </button>
                     </div>
                 </div>

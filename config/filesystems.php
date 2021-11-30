@@ -55,9 +55,9 @@ return [
 
         'ftp' => [
             'driver' => 'ftp',
-            'host' => 'ftp.banskuy.com',
-            'username' => 'Basnkuy2022@banskuy.com',
-            'password' => 'b!Nu$_Basnkuy22FTP',
+            'host' => env('FTP_SERVER'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
             
             
             

@@ -33,7 +33,7 @@
         integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <link rel="icon" href="{{env("FTP_URL")}}assets/favicon.ico" type="image/icon type">
     {{-- CustomStyles --}}
     @yield('styles')
 </head>
