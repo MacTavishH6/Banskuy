@@ -233,53 +233,53 @@
                 .finally(function() {
                     banskuy.getReq('/getprovince')
                         .then(function(data) {
-                            var option = document.getElementById("Province");
+                            var optionProvince = document.getElementById("Province");
                             let newOption = new Option('', '');
-                            option.add(newOption, undefined);
+                            optionProvince.add(newOption, undefined);
                             data.msg.forEach(element => {
                                 let newOption = new Option(element.ProvinceName,
                                     element.ProvinceID);
-                                option.add(newOption, undefined);
+                                optionProvince.add(newOption, undefined);
                             });
                             if (user.address) {
-                                $(option).val(user.address.ProvinceID);
+                                $(optionProvince).val(user.address.ProvinceID);
                             }
-                            if ($(option).val()) {
+                            if ($(optionProvince).val()) {
                                 $("#City").prop("disabled", false);
                                 $("#City").empty();
-                                banskuy.getReq('/getcity/' + $(option).val())
+                                banskuy.getReq('/getcity/' + $(optionProvince).val())
                                     .then(function(data) {
-                                        var option = document.getElementById(
+                                        var optionCity = document.getElementById(
                                             "City");
                                         let newOption = new Option('', '');
-                                        option.add(newOption, undefined);
+                                        optionCity.add(newOption, undefined);
                                         data.msg.forEach(element => {
                                             let newOption = new Option(
                                                 element
                                                 .CityName, element
                                                 .CityID);
-                                            option.add(newOption,
+                                            optionCity.add(newOption,
                                                 undefined);
                                         });
                                         if (user.address) {
-                                            $(option).val(user.address.CityID);
+                                            $(optionCity).val(user.address.CityID);
                                         }
                                     })
                             } else {
                                 $("#City").prop("disabled", true);
                             }
-                            $(option).on('change', function() {
+                            $(optionProvince).on('change', function() {
                                 if ($(this).val()) {
                                     $("#City").prop("disabled", false);
                                     $("#City").empty();
                                     banskuy.getReq('/getcity/' + $(this).val())
                                         .then(function(data) {
-                                            var option = document
+                                            var optionCity = document
                                                 .getElementById(
                                                     "City");
                                             let newOption = new Option(
                                                 '', '');
-                                            option.add(newOption,
+                                            optionCity.add(newOption,
                                                 undefined);
                                             data.msg.forEach(
                                                 element => {
@@ -290,13 +290,13 @@
                                                             element
                                                             .CityID
                                                         );
-                                                    option.add(
+                                                    optionCity.add(
                                                         newOption,
                                                         undefined
                                                     );
                                                 });
                                             if (user.address) {
-                                                $(option).val(user
+                                                $(optionCity).val(user
                                                     .address.CityID);
                                                 // console.log(option);
                                             }
