@@ -7,7 +7,7 @@
             text-align: center;
         }
 
-        .historydetail_button {
+        .approvaldetail_button {
             background-color: #AC8FFF;
             border: none;
             border-radius: 21px;
@@ -22,7 +22,7 @@
             color: black;
         }
 
-        .historydetail_button:hover {
+        .approvaldetail_button:hover {
             box-shadow: 0px 5px 20px rgb(153, 121, 39);
         }
 
@@ -30,91 +30,41 @@
 @endsection
 
 @section('content')
-
+<div class="container mt-3">
     <div class="pagetitle">
-        <p>
-            Donation Approval
-        </p>
+        <p>Donation Approval</p>
     </div>
-
-    <br>
-
-    <div class="containermenu">
-
-        <div class="row">
-            <div class="col-3"></div>
-
-            {{-- sebelahkiri --}}
-            <div class="col-3">
-                <div class="searchbox">
-
-                    <label for="searchbox">Search :</label> <br>
-
-                    <form class="form-inline m-0">
-                        <input class="form-control col-10 mr-sm-2" type="search" placeholder="Input Keyword"
-                            aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-2" type="submit">Go</button>
-                    </form>
-
-                </div>
-
-                <div class="donationstatus">
-                    <div class="form-group">
-
-                        <label for="inputState">Donation Status :</label>
-
-                        <select id="inputState" class="form-control">
-                            <option selected>Status 1</option>
-                            <option>Status 2</option>
-                            <option>Status 3</option>
-                        </select>
-
-                    </div>
-                </div>
+    <div class="row w-75 mx-auto mb-5">
+        {{-- sebelahkiri --}}
+        <div class="col-6">
+            <div class="form-group">
+                <label for="searchbox">Search :</label>
+                <form class="form-inline m-0">
+                    <input class="form-control col" type="search" placeholder="Input Keyword" aria-label="Search"
+                        id="searchKeyword">
+                </form>
             </div>
-
-            {{-- sebelahkanan --}}
-            <div class="col-3">
-                <div class="form-group col-md-12">
-                    <label for="inputState">Choose Date :</label>
-                    <input class="form-control mr-sm-2" type="date" name="" id="">
-                </div>
-
-                <div class="donationstatus">
-                    <div class="form-group col-md-12">
-
-                        <label for="inputState">Donation Type :</label>
-
-                        <select id="inputState" class="form-control">
-                            <option selected>Donation Type 1</option>
-                            <option>Donation Type 2</option>
-                            <option>Donation Type 3</option>
-                        </select>
-                    </div>
-                </div>
-
+            <div class="form-group">
+                <label for="inputState">Donation Status :</label>
+                <select id="donationStatus" class="form-control">
+                </select>
             </div>
-            <div class="col-3"></div>
         </div>
-
-
-
-    </div>
-
-    <br><br><br>
-
-    <div class="donationhistorycontent d-flex justify-content-around">
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-header d-flex justify-content-around">
-                    <div class="transactiondate">
-                        Transaction Date
-                    </div>
-
-                    <div class="requeststatus">
-                        <div class="btn btn-success">Request Confirmed (Status)</div>
-                    </div>
+        <div class="col-6">
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label for="from">Date Start</label>
+                    <input type="text" class="form-control" name="DateStart" id="from" placeholder="">
                 </div>
+
+                <div class="form-group col-md-1">
+                    <label for=""></label>
+                    <button id="resetfrom" class="btn btn-info mt-2 ml-n2 d-none"><span>x</span></button>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="to">Date End</label>
+                    <input type="text" class="form-control" name="DateEnd" id="to" placeholder="">
+
 
                 <div class="card-body d-flex justify-content-around ">
                     <div class="bodyleftside">
@@ -146,12 +96,27 @@
                             </a>
                         </div>
                     </div>
+
+                </div>
+                <div class="form-group col-md-1">
+                    <label for=""></label>
+                    <button id="resetto" class="btn btn-info mt-2 ml-n2 d-none"><span>x</span></button>
                 </div>
             </div>
+            <div class="form-group">
+                <label for="inputState">Donation Type :</label>
+                <select id="donationType" class="form-control">
+                </select>
+            </div>
         </div>
+        <div class="col-6"></div>
+        <div class="col-6">
+            <button id="applyFilter" class="btn btn-primary float-right">Apply Filter</button>
+        </div>
+    </div>
+    <div id="list-containter">
 
     </div>
-
     <div class="paginationhistory d-flex justify-content-around mt-5 mb-5">
         <nav aria-label="Page navigation example">
             <ul class="pagination">
@@ -175,4 +140,261 @@
             </ul>
         </nav>
     </div>
+</div>
+<div class="modal-containter">
+
+</div>
+@include('Transaction.Misc.component-list-approval')
+@include('Transaction.Misc.component-modal-donation-approval')
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            var dateFormat = "mm/dd/yy",
+                from = $("#from")
+                .datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    maxDate: '0'
+                })
+                .on("change", function() {
+                    to.datepicker("option", "minDate", getDate(this));
+                    if (this.value) {
+                        $("#resetfrom").removeClass('d-none');
+                    } else {
+                        $("#resetfrom").addClass('d-none');
+                    }
+                }),
+                to = $("#to").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    maxDate: '0'
+                })
+                .on("change", function() {
+                    if (this.value) {
+                        $("#resetto").removeClass('d-none');
+                    } else {
+                        $("#resetto").addClass('d-none');
+                    }
+                });
+            $("#resetto").on('click', function() {
+                $("#to").datepicker('setDate', null);
+                $("#resetto").addClass('d-none');
+            });
+            $("#resetfrom").on('click', function() {
+                $("#from").datepicker('setDate', null);
+                $("#resetfrom").addClass('d-none');
+            });
+            banskuy.getReq('/getdonationtype')
+                .then(function(data) {
+                    var donationtype = data.msg;
+                    var option = document.getElementById("donationType");
+                    let newOption = new Option('All', '');
+                    option.add(newOption, undefined);
+                    donationtype.forEach(element => {
+                        let newOption = new Option(element.DonationTypeName,
+                            element.DonationTypeID);
+                        option.add(newOption, undefined);
+
+                    });
+                });
+            banskuy.getReq('/getdonationstatus')
+                .then(function(data) {
+                    var donationtype = data.msg;
+                    var option = document.getElementById("donationStatus");
+                    let newOption = new Option('All', '');
+                    option.add(newOption, undefined);
+                    donationtype.forEach(element => {
+                        let newOption = new Option(element.ApprovalStatusName,
+                            element.ApprovalStatusID);
+                        option.add(newOption, undefined);
+
+                    });
+                });
+            // DISINI MULAI APPLY FILTER
+            $("#applyFilter").on('click', function() {
+                if (!$("#from").val() && $("#to").val()) {
+                    toastr.error("Tolong isi tanggal awal!");
+                    return;
+                } else if ($("#from").val() && !$("#to").val()) {
+                    toastr.error("Tolong isi tanggal akhir!");
+                    return;
+                }
+                $("#list-containter").empty();
+                var data = {
+                    keyword: $("#searchKeyword").val(),
+                    donationStatus: $("#donationStatus").val(),
+                    dateStart: $("#from").val(),
+                    dateEnd: $("#to").val(),
+                    transactionDate: $("#transactionDate").val(),
+                    donationType: $("#donationType").val(),
+                    FoundationID: <?php echo '"' . Crypt::encrypt(Auth::guard('foundations')->id()) . '"'; ?>,
+                    _token: "<?php echo csrf_token(); ?>"
+                }
+                banskuy.postReq('/getdonationapproval', data)
+                    .then((response) => {
+                        var listDonation = response.payload;
+                        _.each(listDonation, function(donation, donationKey) {
+                            var data = {};
+                            if ((donationKey + 1) % 2 == 1) {
+                                data.headerColor = "bg-secondary";
+                                data.headerTextColor = "text-white";
+                            } else {
+                                data.headerColor = "";
+                                data.headerTextColor = "";
+                            }
+                            var transactionDate = new Date(donation.TransactionDate);
+                            var formattedDate = transactionDate.toString(
+                                "MMMM dS, yyyy");
+                            data.transactionDate = formattedDate;
+                            data.transactionID = donation.DonationTransactionID;
+                            data.status = donation.approval_status.ApprovalStatusName;
+                            switch (donation.approval_status.ApprovalStatusID) {
+                                case 1:
+                                    data.statusColor = 'btn-warning';
+                                    break;
+                                case 2:
+                                    data.statusColor = 'btn-primary';
+                                    break;
+                                case 3:
+                                    data.statusColor = 'btn-danger';
+                                    break;
+                                case 4:
+                                    data.statusColor = 'btn-warning';
+                                    break;
+                                case 5:
+                                    data.statusColor = 'btn-success';
+                                    break;
+                            }
+                            data.donationTitle = donation.DonationDescriptionName;
+                            data.donationType = donation.donation_type_detail
+                                .donation_type.DonationTypeName;
+                            data.username = donation.user.Username;
+                            var divtemplate = _.template($("#component-list-approval")
+                                .html());
+                            $("#list-containter").append(divtemplate({
+                                data: data
+                            }));
+                        });
+
+                    })
+                    .finally(function() {
+                        $(".approvaldetail_button").on('click', function() {
+                            // alert('tes');
+                            var transactionid = $(this).attr('data-id');
+                            console.log($(this).attr('data-id'));
+                            var data = {
+                                TransactionID: transactionid,
+                                _token: "<?php echo csrf_token(); ?>"
+                            }
+                            banskuy.postReq('/getdonationapprovaldetail', data)
+                                .then(function(response) {
+                                    var transaction = response.payload;
+                                    console.log(transaction);
+                                    var data = {
+                                        DonationType: transaction.donation_type_detail
+                                            .donation_type.DonationTypeName,
+                                        Unit: transaction.donation_type_detail
+                                            .DonationTypeDetail,
+                                        DonationTransactionName: transaction
+                                            .DonationDescriptionName,
+                                        Status: transaction.approval_status
+                                            .ApprovalStatusName,
+                                        Quantity: transaction.Quantity,
+                                        transactionID: transaction.DonationTransactionID,
+                                        Username: transaction.user.Username,
+                                    };
+                                    switch (transaction.approval_status.ApprovalStatusID) {
+                                        case 5:
+                                            data.IsShow = '';
+                                            break;
+                                        default:
+                                            data.IsShow = 'd-none';
+                                            break;
+                                    }
+                                    var transactionDate = new Date(transaction
+                                        .TransactionDate);
+                                    var formattedDate = transactionDate.toString(
+                                        "MMMM dS, yyyy");
+                                    data.TransactionDate = formattedDate;
+                                    $(".modal-containter").empty();
+                                    var modal = _.template($(
+                                        "#component-modal-donation-approval"
+                                    ).html());
+                                    $(".modal-containter").append(modal({
+                                        data: data
+                                    }));
+                                    $('.modal').css('overflow-y', 'auto');
+                                    $("#approvaldetail").modal();
+                                })
+                                //============================================================================
+                                .finally(function(){
+                                    $(".btnRejectingTransaction").on('click', function(){
+                                        var transactionid = $(this).attr('data-id');
+                                        console.log(transactionid);
+                                        var data = {
+                                            TransactionID: transactionid,
+                                            donationStatus: $(".btnRejectingTransaction").val(),
+                                            _token: "<?php echo csrf_token(); ?>"
+                                        }
+                                        banskuy.postReq('/updateapprovalstatus', data)
+                                            .then(function(response) {
+                                                var transaction = response.payload;
+                                                window.location.reload();
+                                                console.log(transaction); 
+                                            })
+                                    })
+                                    $(".btnApprovingTransaction").on('click', function(){
+                                        var transactionid = $(this).attr('data-id');
+                                        console.log(transactionid);
+                                        var data = {
+                                            TransactionID: transactionid,
+                                            donationStatus: $(".btnApprovingTransaction").val(),
+                                            _token: "<?php echo csrf_token(); ?>"
+                                        }
+                                        banskuy.postReq('/updateapprovalstatus', data)
+                                            .then(function(response) {
+                                                var transaction = response.payload;
+                                                window.location.reload();
+                                                console.log(transaction); 
+                                            })
+                                    })
+                                    $(".btnFinishingTransaction").on('click', function(){
+                                        var transactionid = $(this).attr('data-id');
+                                        console.log(transactionid);
+                                        var data = {
+                                            TransactionID: transactionid,
+                                            donationStatus: $(".btnFinishingTransaction").val(),
+                                            _token: "<?php echo csrf_token(); ?>"
+                                        }
+                                        banskuy.postReq('/updateapprovalstatus', data)
+                                            .then(function(response) {
+                                                var transaction = response.payload;
+                                                window.location.reload();
+                                                console.log(transaction); 
+                                            })
+                                    })
+                                })
+                                //============================================================================
+                        });
+                    });
+                });
+                
+                //PEMBATAS SI APPLY FILTER
+                function getDate(element) {
+                    var date;
+                    try {
+                        console.log(dateFormat);
+                        date = $.datepicker.parseDate(dateFormat, element.value);
+                    } catch (error) {
+                        date = null;
+                    }
+
+                    return date;
+                }
+            });
+    </script>
 @endsection
