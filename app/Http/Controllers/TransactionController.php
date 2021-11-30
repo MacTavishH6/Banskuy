@@ -105,4 +105,65 @@ class TransactionController extends Controller
         $response = ['payload' => $donation];
         return response()->json($response);
     }
+
+    //===============================  PEMBATAS UNTUK DONATION APPROVAL  ==================================//
+
+    public function DonationApproval()
+    {
+        return view('Transaction.transactionapproval');
+    }
+
+    public function GetDonationApproval(Request $request)
+    {
+        $foundationid = Crypt::decrypt($request->FoundationID);
+        $donationapproval = DonationTransaction::where('FoundationID', $foundationid)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->orderBy('TransactionDate', 'DESC')->get();
+        // echo ($donationhistory);
+        $donationapproval = $donationapproval->filter(function ($x) use ($request) {
+            if ($request->keyword) $x = (str_contains($x->DonationDescriptionName, $request->keyword) || str_contains($x->DonationTypeDetail->DonationType->DonationTypeName, $request->keyword)) ? $x : [];
+            // echo ($x);
+            // // echo ($x->ApprovalStatus);
+            // return;
+            if ($x && $request->donationStatus) $x = ($x->ApprovalStatus->ApprovalStatusID == $request->donationStatus) ? $x : [];
+
+            if ($x && $request->donationType) $x = ($x->DonationTypeDetail->DonationType->DonationTypeID == $request->donationType) ? $x : [];
+
+            if ($x && ($request->dateStart && $request->dateEnd)) {
+                $dateFrom = date('Y-m-d', strtotime($request->dateStart));
+                $dateTo = date('Y-m-d', strtotime($request->dateEnd));
+                $transactionDate = date('Y-m-d', strtotime($x->TransactionDate));
+                if (($transactionDate >= $dateFrom) && ($transactionDate <= $dateTo)) 
+                {
+                    $x = $x;
+                } else {
+                    $x = [];
+                }
+            }
+
+            return $x;
+        });
+        // echo ($donationhistory);
+        // return;
+        $response = ['payload' => $donationapproval];
+        return response()->json($response);
+    }
+
+    public function GetDonationApprovalDetail(Request $request)
+    {
+        $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->first();
+        $response = ['payload' => $donation];
+        return response()->json($response);
+    }
+
+    public function AcceptRejectDonationTransaction(Request $request)
+    {
+        $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->first();
+        
+        
+        $donation->ApprovalStatusID = $request->donationStatus;
+        
+        $donation->save();
+        $response = ['payload' => 'sukses'];
+        return response()->json($response);
+    }
+
 }

@@ -34,7 +34,7 @@ class FoundationProfileController extends Controller
 
     public function GetFoundationProfile($id){
         $foundationID = Crypt::decrypt($id);
-        $foundation = Foundation::where('FoundationID', $foundationID)->with('Address')->with('FoundationPhoto')->first();
+        $foundation = Foundation::where('FoundationID', $foundationID)->with('Address')->with('Address.Province')->with('Address.City')->with('FoundationPhoto')->first();
         $response = array('payload'=>$foundation);
         return response()->json($response);
     }
