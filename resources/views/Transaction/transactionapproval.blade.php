@@ -273,6 +273,7 @@
                                         Quantity: transaction.Quantity,
                                         transactionID: transaction.DonationTransactionID,
                                         Username: transaction.user.Username,
+                                        approvalStatusID: transaction.ApprovalStatusID,
                                     };
                                     switch (transaction.approval_status.ApprovalStatusID) {
                                         case 5:
