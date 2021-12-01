@@ -49,10 +49,13 @@
                         <div class="col-12 has-bio">
                             <p align="justify">{{ $user->Bio }}</p>
                         </div>
+                        @if (Auth::check() && Auth::id() == $user->UserID)
                         <div class="col-12 edit-bio">
                             <textarea name="Bio" id="Bio" class="form-control" rows="3"
                                 style="resize: none">{{ $user->Bio ? $user->Bio : '' }}</textarea>
                         </div>
+                        @endif
+                        
                     </div>
                     <div class="row mt-2">
                         <div class="col">

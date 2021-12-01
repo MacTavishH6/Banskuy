@@ -45,4 +45,6 @@ class LOVController extends Controller
 
         return response()->json(array('msg'=>$listPost),200);
     }
+
+    
 }

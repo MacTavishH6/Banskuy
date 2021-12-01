@@ -19,6 +19,9 @@ use App\Models\UserLevel;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\VerificationMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Crypt;
 
 class RegisterController extends Controller
 {
@@ -111,12 +114,19 @@ class RegisterController extends Controller
             $this->guard()->login($user);
 
             if ($response = $this->registered($request, $user)) {
+                Mail::to($user->email)->send(new VerificationMail());
+                Auth::logout();
+                return redirect('/verifyEmailSent');
                 return $response;
+                
             }
-
-            return $request->wantsJson()
-                        ? new JsonResponse([], 201)
-                        : redirect($this->redirectPath());
+            Mail::to($user->email)->send(new VerificationMail());
+            Auth::logout();
+        
+            return redirect('/verifyEmailSent');
+            // return $request->wantsJson()
+            //             ? new JsonResponse([], 201)
+            //             : redirect($this->redirectPath());
 
         }
         else if($request['registerAs']=='2'){
@@ -135,12 +145,53 @@ class RegisterController extends Controller
 
 
             if ($response = $this->registered($request, $foundation)) {
+                Mail::to($user->email)->send(new VerificationMail());
+                Auth::guard('foundations')->logout();
+                return redirect('/verifyEmailSent');
                 return $response;
             }
 
-            return $request->wantsJson()
-                        ? new JsonResponse([], 201)
-                        : redirect($this->redirectPath());
+            Mail::to($foundation->email)->send(new VerificationMail());
+            Auth::guard('foundations')->logout();
+            return redirect('/verifyEmailSent');
+            // return $request->wantsJson()
+            //             ? new JsonResponse([], 201)
+            //             : redirect($this->redirectPath());
         }
+    }
+
+
+    public function VerifikasiEmailUser($id){
+        $userId = Crypt::decrypt($id);
+        
+        $user = User::where('UserID',$userId)->first();
+        $user->EmailVerified = 1;
+       
+        
+        try{
+            $user->save();
+        
+            return view('/Verification/verifyEmailResult');
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
+
+    public function VerifikasiEmailFoundation($id){
+        $foundationId = Crypt::decrypt($id);
+        
+        $foundation = Foundation::where('FoundationID',$foundationId)->first();
+        $foundation->EmailVerified = 1;
+       
+        
+        try{
+            $foundation->save();
+
+            return view('/Verification/verifyEmailResult');
+        }catch(Exception $e){
+            throw $e;
+        }
+        
+        
     }
 }

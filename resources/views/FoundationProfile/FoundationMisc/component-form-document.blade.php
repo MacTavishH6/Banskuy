@@ -1,6 +1,6 @@
 <div class="row mb-4">
     <div class="col-9">
-        <h2>Update Document</h2>
+        <h2>Sunting Dokumen</h2>
     </div>
 </div>
 
@@ -8,7 +8,7 @@
     @csrf
     <div class="form-row py-1">
         <div class="col-4">
-            <label for="FirstName">Owner Identity Card</label>
+            <label for="FirstName">Kartu Tanda Penduduk Pemilik</label>
         </div>
         <div class="col-6">
             <div class="custom-file w-100 mb-3">
@@ -19,7 +19,7 @@
     </div>
     <div class="form-row py-1">
         <div class="col-4">
-            <label for="FirstName">Foundation Certificate</label>
+            <label for="FirstName">Sertifikat Yayasan</label>
         </div>
         <div class="col-6">
             <div class="custom-file w-100 mb-3">
@@ -30,7 +30,7 @@
     </div>
     <div class="form-row py-1">
         <div class="col-4">
-            <label for="FirstName">Foundation Operational Permit</label>
+            <label for="FirstName">Izin Operasional Yayasan</label>
         </div>
         <div class="col-6">
             <div class="custom-file w-100 mb-3">
@@ -41,7 +41,7 @@
     </div>
     <div class="form-row py-1">
         <div class="col-4">
-            <label for="FirstName">Foundation Registration Permit</label>
+            <label for="FirstName">Izin Pendaftaran Yayasan</label>
         </div>
         <div class="col-6">
             <div class="custom-file w-100 mb-3">
@@ -60,7 +60,7 @@
 </form>
 
 <div id="lblNoDocument" class="mb-5 mt-5" >
-    <h2 style="color:red;">No documents uploaded yet</h2>
+    <h2 style="color:red;">Tidak ada dokumen</h2>
 </div>
 
 
@@ -72,9 +72,9 @@
         <thead>
             <tr>
                 <th scope="col">No</th>
-                <th scope="col">Document Name</th>
+                <th scope="col">Nama Dokument</th>
                 <th scope="col">Status</th>
-                <th scope="col">Action</th>
+                <th scope="col">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -86,7 +86,7 @@
 
 <div>
     <p class="" style="color: #FF0000; font-size: 120%">
-        For security purpose, all document must be verified before accepting donation
+        Untuk tujuan keamanan, semua dokumen harus sudah terverifikasi sebelum menerima donasi
     </p>
 </div>
 

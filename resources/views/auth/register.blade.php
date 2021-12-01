@@ -221,7 +221,7 @@
                             {{-- BUTTON REGISTER BAWAAN BOOTSTRAP --}}
                             <div class="buttonregister form-group row mb-0">
                                 {{-- <div class="col-md-6 offset-md-4"> --}}
-                                <button id="btnRegister" type="submit" class="userchosen_button" style="color: white">
+                                <button id="btnRegister" type="submit" class="btn btn-banskuy" style="color: white">
                                     {{ __('Mendaftar') }}
                                 </button>
                                 {{-- </div> --}}
@@ -257,7 +257,7 @@
                 else if (regAs == "2")
                     $("#headReqAs").html("Now You're Register As Foundation");
 
-                $(this).addClass("d-none");
+                // $(this).addClass("d-none");
                 $("#hidRegisterAs").val(regAs);
             });
 

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +31,18 @@ Route::get('/landingpage', [App\Http\Controllers\LandingPageController::class, '
 Route::get('/Forum', [ForumController::class, 'Index']);
 Route::get('/Forum/{DonationTypeID}', [ForumController::class, 'ForumWithCategory']);
 Route::get('/ViewPost/{id}', [ForumController::class, 'PostDetail']);
+Route::get('/VerifikasiEmail/{id}',[App\Http\Controllers\Auth\RegisterController::class, 'VerifikasiEmailUser']);
+Route::get('/VerifikasiEmailFoundation/{id}',[App\Http\Controllers\Auth\RegisterController::class, 'VerifikasiEmailFoundation']);
+Route::get('/verifyEmailSent',function(){
+    return view('/Verification/verifyEmailSent');
+});
+Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'profile']);
+Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
 
+
+// Route::get('/email', function () {
+//     Mail::to('fikrifadillah231@gmail.com')->send(new VerificationMail());
+// });
 
 
 Route::middleware(['auth:web,foundations'])->group(function () {
