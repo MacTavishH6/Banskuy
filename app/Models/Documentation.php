@@ -8,6 +8,7 @@ class Documentation extends Model
 {
     //
     protected $table = "msdocumentation";
+    protected $primaryKey = 'DocumentationID';
 
     public function UserDocumentation(){
 
@@ -22,6 +23,12 @@ class Documentation extends Model
     public function DocumentationPhoto(){
 
         return $this->hasMany(DocumentationPhoto::class,'DocumentationID','DocumentationID');
+
+    }
+
+    public function DonationTransaction(){
+
+        return $this->belongsTo(DonationTransaction::class,'DocumentationID','DocumentationID');
 
     }
 }

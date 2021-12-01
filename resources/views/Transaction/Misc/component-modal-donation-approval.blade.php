@@ -57,15 +57,13 @@
                                     <%if(data.approvalStatusID == 4) {%>
                                         <div class="row my-2">
                                             <div class="col-6">
-                                                <form enctype="multipart/form-data" method="POST" action="/UploadDocumentation">
+                                                <form enctype="multipart/form-data" method="POST" id='updocumentation' action="/uploaddocumentation">
                                                     @csrf
                                                     @method('POST')
-                                                    {{-- <input type="hidden" name="TransactionID"
-                                                        value="{{ Crypt::encrypt(<%=data.transactionID%>) }}"> --}}
+                                                    <input type="hidden" name="transactionID"
+                                                        value="<%=data.transactionID%>">
                                                     <label class=" d-block">Foto Dokumentasi</label>
                                                     <input class="" type="file" id="DocumentationPhoto" name="DocumentationPhoto" >
-
-                                                    <button type="submit" class="btn-banskuy text-white mt-2">Unggah</button>
                                                 </form>
                                             </div>
                                         </div>
