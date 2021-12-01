@@ -54,16 +54,37 @@
                                         </div>
                                     </div>
                                     
+                                    <%if(data.approvalStatusID == 4) {%>
+                                        <div class="row my-2">
+                                            <div class="col-6">
+                                                <form enctype="multipart/form-data" method="POST" action="/UploadDocumentation">
+                                                    @csrf
+                                                    @method('POST')
+                                                    {{-- <input type="hidden" name="TransactionID"
+                                                        value="{{ Crypt::encrypt(<%=data.transactionID%>) }}"> --}}
+                                                    <label class=" d-block">Foto Dokumentasi</label>
+                                                    <input class="" type="file" id="DocumentationPhoto" name="DocumentationPhoto" >
+
+                                                    <button type="submit" class="btn-banskuy text-white mt-2">Unggah</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    <%}%>
+
                                     <div class="row">
-                                        <div class="col text-center">
-                                            <button id="" value="3" data-id="<%=data.transactionID%>" class="btnRejectingTransaction btn btn-danger mb-3 mt-5">Tolak Donasi</button>
-                                        </div>
-                                        <div class="col text-center">
-                                            <button id="" value="4" data-id="<%=data.transactionID%>" class="btnApprovingTransaction btn btn-success mb-3 mt-5">Terima Donasi</button>
-                                        </div>
-                                        <div class="col text-center">
-                                            <button id="" value="5" data-id="<%=data.transactionID%>" class="btnFinishingTransaction btn btn-primary mb-3 mt-5">Donasi Selesai</button>
-                                        </div>
+                                        <%if(data.approvalStatusID == 1) {%>
+                                            <div class="col text-center">
+                                                <button id="" value="3" data-id="<%=data.transactionID%>" class="btnRejectingTransaction btn btn-danger mb-3 mt-5">Tolak Donasi</button>
+                                            </div>
+                                            <div class="col text-center">
+                                                <button id="" value="4" data-id="<%=data.transactionID%>" class="btnApprovingTransaction btn btn-success mb-3 mt-5">Terima Donasi</button>
+                                            </div>
+                                        <%}%>
+                                        <%if(data.approvalStatusID == 4) {%>
+                                            <div class="col text-center">
+                                                <button id="" value="5" data-id="<%=data.transactionID%>" class="btnFinishingTransaction btn btn-primary mb-3 mt-5">Donasi Selesai</button>
+                                            </div>
+                                        <%}%>
                                     </div>
                                     
                                 </div>
