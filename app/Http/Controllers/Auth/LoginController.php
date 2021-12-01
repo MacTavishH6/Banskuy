@@ -72,7 +72,10 @@ class LoginController extends Controller
         if($request->rememberMe != null) $isRemember = true;
 
         Auth::attempt($credential,$isRemember);
-
+        if(Auth::user()->EmailVerified != 1){
+            Auth::logout();
+            return redirect('/login')->with('failed',"Silahkan verifikasi email anda terlebih dahulu"); 
+        }
         if(Auth::check()){
 
             if($isRemember == true){
@@ -82,16 +85,20 @@ class LoginController extends Controller
             }
             return $this->showLoginForm();
         }
-        else return redirect('/login')->with('failed',"Invalid email or password");
+        else return redirect('/login')->with('failed',"Email atau password salah");
     }
 
     public function loginFoundation(Request $request){
         $credential = $request->only('email','password');
 
         if(Auth::guard('foundations')->attempt($credential)){
+            if(Auth::guard('foundations')->user()->EmailVerified != 1){
+                Auth::guard('foundations')->logout();
+                return redirect('/foundationlogin')->with('failed',"Silahkan verifikasi email anda terlebih dahulu"); 
+            }
             return $this->showLoginForm();
         }
-        else return redirect('/foundationlogin')->with('failed',"Invalid email or password");    
+        else return redirect('/foundationlogin')->with('failed',"Email atau password salah");    
     }
 
     public function showLoginForm(){

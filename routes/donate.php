@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::middleware(['auth:web'])->group(function () {
-    Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'profile']);
+    //Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'profile']);
     Route::get('/editprofile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile']);
     Route::get('/getprofile/{id}', [App\Http\Controllers\ProfileController::class, 'GetProfile']);
 

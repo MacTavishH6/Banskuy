@@ -243,6 +243,7 @@ class FoundationProfileController extends Controller
                 if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
                     $ExistingDocument->DocumentName = $request->file('reuploadDocument')->getClientOriginalName();
                     $ExistingDocument->Path = $EncodeFile;
+                    $ExistingDocument->ApprovalStatusID = 1;
                     $ExistingDocument->save();
                 }
                 else{

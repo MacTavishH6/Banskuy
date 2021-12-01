@@ -51,14 +51,20 @@
                             <div class="col-12 has-bio">
                                 <p align="justify">{{ $foundation->Bio }}</p>
                             </div>
+                            @if (Auth::guard('foundations') && Auth::guard('foundations')->id() == $foundation->FoundationID)
                             <div class="col-12 edit-bio">
                                 <textarea name="Bio" id="Bio" class="form-control" rows="3"
                                     style="resize: none">{{ $foundation->Bio ? $foundation->Bio : '' }}</textarea>
                             </div>
+                            @endif
+                            
                         </div>
+                        @if (Auth::guard('foundations') && Auth::guard('foundations')->id() == $foundation->FoundationID)
                         <div class="col">
                             <label id="count-bio-word" class="edit-bio float-right">0/100</label>
                         </div>
+                            @endif
+                       
                         <div class="row">
                             <div class="col-12 mt-3" style="font-size:150%">
                                 <small>
