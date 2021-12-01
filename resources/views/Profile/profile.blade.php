@@ -56,7 +56,7 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col">
-                            @if (Auth::user()->UserID == $user->UserID)
+                            @if (Auth::check() && Auth::id() == $user->UserID)
                                 <form action="/updatebio" class="form d-inline" method="post">
                                     @csrf
                                     @method("PUT")
