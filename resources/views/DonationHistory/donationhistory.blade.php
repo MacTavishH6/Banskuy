@@ -121,7 +121,7 @@
                 <div class="form-group">
                     <label for="searchbox">Pencarian :</label>
                     <form class="form-inline m-0">
-                        <input class="form-control col" type="search" placeholder="Input Keyword" aria-label="Search"
+                        <input class="form-control col" type="search" placeholder="Masukan Kata" aria-label="Search"
                             id="searchKeyword">
                     </form>
                 </div>
@@ -164,7 +164,7 @@
         <div id="list-containter">
 
         </div>
-        <div class="paginationhistory d-flex justify-content-around mt-5 mb-5">
+        {{-- <div class="paginationhistory d-flex justify-content-around mt-5 mb-5">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
@@ -184,7 +184,7 @@
                     </li>
                 </ul>
             </nav>
-        </div>
+        </div> --}}
     </div>
     <div class="modalcontainer">
 
@@ -236,7 +236,7 @@
                 .then(function(data) {
                     var donationtype = data.msg;
                     var option = document.getElementById("donationType");
-                    let newOption = new Option('All', '');
+                    let newOption = new Option('Semua', '');
                     option.add(newOption, undefined);
                     donationtype.forEach(element => {
                         let newOption = new Option(element.DonationTypeName,
@@ -249,7 +249,7 @@
                 .then(function(data) {
                     var donationtype = data.msg;
                     var option = document.getElementById("donationStatus");
-                    let newOption = new Option('All', '');
+                    let newOption = new Option('Semua', '');
                     option.add(newOption, undefined);
                     donationtype.forEach(element => {
                         let newOption = new Option(element.ApprovalStatusName,
