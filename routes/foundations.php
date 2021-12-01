@@ -48,7 +48,7 @@ Route::middleware(['auth:foundations'])->group(function () {
     );
     Route::post('/getdonationapprovaldetail', [App\Http\Controllers\TransactionController::class, 'GetDonationApprovalDetail']);
     Route::post('/updateapprovalstatus', [App\Http\Controllers\TransactionController::class, 'AcceptRejectDonationTransaction']);
-    
+    Route::post('/uploaddocumentation', [App\Http\Controllers\TransactionController::class, 'UploadDocumentation']);
 
     Route::post('/UpdateDocument',[App\Http\Controllers\FoundationProfileController::class, 'UploadDocument']); 
     Route::post('/ReUploadDocument',[App\Http\Controllers\FoundationProfileController::class, 'ReUploadDocument']); 

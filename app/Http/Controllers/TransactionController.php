@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Documentation;
+use App\Models\DocumentationPhoto;
 use App\Models\DonationTransaction;
 use App\Models\Foundation;
 use App\Models\Post;
@@ -10,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Auth;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class TransactionController extends Controller
 {
@@ -167,6 +171,36 @@ class TransactionController extends Controller
         $donation->save();
         $response = ['payload' => 'sukses'];
         return response()->json($response);
+    }
+
+    public function UploadDocumentation(Request $request)
+    {
+        $hashed = Hash::make($request->transactionID);
+        $hashed = str_replace('\\',';',$hashed);
+        $hashed = str_replace('/',';',$hashed);
+        $filename = $hashed . '.' . $request->file('DocumentationPhoto')->getClientOriginalExtension();
+        $ftp = ftp_connect(env('FTP_SERVER'));
+        $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
+
+        $donation = DonationTransaction::where('DonationTransactionID', $request->transactionID)->first();
+
+        $documentation = new Documentation();
+        $documentation->DocumentationDate = date('Y-m-d H:i:s');
+        //$documentation->DonationTypeID = ; // MASIH ENTAHLAH GIMANA GET NYA DI TRANSACTION GAADA SOALNYA
+        $documentation->updated_at = date('Y-m-d H:i:s');
+        $documentation->save();
+
+        $donation->DocumentationID = $documentation->DocumentationID;
+        $donation->save();
+
+        $documentationphoto = new DocumentationPhoto();
+        Storage::disk('ftp')->put('DocumentationPicture/' . $filename, fopen($request->file('DocumentationPhoto'), 'r+'));
+        $documentationphoto->DocumentationID = $documentation->DocumentationID;
+        $documentationphoto->PhotoName = $filename;
+        $documentationphoto->save();
+        
+        $request->session()->flash('toastsuccess', 'Dokumentasi updated successfully');
+        return redirect()->back();
     }
 
     //25 Nov 2021 - add fikri for redirecting from post

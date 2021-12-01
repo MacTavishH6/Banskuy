@@ -178,7 +178,7 @@ class FoundationProfileController extends Controller
         $foundation->save();
 
         $request->session()->flash('toastsuccess', 'Profile picture updated successfully');
-        return redirect()->action('App\Http\Controllers\FoundationProfileController@foundationprofile', ['id' => $request->FoundationID]);
+        //return redirect()->action('App\Http\Controllers\FoundationProfileController@foundationprofile', ['id' => $request->FoundationID]);
     }
 
     public function DeleteProfilePhoto(Request $request)
