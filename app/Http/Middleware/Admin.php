@@ -17,7 +17,7 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user() && Auth::user()->Role == 3 && !str_contains(explode("/", $request->url())[2], 'admin')) {
+        if (!Auth::check() || Auth::user()->Role != 3 || !str_contains(explode("/", $request->url())[2], 'admin')) {
             abort(403);
         }
         return $next($request);
