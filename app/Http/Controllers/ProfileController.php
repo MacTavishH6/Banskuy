@@ -167,7 +167,8 @@ class ProfileController extends Controller
             ftp_delete($ftp, 'ProfilePicture/Donatur/' . $path);
         ftp_close($ftp);
         // Storage::disk('ftp')->delete('\\ProfilePicture\\Donatur\\' . $filename);
-        Storage::disk('ftp')->put('ProfilePicture/Donatur/' . $filename, fopen($request->file('ProfilePicture'), 'r+'));
+        //Storage::disk('ftp')->put('ProfilePicture/Donatur/' . $filename, fopen($request->file('ProfilePicture'), 'r+'));
+        Storage::disk('public')->put('ProfilePicture/Donatur/' . $filename, fopen($request->file('ProfilePicture'), 'r+'));
 
         $photo->ID = $user->UserID;
         $photo->Path = $filename;

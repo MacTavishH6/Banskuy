@@ -114,13 +114,13 @@ class RegisterController extends Controller
             $this->guard()->login($user);
 
             if ($response = $this->registered($request, $user)) {
-                Mail::to($user->email)->send(new VerificationMail());
+                //Mail::to($user->email)->send(new VerificationMail());
                 Auth::logout();
                 return redirect('/verifyEmailSent');
                 return $response;
                 
             }
-            Mail::to($user->email)->send(new VerificationMail());
+            //Mail::to($user->email)->send(new VerificationMail());
             Auth::logout();
         
             return redirect('/verifyEmailSent');
@@ -145,13 +145,13 @@ class RegisterController extends Controller
 
 
             if ($response = $this->registered($request, $foundation)) {
-                Mail::to($user->email)->send(new VerificationMail());
+               // Mail::to($user->email)->send(new VerificationMail());
                 Auth::guard('foundations')->logout();
                 return redirect('/verifyEmailSent');
                 return $response;
             }
 
-            Mail::to($foundation->email)->send(new VerificationMail());
+            //Mail::to($foundation->email)->send(new VerificationMail());
             Auth::guard('foundations')->logout();
             return redirect('/verifyEmailSent');
             // return $request->wantsJson()

@@ -248,15 +248,15 @@
                                     Hubungi Pembuat</button>
                             </div>
                             <div class="mr-2">
-                                @if ($Post->PostType == 1)
-                                <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
-                                    Meminta Donasi
-                                </a>   
-                                @else
-                                <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($Post->PostID)}}">
-                                    Memberikan Donasi
-                                </a> 
-                                @endif
+                                @if ($Post->PostTypeID == 1 && Auth::guard('foundations')->check())
+                                    <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
+                                        Meminta Donasi
+                                    </a> 
+                                    @elseif(Auth::check() && $Post->PostTypeID == 2)
+                                    <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($Post->PostID)}}">
+                                        Memberikan Donasi
+                                    </a> 
+                                    @endif
                                     
                             </div>
                             <div><button id="btnMakeReport" type="button" class="btn btn-danger pb-2 pt-1 px-3" data-toggle="modal"
@@ -270,7 +270,7 @@
                                 @if ($Post->RoleID == 2)
                                 <a href="/foundationprofile/{{Crypt::encrypt($Post->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Post->Foundation->FoundationName}}</h5></a>
                                 @else
-                                <a href="/profile/{{Crypt::encrypt($Post->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Post->User->FirstName}} {{$Post->User->LastName}}/h5></a>
+                                <a href="/profile/{{Crypt::encrypt($Post->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Post->User->FirstName}} {{$Post->User->LastName}}</h5></a>
                                 @endif
                             </div>
                             <div class="text-muted">
@@ -286,7 +286,7 @@
                         {{$Post->PostDescription}}
                     </div>
                     <div class="p-2 bd-highlight">
-                        <img class="w-75 h-50" src="{{ env('FTP_URL') }}Forum/Post/{{$Post->PostID}}/{{$Post->PostPicture}}">
+                        <img style="max-width: 40%;max-height:40%" src="{{ env('FTP_URL') }}Storage/Forum/Post/{{$Post->PostID}}/{{$Post->PostPicture}}" onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
                     </div>
                     <div class="p-2 bd-highlight">
                         <div class="d-flex border-bottom">
@@ -321,10 +321,13 @@
                                     {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
                                     @if ($Comment->RoleID == 1)
                                     <img class="mr-3 mt-2    d-block rounded-circle" style="height:50px;width:50px"
-                                    src="{{ env('FTP_URL') }}{{ $Comment->User->Photo  ? 'ProfilePicture/Donatur/' . $Comment->User->Photo->Path : 'assets/Smiley.png'  }}"> 
+                                    src="{{ env('FTP_URL') }}{{ $Comment->User->Photo  ? 'ProfilePicture/Donatur/' . $Comment->User->Photo->Path : 'assets/Smiley.png'  }}"
+                                    onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'"
+                                    > 
                                     @else
                                     <img class="mr-3 mt-2    d-block rounded-circle" style="height:50px;width:50px"
-                                    src="{{ env('FTP_URL') }}{{ $Comment->Foundation->FoundationPhoto  ? 'ProfilePicture/Yayasan/' . $Comment->Foundation->FoundationPhoto->Path : 'assets/Smiley.png'  }}"> 
+                                    src="{{ env('FTP_URL') }}{{ $Comment->Foundation->FoundationPhoto  ? 'ProfilePicture/Yayasan/' . $Comment->Foundation->FoundationPhoto->Path : 'assets/Smiley.png'  }}"
+                                    onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'"> 
                                     @endif
                                     
                                     <div class="border mt-2 w-100">
@@ -363,10 +366,12 @@
                                         {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
                                         @if ($Reply->RoleID == 1)
                                         <img class="mr-3 mt-2    d-block rounded-circle" style="height:50px;width:50px"
-                                        src="{{ env('FTP_URL') }}{{ $Reply->User->Photo  ? 'ProfilePicture/Donatur/' . $Reply->User->Photo->Path : 'assets/Smiley.png'  }}"> 
+                                        src="{{ env('FTP_URL') }}{{ $Reply->User->Photo  ? 'ProfilePicture/Donatur/' . $Reply->User->Photo->Path : 'assets/Smiley.png'  }}"
+                                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'"> 
                                         @else
                                         <img class="mr-3 mt-2    d-block rounded-circle" style="height:50px;width:50px"
-                                        src="{{ env('FTP_URL') }}{{ $Reply->Foundation->FoundationPhoto  ? 'ProfilePicture/Yayasan/' . $Reply->Foundation->FoundationPhoto->Path : 'assets/Smiley.png'  }}"> 
+                                        src="{{ env('FTP_URL') }}{{ $Reply->Foundation->FoundationPhoto  ? 'ProfilePicture/Yayasan/' . $Reply->Foundation->FoundationPhoto->Path : 'assets/Smiley.png'  }}"
+                                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'"> 
                                         @endif
                                         <div class="border mt-2 w-100">
                                             <div class="media-body p-3">

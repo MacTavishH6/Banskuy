@@ -15,7 +15,7 @@
                         <img src="{{ env('FTP_URL') }}{{ Auth::guard('foundations')->user()->FoundationPhoto ? 'ProfilePicture/Yayasan/' . Auth::guard('foundations')->user()->FoundationPhoto->Path : 'assets/Smiley.png' }}"
                         alt="FoundationPhotoProfile" class="mr-3 d-block rounded-circle"
                         style="height:75px;width:75px"
-                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
+                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}images/assets/Smiley.png'">
                         <div class="media-body mt-3">
                             <h3>{{Auth::guard('foundations')->user()->FoundationName}}</h3>
                         </div>
@@ -24,7 +24,7 @@
                         <img src="{{ env('FTP_URL') }}{{ Auth::user()->Photo ? 'ProfilePicture/Donatur/' . Auth::user()->Photo->Path : 'assets/Smiley.png' }}"
                         alt="UsernamePhotoProfile" class="mr-3 d-block rounded-circle"
                         style="height:75px;width:75px"
-                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
+                        onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}images/assets/Smiley.png'">
                             
                             <div class="media-body mt-3">
                                 <h3>{{Auth::user()->FirstName}} {{Auth::user()->LastName}}</h3>

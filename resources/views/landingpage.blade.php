@@ -2,7 +2,7 @@
 @section('styles')
     <style>
         .backgroundstyle {
-            background-image: url(<?php echo env('FTP_URL') . 'assets/lp_background.jpg'; ?>);
+            background-image: url(<?php echo env('FTP_URL') . 'assets/lp_background.png'; ?>);
             background-repeat: no-repeat;
             background-size: cover;
         }

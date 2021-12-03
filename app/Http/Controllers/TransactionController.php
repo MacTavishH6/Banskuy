@@ -180,7 +180,7 @@ class TransactionController extends Controller
         $hashed = str_replace('/',';',$hashed);
         $filename = $hashed . '.' . $request->file('DocumentationPhoto')->getClientOriginalExtension();
         $ftp = ftp_connect(env('FTP_SERVER'));
-        $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
+        // $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
 
         $donation = DonationTransaction::where('DonationTransactionID', $request->transactionID)->first();
 
@@ -194,7 +194,9 @@ class TransactionController extends Controller
         $donation->save();
 
         $documentationphoto = new DocumentationPhoto();
-        Storage::disk('ftp')->put('DocumentationPicture/' . $filename, fopen($request->file('DocumentationPhoto'), 'r+'));
+        //Storage::disk('ftp')->put('DocumentationPicture/' . $filename, fopen($request->file('DocumentationPhoto'), 'r+'));
+        Storage::disk('public')->put('DocumentationPicture/' . $filename, fopen($request->file('DocumentationPhoto'), 'r+'));
+        
         $documentationphoto->DocumentationID = $documentation->DocumentationID;
         $documentationphoto->PhotoName = $filename;
         $documentationphoto->save();

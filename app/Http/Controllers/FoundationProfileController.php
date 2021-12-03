@@ -168,7 +168,8 @@ class FoundationProfileController extends Controller
             ftp_delete($ftp, 'ProfilePicture/Yayasan/' . $path);
         ftp_close($ftp);
         // Storage::disk('ftp')->delete('\\ProfilePicture\\Donatur\\' . $filename);
-        Storage::disk('ftp')->put('ProfilePicture/Yayasan/' . $filename, fopen($request->file('ProfilePicture'), 'r+'));
+       // Storage::disk('ftp')->put('ProfilePicture/Yayasan/' . $filename, fopen($request->file('ProfilePicture'), 'r+'));
+       Storage::disk('public')->put('ProfilePicture/Yayasan/' . $filename, fopen($request->file('ProfilePicture'), 'r+'));
 
         $photo->ID = $foundation->FoundationID;
         $photo->Path = $filename;
@@ -208,7 +209,7 @@ class FoundationProfileController extends Controller
         $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',$DocumentTypeID)->first();
         if ($ExistingDocument != null) {
             $path = $ExistingDocument->Path;
-            if ($path && ftp_size($ftp, env('FTP_URL').'DocumentYayasan/' . $path) > 0)
+            if ($path && ftp_size($ftp, env('FTP_URL').'Storage/DocumentYayasan/' . $path) > 0)
                 ftp_delete($ftp, 'DocumentYayasan/' . $path);
         }
         else{
@@ -251,7 +252,9 @@ class FoundationProfileController extends Controller
                     return redirect()->back();
                 
                 }
-            Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('reuploadDocument'),'r+'));
+            Storage::disk('public')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('reuploadDocument'),'r+'));
+
+            //Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('reuploadDocument'),'r+'));
             $request->session()->flash('toastfailed', 'Upload dokumen berhasil');
             return response()->json('');
         }
@@ -288,7 +291,8 @@ class FoundationProfileController extends Controller
                     }
                 }
                 
-                Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('OwnerIdentityCard'),'r+'));              
+                //Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('OwnerIdentityCard'),'r+'));              
+                Storage::disk('public')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('OwnerIdentityCard'),'r+'));              
 
 
             }
@@ -319,7 +323,8 @@ class FoundationProfileController extends Controller
                         return redirect()->back();
                     }
                 }
-                Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationCertificate'),'r+'));
+                //Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationCertificate'),'r+'));
+                Storage::disk('public')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationCertificate'),'r+'));
 
             }
             if($request->hasFile('FoundationOperationalPermit')){
@@ -349,7 +354,8 @@ class FoundationProfileController extends Controller
                         return redirect()->back();
                     }
                 }
-                Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationOperationalPermit'),'r+'));
+                //Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationOperationalPermit'),'r+'));
+                Storage::disk('public')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationOperationalPermit'),'r+'));
 
             }
 
@@ -380,7 +386,8 @@ class FoundationProfileController extends Controller
                         return redirect()->back();
                     }
                 }
-                Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationRegistrationPermit'),'r+'));
+                //Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationRegistrationPermit'),'r+'));
+                Storage::disk('public')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationRegistrationPermit'),'r+'));
 
             }
 

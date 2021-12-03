@@ -105,7 +105,9 @@ class ForumController extends Controller
             $Post->save();
 
             //Upload to FTP
-            Storage::disk('ftp')->put('Forum/Post/'.$Post->id.'/'.$EncodeFile,fopen($request->file('fuAttachment'),'r+'));
+            Storage::disk('public')->put('Forum/Post/'.$Post->id.'/'.$EncodeFile,fopen($request->file('fuAttachment'),'r+'));
+
+            //Storage::disk('ftp')->put('Forum/Post/'.$Post->id.'/'.$EncodeFile,fopen($request->file('fuAttachment'),'r+'));
             $request->session()->flash('toastsuccess', 'Post Created');
             return redirect('/Forum');
         }
@@ -178,7 +180,7 @@ class ForumController extends Controller
             $UserName = Auth::guard('foundations')->user()->FoundationName;
             $hrefProfile = "foundationProfile/" . Crypt::encrypt(Auth::guard('foundations')->user->FoundationID);
             if(Auth::guard('foundations')->user()->FoundationPhoto){
-                $PhotoPath = env('FTP_URL').'ProfilePicture/Yayasan/' .Auth::guard('foundations')->user()->FoundationPhoto->Path;
+                $PhotoPath = env('FTP_URL').'Storage/ProfilePicture/Yayasan/' .Auth::guard('foundations')->user()->FoundationPhoto->Path;
             }
             else{
                 $PhotoPath = env('FTP_URL') . 'assets/Smiley.png';
@@ -188,7 +190,7 @@ class ForumController extends Controller
             $UserName = Auth::user()->FirstName.' '.Auth:: user()->LastName;
             $hrefProfile = "profile/" . Crypt::encrypt(Auth::user()->UserID);
             if(Auth::user()->Photo){
-                $PhotoPath = env('FTP_URL').'ProfilePicture/Donatur/' .Auth::user()->Photo->Path;
+                $PhotoPath = env('FTP_URL').'Storage/ProfilePicture/Donatur/' .Auth::user()->Photo->Path;
             }
             else{
                 $PhotoPath = env('FTP_URL') . 'assets/Smiley.png';
@@ -267,9 +269,9 @@ class ForumController extends Controller
         }
         if(Auth::guard('foundations')->check()){
             $UserName = Auth::guard('foundations')->user()->FoundationName;
-            $hrefProfile = "foundationProfile/" . Crypt::encrypt(Auth::guard('foundations')->user->FoundationID);
+            $hrefProfile = "foundationProfile/" . Crypt::encrypt(Auth::guard('foundations')->user()->FoundationID);
             if(Auth::guard('foundations')->user()->FoundationPhoto){
-                $PhotoPath = env('FTP_URL').'ProfilePicture/Yayasan/' .Auth::guard('foundations')->user()->FoundationPhoto->Path;
+                $PhotoPath = env('FTP_URL').'Storage/ProfilePicture/Yayasan/' .Auth::guard('foundations')->user()->FoundationPhoto->Path;
             }
             else{
                 $PhotoPath = env('FTP_URL') . 'assets/Smiley.png';
@@ -280,7 +282,7 @@ class ForumController extends Controller
             $hrefProfile = "profile/" . Crypt::encrypt(Auth::user()->UserID);
 
             if(Auth::user()->Photo){
-                $PhotoPath = env('FTP_URL').'ProfilePicture/Donatur/' .Auth::user()->Photo->Path;
+                $PhotoPath = env('FTP_URL').'Storage/ProfilePicture/Donatur/' .Auth::user()->Photo->Path;
             }
             else{
                 $PhotoPath = env('FTP_URL') . 'assets/Smiley.png';
