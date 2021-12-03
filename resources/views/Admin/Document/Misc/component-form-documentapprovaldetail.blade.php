@@ -53,10 +53,10 @@
                                         <input type="hidden" id="txtdocumentidhidden" value="<%=data.documentId%>">
                                         <%if(data.approvalStatusID == 1) {%>
                                             <div class="col text-center">
-                                                <button id=""  onclick="btnRejectClick()" class="btnRejectingTransaction btn btn-danger mb-3 mt-5">Tolak Donasi</button>
+                                                <button id=""  onclick="btnRejectClick()" class="btnRejectingTransaction btn btn-danger mb-3 mt-5">Tolak Dokumen</button>
                                             </div>
                                             <div class="col text-center">
-                                                <button id="" onclick="btnApproveClick()" class="btnApprovingTransaction btn btn-success mb-3 mt-5">Terima Donasi</button>
+                                                <button id="" onclick="btnApproveClick()" class="btnApprovingTransaction btn btn-success mb-3 mt-5">Terima Dokumen</button>
                                             </div>
                                         <%}%>
                                     </div>

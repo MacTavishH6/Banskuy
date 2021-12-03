@@ -4,9 +4,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirmation</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <form method="POST" action="/SaveDocumentApproval">
                 <div class="modal-body">
@@ -35,6 +32,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" id="btnCancelConfirmation" onclick="btnCancelConfirmationClick()" class="btn btn-danger text-white" data-dismiss="modal">Batalkan</button>
                     <button type="button" id="btnSaveConfirmation" onclick="btnSaveConfirmationClick(<%=data.typeApprovalId%>)" class="<%=data.buttonType%> text-white" data-dismiss="modal">Simpan</button>
                 </div>
             </form>

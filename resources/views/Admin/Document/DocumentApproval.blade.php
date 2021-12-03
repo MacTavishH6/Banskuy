@@ -34,7 +34,6 @@
 <div class="container mt-3">
     <div class="pagetitle">
         <p>Document Approval</p>
-        <img src="{{asset('/images/assets/Smiley.png')}}">
     </div>
     <div class="row w-75 mx-auto mb-5">
         {{-- sebelahkiri --}}
@@ -53,7 +52,7 @@
             </div>
         </div>
         <div class="col-6">
-            <div class="form-row">
+            {{-- <div class="form-row">
                 <div class="form-group col-md-5">
                     <label for="from">Date Start</label>
                     <input type="text" class="form-control" name="DateStart" id="from" placeholder="">
@@ -71,7 +70,7 @@
                     <label for=""></label>
                     <button id="resetto" class="btn btn-info mt-2 ml-n2 d-none"><span>x</span></button>
                 </div>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label for="inputState">Document Type :</label>
                 <select id="documentType" class="form-control">
@@ -307,6 +306,7 @@
                 data : Data
             }));
             $("#btnSaveConfirmation").prop('disabled', true);
+            $('#approvaldetail').modal('hide');
             $('#confimationModal').modal();
         }
 
@@ -323,6 +323,7 @@
                 data : Data
             }));
             $("#btnSaveConfirmation").prop('disabled', false);
+            $('#approvaldetail').modal('hide');
             $('#confimationModal').modal();
         }
 
@@ -339,16 +340,27 @@
                 type : 'POST',
                 data : {_token: "<?php echo csrf_token(); ?>",documentId : documentId, approvalStatusId : approvalStatusId, description : description},
                 success: function(response){
-                    $('#confimationModal').modal('hide');
-                    $('#approvaldetail').modal('hide');
+                    window.location.reload();
                 }
             }); 
         }
     
         function btnViewFileClick(){
            // $('#approvaldetail').modal('hide');
+            $('#approvaldetail').modal('hide');
             $('#documentPhoto').modal();
+            
         }
+
+        function btnCloseViewPhotoClick(){
+            $('#documentPhoto').modal('hide');
+            $('#approvaldetail').modal();
+        }
+
+        function btnCancelConfirmationClick(){
+            $('#confimationModal').modal('hide');
+            $('#approvaldetail').modal();
+        } 
 
         function txtAlasanChange(){
                 var TextLength = $('#txtAlasan').val().length;

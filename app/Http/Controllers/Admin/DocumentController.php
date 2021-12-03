@@ -14,7 +14,7 @@ class DocumentController extends Controller
     }
 
     public function GetListDocumentByFilter(Request $request){
-        $Document = Document::all();
+        $Document = Document::orderBy('updated_at','desc')->get();
 
         if($request->documentType != 0 ){
             
@@ -54,6 +54,7 @@ class DocumentController extends Controller
         $document->save();
 
         $response = [];
+        $request->session()->flash('toastsuccess', 'Document Updated');
         return response()->json($response);
     }
 }
