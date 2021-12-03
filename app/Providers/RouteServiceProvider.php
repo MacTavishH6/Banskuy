@@ -86,4 +86,16 @@ class RouteServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->group(base_path('routes/foundations.php'));
     }
+
+    /**
+     * Configure routes donatur
+     * 
+     * @return void
+     */
+    protected function mapAdminRoutes()
+    {
+        Route::domain('admin.' . env('APP_URL'))->middleware(['web', 'admin'])
+        ->namespace($this->namespace)
+            ->group(base_path('routes/admin.php'));
+    }
 }

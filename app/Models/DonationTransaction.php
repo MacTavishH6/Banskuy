@@ -29,4 +29,8 @@ class DonationTransaction extends Model
     {
         return $this->hasOne(Post::class, 'PostID', 'PostID');
     }
+
+    public function Documentation(){
+        return $this->hasOne(Documentation::class,'DocumentationID','DocumentationID');
+    }
 }

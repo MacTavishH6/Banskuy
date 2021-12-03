@@ -341,7 +341,8 @@
                                         banskuy.postReq('/updateapprovalstatus', data)
                                             .then(function(response) {
                                                 var transaction = response.payload;
-                                                window.location.reload();
+                                                $("#updocumentation").submit();
+                                                // window.location.reload();
                                                 console.log(transaction); 
                                             })
                                     })
