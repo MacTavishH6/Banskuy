@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\DonationTransaction;
 use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +26,8 @@ class ProfileController extends Controller
         $id = Crypt::decrypt($id);
         $user = User::where('UserID', $id)->with('UserLevel.LevelGrade')->with('Photo')->first();
         $post = Post::where([['ID', $id],['RoleID', '1']])->paginate(15);
-        $documentation = UserDocumentation::where('ID', $id)->with('Documentation')->get();
-        return view('Profile.profile', ['user' => $user, 'posts' => $post, 'documentation' => $documentation]);
+        $donationTransaction = DonationTransaction::where([['UserID',$id],['ApprovalStatusID',5]])->with('Documentation.DocumentationPhoto')->get();
+        return view('Profile.profile', ['user' => $user, 'posts' => $post, 'donationTransaction' => $donationTransaction]);
     }
 
     public function GetProfile($id)
