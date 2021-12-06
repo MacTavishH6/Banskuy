@@ -176,7 +176,8 @@
                             return location.href = '/editfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>;
                         });
                         $(".donation-approval").on('click', function() {
-                            return location.href = '/donationapproval/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>;
+                            // return location.href = '/donationapproval/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>;
+                            return location.href = '/donationapproval/';
                         });
                         $('#Bio').on('input', function() {
                             if ($(this).val().length > 100) $(this).val($(this).val().substring(0, 100));
