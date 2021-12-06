@@ -98,9 +98,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="row">
-                            <div class="col-6 text-center"><a href="https://donate.{{ env('APP_URL') }}/login"
+                            <div class="col-6 text-center"><a href="{{env('APP_SECURE')}}donate.{{ env('APP_URL') }}/login"
                                     class="btn-banskuy">Donatur</a></div>
-                        <div class="col-6 text-center"><a href="https://foundation.{{ env('APP_URL') }}/login"
+                        <div class="col-6 text-center"><a href="{{env('APP_SECURE')}}foundation.{{ env('APP_URL') }}/login"
                                 class="btn-banskuy">Yayasan</a></div>
                     </div>
 

@@ -311,8 +311,10 @@
                                         banskuy.postReq('/updateapprovalstatus', data)
                                             .then(function(response) {
                                                 var transaction = response.payload;
-                                                window.location.reload();
-                                                console.log(transaction); 
+                                                // window.location.reload();
+                                                // console.log(transaction); 
+                                                $("#approvaldetail").modal('hide');
+                                                $("#applyFilter").click();
                                             })
                                     })
                                     $(".btnApprovingTransaction").on('click', function(){
@@ -326,8 +328,10 @@
                                         banskuy.postReq('/updateapprovalstatus', data)
                                             .then(function(response) {
                                                 var transaction = response.payload;
-                                                window.location.reload();
-                                                console.log(transaction); 
+                                                // window.location.reload();
+                                                // console.log(transaction); 
+                                                $("#approvaldetail").modal('hide');
+                                                $("#applyFilter").click();
                                             })
                                     })
                                     $(".btnFinishingTransaction").on('click', function(){
@@ -343,7 +347,7 @@
                                                 var transaction = response.payload;
                                                 $("#updocumentation").submit();
                                                 // window.location.reload();
-                                                console.log(transaction); 
+                                                // console.log(transaction); 
                                             })
                                     })
                                 })

@@ -127,8 +127,6 @@
             <div class="tab-pane fade" id="documentation" role="tabpanel" aria-labelledby="documentation-tab">
                 <div class="container">
                     @include('Profile.Misc.component-list-documentation')
-                    @include('Profile.Misc.component-list-documentation')
-                    @include('Profile.Misc.component-list-documentation')
                 </div>
             </div>
             <div class="tab-pane fade" id="leveltracking" role="tabpanel" aria-labelledby="leveltracking-tab">
