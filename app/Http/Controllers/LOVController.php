@@ -8,6 +8,7 @@ use App\Models\Province;
 use App\Models\City;
 use App\Models\DonationType;
 use App\Models\Post;
+use App\Models\DocumentType;
 use Illuminate\Support\Facades\Crypt;
 
 class LOVController extends Controller
@@ -44,6 +45,19 @@ class LOVController extends Controller
         $listPost = Post::where('ID',$FoundationID)->get();
 
         return response()->json(array('msg'=>$listPost),200);
+    }
+
+
+    public function GetDocumentTypeList(){
+        $DocumentType = DocumentType::all();
+
+        return response()->json(array('payload'=>$DocumentType),200);
+    }
+
+    public function GetApprovalStatus(){
+        $ApprovalStatus = ApprovalStatus::all();
+
+        return response()->json(array('payload'=>$ApprovalStatus),200);
     }
 
     

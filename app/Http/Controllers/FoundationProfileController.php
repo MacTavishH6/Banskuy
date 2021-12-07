@@ -424,7 +424,7 @@ class FoundationProfileController extends Controller
         'ReviewDate' => $Document->ReviewDate,
         'ReviewStatus' => $Document->ApprovalStatus->ApprovalStatusName,
         'ReviewStatusID' => $Document->ApprovalStatus->ApprovalStatusID,
-        'ReviewDescription' => $Document->Description 
+        'ReviewDescription' => $Document->description 
         ];
 
         $response = ['payload' => $DocumentDetail];

@@ -248,15 +248,15 @@
                                     Hubungi Pembuat</button>
                             </div>
                             <div class="mr-2">
-                                @if ($Post->PostType == 1)
-                                <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
-                                    Meminta Donasi
-                                </a>   
-                                @else
-                                <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($Post->PostID)}}">
-                                    Memberikan Donasi
-                                </a> 
-                                @endif
+                                @if ($Post->PostTypeID == 1 && Auth::guard('foundations')->check())
+                                    <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
+                                        Meminta Donasi
+                                    </a> 
+                                    @elseif(Auth::check() && $Post->PostTypeID == 2)
+                                    <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($Post->PostID)}}">
+                                        Memberikan Donasi
+                                    </a> 
+                                    @endif
                                     
                             </div>
                             <div><button id="btnMakeReport" type="button" class="btn btn-danger pb-2 pt-1 px-3" data-toggle="modal"
