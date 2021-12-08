@@ -104,11 +104,7 @@
                                         Approval</button>
                                 @else
                                     <button class="text-white py-1 px-3"
-                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Kontak</button>
-
-                                    <button class="text-white py-1 px-3"
-                                        style="border-radius: 20px; background-color: #53FF37; border: none;">Donasi
-                                        dibutuhkan</button>
+                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Hubungi Sekarang</button>
 
                                     <button class="text-white py-1 px-3"
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;">Laporkan</button>
@@ -125,7 +121,11 @@
                 <div class="row justify-content-center">
                     <ul class="nav text-center" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="documentation-tab" data-toggle="tab" href="#documentation"
+                            <a class="nav-link active" id="post-tab" data-toggle="tab" href="#post" role="tab"
+                                aria-controls="post" aria-selected="true">Daftar Kebutuhan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="documentation-tab" data-toggle="tab" href="#documentation"
                                 role="tab" aria-controls="documentation" aria-selected="false">Dokumentasi</a>
                         </li>
                         <li class="nav-item">
@@ -136,7 +136,12 @@
                 </div>
             </div>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="documentation" role="tabpanel"
+                <div class="tab-pane fade show active" id="post" role="tabpanel" aria-labelledby="post-tab">
+                    <div class="container list-post-container">
+                        @include('FoundationProfile.FoundationMisc.component-list-post')
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="documentation" role="tabpanel"
                     aria-labelledby="documentation-tab">
                     <div class="container">
                         @include('FoundationProfile.FoundationMisc.component-list-documentation')
