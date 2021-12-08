@@ -43,6 +43,10 @@ return [
         'foundations' => [
             'driver' => 'session',
             'provider' => 'foundations',
+        ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin',
         ]
     ],
 
@@ -71,6 +75,10 @@ return [
         'foundations' => [
             'driver' => 'eloquent',
             'model' => App\Models\Foundation::class,
+        ],
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
         ],
         // 'users' => [
         //     'driver' => 'database',

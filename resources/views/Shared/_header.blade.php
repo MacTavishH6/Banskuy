@@ -45,7 +45,7 @@
                 </li>
 
                 <!-- Authentication Links -->
-                @if (Auth::guard('foundations')->check() || Auth::check())
+                @if (Auth::guard('foundations')->check() || Auth::check() || Auth::guard('admin')->check())
                     <li class="nav-item">
                         @if (Auth::guard('foundations')->check())
                             <a class="nav-link"
@@ -84,7 +84,7 @@
                             </li>
                         @elseif(str_contains($_SERVER['HTTP_HOST'],'admin.'))
                             <li class="nav-item">
-                                <a class="nav-link" href="/adminlogin">{{ __('Masuk') }}</a>
+                                <a class="nav-link" href="/login">{{ __('Masuk') }}</a>
                             </li>
 
                         @endif
@@ -107,12 +107,12 @@
                             <li class="nav-item">
                                 <a class="nav-link text-white py-1 px-3"
                                     style="background-color: #AC8FFF; border-radius: 20px;"
-                                    href="/adminlogin">{{ __('Masuk') }}</a>
+                                    href="/login">{{ __('Masuk') }}</a>
                             </li>
                         @endif
                     @endif
 
-                    @if (Request::is('login') || Request::is('foundationlogin'))
+                    @if ((Request::is('login') || Request::is('foundationlogin')) && !str_contains($_SERVER['HTTP_HOST'],'admin.'))
                         <li class="nav-item">
                             <a class="nav-link"
                                 href="{{ Request::is('login') ? route('register') : '/foundationregister' }}">{{ __('Daftar Sekarang') }}</a>
