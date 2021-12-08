@@ -180,9 +180,9 @@ class TransactionController extends Controller
             $NextLevel = $LevelGrade->where('LevelGradeID', $UserLevel->LevelGradeID + 1)->first();
             switch ($donation->DonationTypeDetail->DonationType->DonationTypeID) {
                 case 1:
-                    if ($Level->Exp + 50 > $NextLevel->LevelExp) {
-                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 50);
-                        $Level->Exp = $Level->Exp + 50;
+                    if ($Level->Exp + 750 >= $NextLevel->LevelExp) {
+                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 750);
+                        $Level->Exp = $Level->Exp + 750;
                         $Level->save();
                         $userlevel = new UserLevel;
                         $userlevel->UserID = $UserLevel->UserID;
@@ -201,15 +201,15 @@ class TransactionController extends Controller
                         $level->created_at = date('Y-m-d H:i:s');
                         $level->save();
                     } else {
-                        $Level->Exp = $Level->Exp + 50;
+                        $Level->Exp = $Level->Exp + 750;
                         // dd($Level);
                         $Level->save();
                     }
                     break;
                 case 2:
-                    if ($Level->Exp + 75 > $NextLevel->LevelExp) {
-                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 75);
-                        $Level->Exp = $Level->Exp + 50;
+                    if ($Level->Exp + 1000 >= $NextLevel->LevelExp) {
+                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 1000);
+                        $Level->Exp = $Level->Exp + 1000;
                         $Level->save();
                         $userlevel = new UserLevel;
                         $userlevel->UserID = $UserLevel->UserID;
@@ -228,14 +228,14 @@ class TransactionController extends Controller
                         $level->created_at = date('Y-m-d H:i:s');
                         $level->save();
                     } else {
-                        $Level->Exp = $Level->Exp + 75;
+                        $Level->Exp = $Level->Exp + 1000;
                         $Level->save();
                     }
                     break;
                 case 3:
-                    if ($Level->Exp + 25 > $NextLevel->LevelExp) {
-                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 25);
-                        $Level->Exp = $Level->Exp + 50;
+                    if ($Level->Exp + 500 >= $NextLevel->LevelExp) {
+                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 500);
+                        $Level->Exp = $Level->Exp + 500;
                         $Level->save();
                         $userlevel = new UserLevel;
                         $userlevel->UserID = $UserLevel->UserID;
@@ -254,7 +254,7 @@ class TransactionController extends Controller
                         $level->created_at = date('Y-m-d H:i:s');
                         $level->save();
                     } else {
-                        $Level->Exp = $Level->Exp + 25;
+                        $Level->Exp = $Level->Exp + 500;
                         $Level->save();
                     }
                     break;
