@@ -25,8 +25,8 @@ class ProfileController extends Controller
     {
         $id = Crypt::decrypt($id);
         $user = User::where('UserID', $id)->with('UserLevel.LevelGrade')->with('Photo')->first();
-        $post = Post::where([['ID', $id],['RoleID', '1']])->paginate(15);
-        $donationTransaction = DonationTransaction::where([['UserID',$id],['ApprovalStatusID',5]])->with('Documentation.DocumentationPhoto')->get();
+        $post = Post::where([['ID', $id],['RoleID', '1']])->paginate(10);
+        $donationTransaction = DonationTransaction::where([['UserID',$id],['ApprovalStatusID',5]])->with('Documentation.DocumentationPhoto')->paginate(10);
         return view('Profile.profile', ['user' => $user, 'posts' => $post, 'donationTransaction' => $donationTransaction]);
     }
 

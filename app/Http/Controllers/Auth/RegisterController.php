@@ -105,7 +105,7 @@ class RegisterController extends Controller
 
             $level = new Level();
             $level->LevelID = $userlevellastid;
-            $level->Exp = 0;
+            $level->Exp = 2500;
             $level->ReceivedDate = Carbon::now()->toDateTimeString();
             $level->created_at = date('Y-m-d H:i:s');
             $level->save();
