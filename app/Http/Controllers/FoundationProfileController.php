@@ -243,6 +243,7 @@ class FoundationProfileController extends Controller
                 if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
                     $ExistingDocument->DocumentName = $request->file('reuploadDocument')->getClientOriginalName();
                     $ExistingDocument->Path = $EncodeFile;
+                    $ExistingDocument->ApprovalStatusID = 1;
                     $ExistingDocument->save();
                 }
                 else{
@@ -423,7 +424,7 @@ class FoundationProfileController extends Controller
         'ReviewDate' => $Document->ReviewDate,
         'ReviewStatus' => $Document->ApprovalStatus->ApprovalStatusName,
         'ReviewStatusID' => $Document->ApprovalStatus->ApprovalStatusID,
-        'ReviewDescription' => $Document->Description 
+        'ReviewDescription' => $Document->description 
         ];
 
         $response = ['payload' => $DocumentDetail];

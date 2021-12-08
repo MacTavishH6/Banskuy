@@ -58,7 +58,6 @@
                     data: {text : Comment,_token: "<?php echo csrf_token(); ?>"},
                     success:function(response){
                     var commentResponse = response.payload; 
-                    console.log(commentResponse);
                     var Body = "";
                     var Name = response.UserName;
                     
@@ -70,7 +69,9 @@
                             Body += "<div class=\"border mt-2 w-100\">";
                             Body += "<div class=\"media-body p-3\">";
                             Body += "<div class=\"d-flex \">";
-                            Body += "<div class=\"p-1\"> <h5 style=\"font-weight: normal\">"+Name+"</h5></div>";
+                                
+                            Body += "<div class=\"p-1\"> <a href=\"/"+response.hrefProfile+"\" style=\"color: black\"><h5 style=\"font-weight: normal\">"+Name+"</h5></a></div> ";
+                            
                             Body += "<div class=\"p-1 text-muted mr-auto\"> <small>"+response.date+"</small></div>"
                             Body += "<div>";
                             Body += "<button id=\"btnReplyComment\" class=\"btn btn-link\" onclick=\"btnReplyCommentOnClick("+commentResponse.CommentID+","+commentResponse.PostID+")\">"
@@ -124,7 +125,7 @@
                 success:function(response){
                     var Reply = response.payload;
                     var Name = response.UserName;
-                    
+                    console.log(response);
                     var Body = "";
                     Body += "<div id=\"ReplySection\" class=\"ml-5\">";
                             Body += "<div class=\"media mb-2\">";
@@ -133,7 +134,9 @@
                             Body += "<div class=\"border mt-2 w-100\">";
                             Body += "<div class=\"media-body p-3\">";
                             Body += "<div class=\"d-flex\">";
-                            Body += "<div class=\"p-1\"> <h5 style=\"font-weight: normal\">"+Name+"</h5></div>"
+                            //Body += "<div class=\"p-1\"> <h5 style=\"font-weight: normal\">"+Name+"</h5></div>"
+                            Body += "<div class=\"p-1\"> <a href=\"/"+response.hrefProfile+"\" style=\"color: black\"><h5 style=\"font-weight: normal\">"+Name+"</h5></a></div> ";
+                            
                             Body += "<div class=\"p-1 text-muted mr-auto\"> <small>"+response.date+"</small></div>"
                             Body += "<div class=\"p-1 text-muted\"><small>Reply to "+ response.replyTo +"</small> </div>"
                             Body += "</div>"; 
@@ -242,18 +245,18 @@
                             @if (Auth::check() || Auth::guard('foundations')->check())
                             <div class="mr-2">
                                 <button type="submit" class="btn btn-warning pb-2 pt-1 px-1">
-                                    Contact Author</button>
+                                    Hubungi Pembuat</button>
                             </div>
                             <div class="mr-2">
-                                @if ($Post->PostType == 1)
-                                <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
-                                    Ask For Donation
-                                </a>   
-                                @else
-                                <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($Post->PostID)}}">
-                                    Open For Donation
-                                </a> 
-                                @endif
+                                @if ($Post->PostTypeID == 1 && Auth::guard('foundations')->check())
+                                    <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
+                                        Meminta Donasi
+                                    </a> 
+                                    @elseif(Auth::check() && $Post->PostTypeID == 2)
+                                    <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($Post->PostID)}}">
+                                        Memberikan Donasi
+                                    </a> 
+                                    @endif
                                     
                             </div>
                             <div><button id="btnMakeReport" type="button" class="btn btn-danger pb-2 pt-1 px-3" data-toggle="modal"
@@ -265,9 +268,9 @@
                         <div class="d-flex">
                             <div class="mr-2">
                                 @if ($Post->RoleID == 2)
-                                <h5 style="font-weight: normal">{{$Post->Foundation->FoundationName}}</h5>
+                                <a href="/foundationprofile/{{Crypt::encrypt($Post->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Post->Foundation->FoundationName}}</h5></a>
                                 @else
-                                <h5 style="font-weight: normal">{{$Post->User->FirstName}} {{$Post->User->LastName}}</h5>
+                                <a href="/profile/{{Crypt::encrypt($Post->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Post->User->FirstName}} {{$Post->User->LastName}}/h5></a>
                                 @endif
                             </div>
                             <div class="text-muted">
@@ -316,9 +319,9 @@
                             <div id="CommentSection{{$Comment->CommentID}}">
                                 <div class="media">
                                     {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
-                                    @if ($Comment->User->RoleID == 1)
+                                    @if ($Comment->RoleID == 1)
                                     <img class="mr-3 mt-2    d-block rounded-circle" style="height:50px;width:50px"
-                                    src="{{ env('FTP_URL') }}{{ $Comment->User->Photo  ? 'ProfilePicture/Yayasan/' . $Comment->User->Photo->Path : 'assets/Smiley.png'  }}"> 
+                                    src="{{ env('FTP_URL') }}{{ $Comment->User->Photo  ? 'ProfilePicture/Donatur/' . $Comment->User->Photo->Path : 'assets/Smiley.png'  }}"> 
                                     @else
                                     <img class="mr-3 mt-2    d-block rounded-circle" style="height:50px;width:50px"
                                     src="{{ env('FTP_URL') }}{{ $Comment->Foundation->FoundationPhoto  ? 'ProfilePicture/Yayasan/' . $Comment->Foundation->FoundationPhoto->Path : 'assets/Smiley.png'  }}"> 
@@ -329,12 +332,11 @@
                                             <div class="d-flex ">
                                                 <div class="p-1">
                                                     
-                                                    @if ($Comment->User->RoleID == 1)
-                                                    <h5 style="font-weight: normal">{{$Comment->User->FirstName}} {{$Comment->User->LastName}}</h5>
-                                                    @else
-
-                                                    <h5 style="font-weight: normal">{{$Comment->Foundation->FoundationName}}</h5>
-                                                    @endif
+                                                    @if ($Comment->RoleID == 2)
+                                                        <a href="/foundationprofile/{{Crypt::encrypt($Comment->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Comment->Foundation->FoundationName}}</h5></a>
+                                                        @else
+                                                        <a href="/profile/{{Crypt::encrypt($Comment->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Comment->User->FirstName}} {{$Comment->User->LastName}}</h5></a>
+                                                        @endif
                                                 </div>
                                                 <div class="p-1 text-muted mr-auto">
                                                     <small>{{date('d M Y',strtotime($Comment->created_at))}}</small> 
@@ -359,19 +361,34 @@
                                   <div id="ReplySection" class="ml-5">
                                     <div class="media mb-2">
                                         {{-- <img class="mr-3 d-block rounded-circle" style="height:100px;width:100px"  src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png"> --}}
-                                        <img class="mr-3 mt-2   d-block rounded-circle" style="height:50px;width:50px"
-                                        src="{{ env('FTP_URL') }}{{ $Post->Foundation->FoundationPhoto  ? 'ProfilePicture/Yayasan/' . $Post->Foundation->FoundationPhoto->Path : 'assets/Smiley.png' }}">
+                                        @if ($Reply->RoleID == 1)
+                                        <img class="mr-3 mt-2    d-block rounded-circle" style="height:50px;width:50px"
+                                        src="{{ env('FTP_URL') }}{{ $Reply->User->Photo  ? 'ProfilePicture/Donatur/' . $Reply->User->Photo->Path : 'assets/Smiley.png'  }}"> 
+                                        @else
+                                        <img class="mr-3 mt-2    d-block rounded-circle" style="height:50px;width:50px"
+                                        src="{{ env('FTP_URL') }}{{ $Reply->Foundation->FoundationPhoto  ? 'ProfilePicture/Yayasan/' . $Reply->Foundation->FoundationPhoto->Path : 'assets/Smiley.png'  }}"> 
+                                        @endif
                                         <div class="border mt-2 w-100">
                                             <div class="media-body p-3">
                                                 <div class="d-flex ">
                                                     <div class="p-1">
-                                                        <h5 style="font-weight: normal">{{$Reply->User->FirstName}} {{$Reply->User->LastName}}</h5>
+                                                        @if ($Reply->RoleID == 2)
+                                                        <a href="/foundationprofile/{{Crypt::encrypt($Reply->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Reply->Foundation->FoundationName}}</h5></a>
+                                                        @else
+                                                        <a href="/profile/{{Crypt::encrypt($Reply->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Reply->User->FirstName}} {{$Reply->User->LastName}}</h5></a>
+                                                        @endif
                                                     </div>
                                                     <div class="p-1 text-muted mr-auto">
                                                         <small>{{date('d M Y',strtotime($Reply->created_at))}}</small> 
                                                     </div>
                                                     <div class="p-1 text-muted">
+                                                        
+                                                        
+                                                        @if ($Comment->RoleID == 1)
                                                         <small>Reply to {{$Comment->User->FirstName}} {{$Comment->User->LastName}}</small> 
+                                                        @else
+                                                        <small>Reply to {{$Comment->Foundation->FoundationName}}</small> 
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <h6>{{$Reply->Comment}}</h6>

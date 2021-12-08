@@ -6,11 +6,15 @@ use App\Models\Documentation;
 use App\Models\DocumentationPhoto;
 use App\Models\DonationTransaction;
 use App\Models\Foundation;
+use App\Models\Level;
+use App\Models\LevelGrade;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\UserLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -22,7 +26,7 @@ class TransactionController extends Controller
         $id = Crypt::decrypt($id);
         $user = User::where('UserID', $id)->with('UserLevel.LevelGrade')->with('Photo')->first();
         $StatusRedirect = 0;
-        return view('Transaction.createtransaction', compact('user','StatusRedirect'));
+        return view('Transaction.createtransaction', compact('user', 'StatusRedirect'));
     }
 
     public function DonationHistory()
@@ -37,7 +41,7 @@ class TransactionController extends Controller
             $foundation = Foundation::get();
         else
             $foundation = Foundation::where('FoundationName', 'like', '%' . $request->text . '%')->get();
-        
+
         $foundationid = array();
         foreach ($foundation as $value) {
             $foundationid[] = ['key' => $value->FoundationID, 'value' => Crypt::encrypt($value->FoundationID)];
@@ -90,8 +94,7 @@ class TransactionController extends Controller
                 $dateFrom = date('Y-m-d', strtotime($request->dateStart));
                 $dateTo = date('Y-m-d', strtotime($request->dateEnd));
                 $transactionDate = date('Y-m-d', strtotime($x->TransactionDate));
-                if (($transactionDate >= $dateFrom) && ($transactionDate <= $dateTo)) 
-                {
+                if (($transactionDate >= $dateFrom) && ($transactionDate <= $dateTo)) {
                     $x = $x;
                 } else {
                     $x = [];
@@ -138,8 +141,7 @@ class TransactionController extends Controller
                 $dateFrom = date('Y-m-d', strtotime($request->dateStart));
                 $dateTo = date('Y-m-d', strtotime($request->dateEnd));
                 $transactionDate = date('Y-m-d', strtotime($x->TransactionDate));
-                if (($transactionDate >= $dateFrom) && ($transactionDate <= $dateTo)) 
-                {
+                if (($transactionDate >= $dateFrom) && ($transactionDate <= $dateTo)) {
                     $x = $x;
                 } else {
                     $x = [];
@@ -163,12 +165,101 @@ class TransactionController extends Controller
 
     public function AcceptRejectDonationTransaction(Request $request)
     {
-        $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->first();
-        
-        
+        $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->with('DonationTypeDetail.DonationType')->first();
+
+
         $donation->ApprovalStatusID = $request->donationStatus;
-        
+
+
         $donation->save();
+        if ($donation->ApprovalStatusID == 5) {
+            $UserLevel = UserLevel::where([['UserID', $donation->UserID], ['IsCurrentLevel', 1]])->first();
+            $Level = Level::where('LevelID', $UserLevel->LevelID)->first();
+            // dd($Level);
+            $LevelGrade = LevelGrade::all();
+            $NextLevel = $LevelGrade->where('LevelGradeID', $UserLevel->LevelGradeID + 1)->first();
+            switch ($donation->DonationTypeDetail->DonationType->DonationTypeID) {
+                case 1:
+                    if ($Level->Exp + 750 >= $NextLevel->LevelExp) {
+                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 750);
+                        $Level->Exp = $Level->Exp + 750;
+                        $Level->save();
+                        $userlevel = new UserLevel;
+                        $userlevel->UserID = $UserLevel->UserID;
+                        $userlevel->LevelGradeID = $NextLevel->LevelGradeID;
+                        $userlevel->IsCurrentLevel = 1;
+                        $userlevel->ReceivedDate = Carbon::now()->toDateTimeString();
+                        $userlevel->created_at = date('Y-m-d H:i:s');
+                        $userlevel->save();
+
+                        $userlevellastid = $userlevel->LevelID;
+
+                        $level = new Level();
+                        $level->LevelID = $userlevellastid;
+                        $level->Exp = $Remain;
+                        $level->ReceivedDate = Carbon::now()->toDateTimeString();
+                        $level->created_at = date('Y-m-d H:i:s');
+                        $level->save();
+                    } else {
+                        $Level->Exp = $Level->Exp + 750;
+                        // dd($Level);
+                        $Level->save();
+                    }
+                    break;
+                case 2:
+                    if ($Level->Exp + 1000 >= $NextLevel->LevelExp) {
+                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 1000);
+                        $Level->Exp = $Level->Exp + 1000;
+                        $Level->save();
+                        $userlevel = new UserLevel;
+                        $userlevel->UserID = $UserLevel->UserID;
+                        $userlevel->LevelGradeID = $NextLevel->LevelGradeID;
+                        $userlevel->IsCurrentLevel = 1;
+                        $userlevel->ReceivedDate = Carbon::now()->toDateTimeString();
+                        $userlevel->created_at = date('Y-m-d H:i:s');
+                        $userlevel->save();
+
+                        $userlevellastid = $userlevel->LevelID;
+
+                        $level = new Level();
+                        $level->LevelID = $userlevellastid;
+                        $level->Exp = $Remain;
+                        $level->ReceivedDate = Carbon::now()->toDateTimeString();
+                        $level->created_at = date('Y-m-d H:i:s');
+                        $level->save();
+                    } else {
+                        $Level->Exp = $Level->Exp + 1000;
+                        $Level->save();
+                    }
+                    break;
+                case 3:
+                    if ($Level->Exp + 500 >= $NextLevel->LevelExp) {
+                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 500);
+                        $Level->Exp = $Level->Exp + 500;
+                        $Level->save();
+                        $userlevel = new UserLevel;
+                        $userlevel->UserID = $UserLevel->UserID;
+                        $userlevel->LevelGradeID = $NextLevel->LevelGradeID;
+                        $userlevel->IsCurrentLevel = 1;
+                        $userlevel->ReceivedDate = Carbon::now()->toDateTimeString();
+                        $userlevel->created_at = date('Y-m-d H:i:s');
+                        $userlevel->save();
+
+                        $userlevellastid = $userlevel->LevelID;
+
+                        $level = new Level();
+                        $level->LevelID = $userlevellastid;
+                        $level->Exp = $Remain;
+                        $level->ReceivedDate = Carbon::now()->toDateTimeString();
+                        $level->created_at = date('Y-m-d H:i:s');
+                        $level->save();
+                    } else {
+                        $Level->Exp = $Level->Exp + 500;
+                        $Level->save();
+                    }
+                    break;
+            }
+        }
         $response = ['payload' => 'sukses'];
         return response()->json($response);
     }
@@ -176,8 +267,8 @@ class TransactionController extends Controller
     public function UploadDocumentation(Request $request)
     {
         $hashed = Hash::make($request->transactionID);
-        $hashed = str_replace('\\',';',$hashed);
-        $hashed = str_replace('/',';',$hashed);
+        $hashed = str_replace('\\', ';', $hashed);
+        $hashed = str_replace('/', ';', $hashed);
         $filename = $hashed . '.' . $request->file('DocumentationPhoto')->getClientOriginalExtension();
         $ftp = ftp_connect(env('FTP_SERVER'));
         $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
@@ -198,19 +289,19 @@ class TransactionController extends Controller
         $documentationphoto->DocumentationID = $documentation->DocumentationID;
         $documentationphoto->PhotoName = $filename;
         $documentationphoto->save();
-        
+
         $request->session()->flash('toastsuccess', 'Dokumentasi updated successfully');
         return redirect()->back();
     }
 
     //25 Nov 2021 - add fikri for redirecting from post
-    public function MakeTransactionWithPost($id){
+    public function MakeTransactionWithPost($id)
+    {
         $PostID = Crypt::decrypt($id);
-        $user = User::where('UserID',FacadesAuth::id())->with('UserLevel.LevelGrade')->with('Photo')->first();
-        $Post = Post::where('PostID',$PostID)->first();
-        $Foundation = Foundation::where('FoundationID',$Post->ID)->first();
+        $user = User::where('UserID', FacadesAuth::id())->with('UserLevel.LevelGrade')->with('Photo')->first();
+        $Post = Post::where('PostID', $PostID)->first();
+        $Foundation = Foundation::where('FoundationID', $Post->ID)->first();
         $StatusRedirect = 1;
-        return view('Transaction.createtransaction', compact('user','Foundation','Post','StatusRedirect'));
+        return view('Transaction.createtransaction', compact('user', 'Foundation', 'Post', 'StatusRedirect'));
     }
 }
-

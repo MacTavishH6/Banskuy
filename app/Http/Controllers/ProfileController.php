@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\DonationTransaction;
 use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,9 +25,9 @@ class ProfileController extends Controller
     {
         $id = Crypt::decrypt($id);
         $user = User::where('UserID', $id)->with('UserLevel.LevelGrade')->with('Photo')->first();
-        $post = Post::where('ID', $id)->get();
-        $documentation = UserDocumentation::where('ID', $id)->with('Documentation')->get();
-        return view('Profile.profile', ['user' => $user, 'post' => $post, 'documentation' => $documentation]);
+        $post = Post::where([['ID', $id],['RoleID', '1']])->paginate(10);
+        $donationTransaction = DonationTransaction::where([['UserID',$id],['ApprovalStatusID',5]])->with('Documentation.DocumentationPhoto')->paginate(10);
+        return view('Profile.profile', ['user' => $user, 'posts' => $post, 'donationTransaction' => $donationTransaction]);
     }
 
     public function GetProfile($id)
@@ -198,5 +199,12 @@ class ProfileController extends Controller
         ftp_close($ftp);
         $request->session()->flash('toastsuccess', 'Profile picture has been deleted');
         return redirect()->action('App\Http\Controllers\ProfileController@profile', ['id' => $request->UserID]);
+    }
+
+    public function GetUserListPost($id){
+        $id = Crypt::decrypt($id);
+        $post = Post::where([["ID", $id],["RoleID", "1"]])->get();
+        $response = ['payload' => $post];
+        return response()->json($response);
     }
 }

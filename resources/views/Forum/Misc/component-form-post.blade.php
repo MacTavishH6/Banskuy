@@ -1,7 +1,7 @@
 @foreach ($ItemTypeDetail->Post as $ItemPost)
 <div class="Post-Item mb-2 card-body mb-2">
     <div class="media mb-4 ">
-        <img class="mr-3 d-block w-25 h-25"
+        <img class="mr-3 d-block w-25 h-25" style="max-width: 25%;max-height: 25%"
             src="{{ env('FTP_URL') }}Forum/Post/{{$ItemPost->PostID}}/{{$ItemPost->PostPicture}}">
         <div class="media-body">
             <div class="d-flex">
@@ -13,7 +13,7 @@
                                     <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
                                         Meminta Donasi
                                     </a> 
-                                    @elseif(Auth::check())
+                                    @elseif(Auth::check() && $ItemPost->PostTypeID == 2)
                                     <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($ItemPost->PostID)}}">
                                         Memberikan Donasi
                                     </a> 

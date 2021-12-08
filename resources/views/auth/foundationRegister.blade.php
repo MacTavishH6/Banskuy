@@ -221,7 +221,7 @@
                             {{-- BUTTON REGISTER BAWAAN BOOTSTRAP --}}
                             <div class="buttonregister form-group row mb-0">
                                 {{-- <div class="col-md-6 offset-md-4"> --}}
-                                <button id="btnRegister" disabled type="submit" class="disabled" style="color: white">
+                                <button id="btnRegister" disabled type="submit" class="btn btn-banskuy" style="color: white">
                                     {{ __('Mendaftar') }}
                                 </button>
                                 {{-- </div> --}}

@@ -49,14 +49,17 @@
                         <div class="col-12 has-bio">
                             <p align="justify">{{ $user->Bio }}</p>
                         </div>
+                        @if (Auth::check() && Auth::id() == $user->UserID)
                         <div class="col-12 edit-bio">
                             <textarea name="Bio" id="Bio" class="form-control" rows="3"
                                 style="resize: none">{{ $user->Bio ? $user->Bio : '' }}</textarea>
                         </div>
+                        @endif
+                        
                     </div>
                     <div class="row mt-2">
                         <div class="col">
-                            @if (Auth::user()->UserID == $user->UserID)
+                            @if (Auth::check() && Auth::id() == $user->UserID)
                                 <form action="/updatebio" class="form d-inline" method="post">
                                     @csrf
                                     @method("PUT")
@@ -67,7 +70,8 @@
                                         Bio</button>
                                 </form>
                                 <button class="text-white py-1 px-3 has-bio" id="btnEditBio"
-                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Suntung Bio</button>
+                                    style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting
+                                    Bio</button>
 
                                 <button class="text-white py-1 px-3 edit-profile"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting
@@ -105,7 +109,7 @@
                         <a class="nav-link" id="documentation-tab" data-toggle="tab" href="#documentation" role="tab"
                             aria-controls="documentation" aria-selected="false">Dokumentasi</a>
                     </li>
-                    @if (true)
+                    @if (Auth::check() && Auth::id() == $user->UserID)
                         <li class="nav-item">
                             <a class="nav-link" id="leveltracking-tab" data-toggle="tab" href="#leveltracking"
                                 role="tab" aria-controls="leveltracking" aria-selected="false">Jelajah Level</a>
@@ -116,14 +120,12 @@
         </div>
         <div class="tab-content mb-3" id="myTabContent">
             <div class="tab-pane fade show active" id="post" role="tabpanel" aria-labelledby="post-tab">
-                <div class="container">
+                <div class="container list-post-container">
                     @include('Profile.Misc.component-list-post')
                 </div>
             </div>
             <div class="tab-pane fade" id="documentation" role="tabpanel" aria-labelledby="documentation-tab">
                 <div class="container">
-                    @include('Profile.Misc.component-list-documentation')
-                    @include('Profile.Misc.component-list-documentation')
                     @include('Profile.Misc.component-list-documentation')
                 </div>
             </div>
@@ -176,6 +178,7 @@
                     $("#nextlevelxp").html(data.payload.LevelExp);
                     $("#nextlevelname").html(data.payload.LevelName);
                 });
+            $(".pagination").parent().addClass('w-25').addClass('mx-auto');
         });
     </script>
 @endsection

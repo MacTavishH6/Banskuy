@@ -12,7 +12,7 @@
                     <div class="d-flex flex-column bd-highlght mb-3">
                         <div class="d-flex flex-row bd-highlight mb-2 border-bottom">
                             <div class="p-2 bd-highlight w-50">
-                                Document Type
+                                Tipe Dokumen
                             </div>
                             <div class="p-2 bd-highlight">
                                 <label id="lblDocumentTypePopup"></label>
@@ -20,7 +20,7 @@
                         </div>
                         <div class="d-flex flex-row bd-highlight mb-2 border-bottom"">
                             <div class="p-2 bd-highlight w-50">
-                                File Name
+                                Nama File
                             </div>
                             <div class="p-2 bd-highlight">
                                 <label id="lblDocumentFileNamePopup"></label>
@@ -28,7 +28,7 @@
                         </div>
                         <div class="d-flex flex-row bd-highlight mb-2 border-bottom"">
                             <div class="p-2 bd-highlight w-50">
-                                Upload Date
+                                Tanggal Unggah
                             </div>
                             <div class="p-2 bd-highlight">
                                 <label id="lblDocumentUploadDatePopup"></label>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="d-flex flex-row bd-highlight mb-2 border-bottom"">
                             <div class="p-2 bd-highlight w-50">
-                                Review Date
+                                Tanggal Tinjauan
                             </div>
                             <div class="p-2 bd-highlight">
                                 <label id="lblDocumentReviewDatePopup"></label>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="d-flex flex-row bd-highlight mb-2 border-bottom"">
                             <div class="p-2 bd-highlight w-50">
-                                Review Status
+                                Status Tinjauan
                             </div>
                             <div class="p-2 bd-highlight">
                                 <label id="lblDocumentStatusPopup"></label>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="d-flex flex-row bd-highlight mb-2 border-bottom"">
                             <div class="p-2 bd-highlight w-50">
-                                Review Description
+                                Deskripsi Tinjauan
                             </div>
                             <div class="p-2 bd-highlight">
                                 <label id="lblDocumentReviewDescPopup"></label>
@@ -63,7 +63,7 @@
                         <div class="d-flex flex-row bd-highlight mb-2 d-none" id="divReuploadDocument"  >
                           
                                 <div class="p-2 bd-highlight w-50">
-                                    Reupload Document
+                                    Unggah Ulang
                                 </div>
                                 <div class="p-2 bd-highlight">
                                     <div class="custom-file w-100 mb-3">

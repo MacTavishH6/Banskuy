@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Document;
+use Illuminate\Support\Facades\Crypt;
 
 class ForumController extends Controller
 {
@@ -24,7 +25,7 @@ class ForumController extends Controller
         $DonationType = $this->GetCategory();
         $DonationTypeDetail = DonationTypeDetail::all();
 
-        $AllowedPost = 0;
+        $AllowedPost = 3;
         if(Auth::guard('foundations')->check()){
             $Document = Document::where('FoundationID',Auth::guard('foundations')->user()->FoundationID)->where('ApprovalStatusID','2')->get();
             if($Document->count() == 4 && Auth::guard('foundations')->User()->IsConfirmed == 1){
@@ -45,7 +46,7 @@ class ForumController extends Controller
         $DonationType = $this->GetCategory()->where('DonationTypeID',$id);
         $DonationTypeDetail = DonationTypeDetail::all();
 
-        $AllowedPost = 0;
+        $AllowedPost = 3;
         if(Auth::guard('foundations')->check()){
             $Document = Document::where('FoundationID',Auth::guard('foundations')->user()->FoundationID)->where('ApprovalStatusID','2')->get();
             if($Document->count() == 4){
@@ -170,9 +171,12 @@ class ForumController extends Controller
         $UserName = "";
         $PhotoPath = "";
         
-       
+        $ReplyTo = "";
+        $hrefProfile = "";
+        $commentForm = Comment::where('CommentID',$id)->first();
         if(Auth::guard('foundations')->check()){
             $UserName = Auth::guard('foundations')->user()->FoundationName;
+            $hrefProfile = "foundationProfile/" . Crypt::encrypt(Auth::guard('foundations')->user->FoundationID);
             if(Auth::guard('foundations')->user()->FoundationPhoto){
                 $PhotoPath = env('FTP_URL').'ProfilePicture/Yayasan/' .Auth::guard('foundations')->user()->FoundationPhoto->Path;
             }
@@ -182,7 +186,8 @@ class ForumController extends Controller
         } 
         else{
             $UserName = Auth::user()->FirstName.' '.Auth:: user()->LastName;
-            if(Auth::guard('foundations')->user()->FoundationPhoto){
+            $hrefProfile = "profile/" . Crypt::encrypt(Auth::user()->UserID);
+            if(Auth::user()->Photo){
                 $PhotoPath = env('FTP_URL').'ProfilePicture/Donatur/' .Auth::user()->Photo->Path;
             }
             else{
@@ -196,7 +201,7 @@ class ForumController extends Controller
         try{
             $Comment->save();
             $totalReplies = Comment::where('PostID',$id)->get()->count();
-            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'UserName'=>$UserName,'date' => date('d M Y',strtotime($Comment->created_at)), 'PhotoPath' => $PhotoPath];
+            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'UserName'=>$UserName,'date' => date('d M Y',strtotime($Comment->created_at)), 'PhotoPath' => $PhotoPath,'hrefProfile'=> $hrefProfile ];
             return response()->json($response);
         }catch(Exception $ex){
             return redirect('/');
@@ -225,7 +230,7 @@ class ForumController extends Controller
         try{
             $Comment->save();
     
-            return $this->PostDetail($id);
+            return redirect('/ViewPost/'.$id);
         }catch(Exception $ex){
             throw $ex;
         }
@@ -251,8 +256,18 @@ class ForumController extends Controller
 
         $UserName = "";
         $PhotoPath = "";
+        $ReplyTo = "";
+        $hrefProfile = "";
+        $commentForm = Comment::where('CommentID',$id)->first();
+        if($commentForm->RoleID == 1){
+            $ReplyTo  = $commentForm->User->FirstName." ".$commentForm->User->LastName;
+        }
+        else{
+            $ReplyTo  = $commentForm->Foundation->FoundationName;
+        }
         if(Auth::guard('foundations')->check()){
             $UserName = Auth::guard('foundations')->user()->FoundationName;
+            $hrefProfile = "foundationProfile/" . Crypt::encrypt(Auth::guard('foundations')->user()->FoundationID);
             if(Auth::guard('foundations')->user()->FoundationPhoto){
                 $PhotoPath = env('FTP_URL').'ProfilePicture/Yayasan/' .Auth::guard('foundations')->user()->FoundationPhoto->Path;
             }
@@ -262,7 +277,9 @@ class ForumController extends Controller
         } 
         else{
             $UserName = Auth::user()->FirstName.' '.Auth:: user()->LastName;
-            if(Auth::guard('foundations')->user()->FoundationPhoto){
+            $hrefProfile = "profile/" . Crypt::encrypt(Auth::user()->UserID);
+
+            if(Auth::user()->Photo){
                 $PhotoPath = env('FTP_URL').'ProfilePicture/Donatur/' .Auth::user()->Photo->Path;
             }
             else{
@@ -274,10 +291,10 @@ class ForumController extends Controller
         try{
             $Comment->save();
             $Comment->created_at = date('d M Y',strtotime($Comment->created_at));
-            $commentForm = Comment::where('CommentID',$id)->first();
+            
             $totalReplies = Comment::where('PostID',$idpost)->get()->count();
 
-            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'UserName' => $UserName,'replyTo'=> $commentForm->User->FirstName." ".$commentForm->User->LastName,'date' => date('d M Y',strtotime($Comment->created_at)),'PhotoPath' => $PhotoPath];
+            $response = ['payload' => $Comment,'totalReplies'=>$totalReplies,'UserName' => $UserName,'replyTo'=> $ReplyTo,'date' => date('d M Y',strtotime($Comment->created_at)),'PhotoPath' => $PhotoPath, 'hrefProfile' => $hrefProfile];
         return response()->json($response);
 
         }catch(Exception $ex){
