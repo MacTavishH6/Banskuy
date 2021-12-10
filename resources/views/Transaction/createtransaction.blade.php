@@ -77,6 +77,17 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="form-row py-1 d-none" id="select-tipepost">
+                        <div class="col-3">
+                            <label for="TipePost">Tipe Post</label>
+                        </div>
+                        <div class="col-5">
+                            <select name="TipePost" class="form-control" id="TipePost">
+                                <option value="1">Post Donatur</option>
+                                <option value="2">Post Yayasan</option>
+                            </select>
+                        </div>
+                    </div>
 
 
                     <div class="form-row py-1">
@@ -117,6 +128,7 @@
                             <input type="text" name="City" id="City" class="form-control" disabled required>
                         </div>
                     </div>
+                    
                     <div class="form-row py-1 d-none" id="select-post">
                         <div class="col-3">
                             <label for="SelectPost">Pilih Post</label>
@@ -313,11 +325,13 @@
             $("input[name='WithPost']").change(function() {
                 if ($(this).val() == 1) {
                     $("#select-post").removeClass('d-none');
+                    $("#select-tipepost").removeClass('d-none');
                     CheckPostEnabled();
                     
                     
                 } else if ($(this).val() == 2) {
                     $("#select-post").addClass('d-none');
+                    $("#select-tipepost").addClass('d-none');
                 }
             });
        
@@ -326,8 +340,10 @@
         function bindListPost($id){
             //var id = $('#FoundationID').val();
             //console.log(id);
+            console.log($('#TipePost').val());
             var data = {
                         UserID: $id,
+                        TipePost: $('#TipePost').val(),
                         _token: "<?php echo csrf_token(); ?>"
                     }
             banskuy.postReq('/getpostlist', data)
@@ -344,7 +360,7 @@
 
                         if(element.PostID == {{isset($Post) ? $Post->PostID : 0}})
                             $('#SelectPost').append('<option value ='+element.PostID+' selected>'+element.PostTitle+'</option>');
-                            else
+                        else
                             $('#SelectPost').append('<option value ='+element.PostID+'>'+element.PostTitle+'</option>');
 
                     });
