@@ -10,6 +10,7 @@ use App\Models\DonationType;
 use App\Models\Post;
 use App\Models\DocumentType;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Auth;
 
 class LOVController extends Controller
 {
@@ -40,9 +41,13 @@ class LOVController extends Controller
     }
 
     public function PostList(Request $request){
-        $FoundationID = Crypt::decrypt($request->UserID);
+        $id = Crypt::decrypt($request->UserID);
+        $TypePost = $request->TipePost;
+        if($TypePost == 1){
+            $id = Auth::user()->UserID;
 
-        $listPost = Post::where('ID',$FoundationID)->get();
+        }
+        $listPost = Post::where('ID',$id)->get();
 
         return response()->json(array('msg'=>$listPost),200);
     }

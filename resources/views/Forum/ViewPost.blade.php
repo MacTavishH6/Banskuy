@@ -243,12 +243,10 @@
                                 <h2>{{$Post->PostTitle}}</h2>
                             </div>
                             @if (Auth::check() || Auth::guard('foundations')->check())
+                            
                             <div class="mr-2">
-                                <button type="submit" class="btn btn-warning pb-2 pt-1 px-1">
-                                    Hubungi Pembuat</button>
-                            </div>
-                            <div class="mr-2">
-                                @if ($Post->PostTypeID == 1 && Auth::guard('foundations')->check())
+                                @if ($Post->StatusPostId == 1)
+                                    @if ($Post->PostTypeID == 1 && Auth::guard('foundations')->check())
                                     <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
                                         Meminta Donasi
                                     </a> 
@@ -256,13 +254,29 @@
                                     <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($Post->PostID)}}">
                                         Memberikan Donasi
                                     </a> 
-                                    @endif
-                                    
+                                    @endif  
+                                @elseif($Post->StatusPostId == 2)
+                                    <a class="btn btn-danger pb-2 pt-1 px-1" id="btnOpenDonation" href="#}">
+                                        Post Ditutup
+                                    </a>  
+                                @endif   
                             </div>
-                            <div><button id="btnMakeReport" type="button" class="btn btn-danger pb-2 pt-1 px-3" data-toggle="modal"
+                            
+                           
+                                @if ($StatusPost == true)
+                                <div class="mr-2">
+                                    <button type="submit" class="btn btn-warning pb-2 pt-1 px-1">
+                                        Hubungi Pembuat</button>
+                                </div>
+                                <div>
+                                    <button id="btnMakeReport" type="button" class="btn btn-danger pb-2 pt-1 px-3" data-toggle="modal"
                                     data-target="#mdlMakeReport" onclick="btnMakeReportOnClick()">
                                     Report
-                                </button></div>
+                                    </button> 
+                                </div>
+                                @endif
+                                
+                            
                                 @endif
                         </div>
                         <div class="d-flex">
@@ -270,7 +284,7 @@
                                 @if ($Post->RoleID == 2)
                                 <a href="/foundationprofile/{{Crypt::encrypt($Post->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Post->Foundation->FoundationName}}</h5></a>
                                 @else
-                                <a href="/profile/{{Crypt::encrypt($Post->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Post->User->FirstName}} {{$Post->User->LastName}}/h5></a>
+                                <a href="/profile/{{Crypt::encrypt($Post->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Post->User->FirstName}} {{$Post->User->LastName}}</h5></a>
                                 @endif
                             </div>
                             <div class="text-muted">

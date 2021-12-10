@@ -7,14 +7,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="d-flex justify-content-around">
-                        <div class="col-md-9">
-                            <div class="card">
 
-                                <div class="">
-                                    <img src="{{ env('FTP_URL') }}<%=data.filePath%>">
+                                <div>
+                                    <img  style="width:100%;height:100%" src="{{ env('FTP_URL') }}<%=data.filePath%>">
                                 </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
