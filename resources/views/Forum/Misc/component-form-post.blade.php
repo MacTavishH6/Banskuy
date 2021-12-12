@@ -9,15 +9,23 @@
                     <h5><a href="/ViewPost/{{$ItemPost->PostID}}" class="PostTitle" style="color: black;text-decoration:none">{{$ItemPost->PostTitle}}</a></h5>
                 </div>
                 <div>
+                                @if($ItemPost->StatusPostId == 1)
                                     @if ($ItemPost->PostTypeID == 1 && Auth::guard('foundations')->check())
-                                    <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
-                                        Meminta Donasi
-                                    </a> 
-                                    @elseif(Auth::check() && $ItemPost->PostTypeID == 2)
-                                    <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($ItemPost->PostID)}}">
-                                        Memberikan Donasi
-                                    </a> 
+                                        <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
+                                            Meminta Donasi
+                                        </a> 
+                                        @elseif(Auth::check() && $ItemPost->PostTypeID == 2)
+                                        <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($ItemPost->PostID)}}">
+                                            Memberikan Donasi
+                                        </a> 
                                     @endif
+                                @elseif($ItemPost->StatusPostId == 2)
+                                    <a class="btn btn-danger pb-2 pt-1 px-1" id="btnOpenDonation" href="#}">
+                                        Post Ditutup
+                                    </a>  
+                                @endif
+                                
+                                    
                 </div>
             </div>
             <div class="d-flex flex-column bd-highlight">

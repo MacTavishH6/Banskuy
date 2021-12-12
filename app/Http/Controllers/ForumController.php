@@ -65,8 +65,19 @@ class ForumController extends Controller
     public function PostDetail($id){
         $Post = Post::where('PostID',$id)->first();
         $Like = Like::where('PostID',$id)->where('LikePost',1)->get();
-        
-        return view('/Forum/ViewPost',compact('Post','Like'));
+
+        $StatusPost = true;
+        if(Auth::check()){
+            if(Auth::user()->UserID == $Post->ID){
+                $StatusPost = false;
+            }
+        }
+        else if(Auth::guard('foundations')->check()){
+            if(Auth::guard('foundations')->user()->FoundationID == $Post->ID){
+                $StatusPost = false;
+            }
+        }
+        return view('/Forum/ViewPost',compact('Post','Like','StatusPost'));
     }
 
     public function CreatePost(Request $request){
@@ -86,7 +97,7 @@ class ForumController extends Controller
         $Post->UploadDate = Carbon::now()->toDateTimeString();
         $Post->Quantity = $request->txtQuantity;
         $Post->PostTitle = $request->txtPostTitle;
-
+        $Post->StatusPostId = 1;
         if(Auth::guard('foundations')->check()){
             $Post->RoleID = 2;
         } 
