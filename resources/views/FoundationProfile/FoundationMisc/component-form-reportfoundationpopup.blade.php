@@ -2,18 +2,18 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content p-4">
             <div class="modal-header">
-                <h2 class="modal-title w-100 text-center">Laporkan Pengguna</h2>
+                <h2 class="modal-title w-100 text-center">Laporkan Yayasan</h2>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body mb-1">
-                <h3>Apakah anda yakin ingin melaporkan pengguna ini?</h3>
+                <h3>Apakah anda yakin ingin melaporkan yayasan ini?</h3>
                 <div class="mt-4">
                     <form action="/MakeReportUser" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" id="targetId" name="targetId" value="{{Crypt::encrypt($user->UserID)}}">
-                        <input type="hidden" id="roleId" name="roleId" value="1">
+                        <input type="hidden" id="targetId" name="targetId" value="{{Crypt::encrypt($foundation->FoundationID)}}">
+                        <input type="hidden" id="roleId" name="roleId" value="2">
                         <div class="form-group w-100">
                             <div class="mt-2 mr-1">
                                 <h5>Tipe Pelanggaran</h5>
