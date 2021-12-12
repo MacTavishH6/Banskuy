@@ -79,11 +79,11 @@
                             @else
                                 <button class="text-white py-1 px-3"
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;"
-                                    data-toggle="modal" data-target="#mdlMakeReport">Laporkan</button>
+                                    data-toggle="modal" data-target="#mdlMakeReport" onclick="btnMakeReportOnClick()">Laporkan</button>
 
                                 {{-- POP UP CREATE POST START HERE --}}
                                 <div class="slider">
-                                    @include('Forum.Misc.component-form-reportuserpopup')
+                                    @include('Profile.Misc.component-form-reportuserpopup')
                                 </div>
                                 {{-- POP UP CREATE POST End HERE --}}
                             @endif
@@ -180,5 +180,23 @@
                 });
             $(".pagination").parent().addClass('w-25').addClass('mx-auto');
         });
+
+        function btnMakeReportOnClick(){
+            $.ajax({
+                type: 'GET',
+                dataType : 'json',
+                url : '/GetReportCategory',
+                success:function(response){
+                    if(response.payload){
+                        $('#ddlReportType').empty();
+                        $.each(response.payload,function(index){
+                            var Value = response.payload[index].ReportCategoryID;
+                            var Name = response.payload[index].ReportCategoryName;
+                            $('#ddlReportType').append("<option value="+Value+">"+Name+"</option");
+                        });
+                    }
+                }
+            });
+        }
     </script>
 @endsection

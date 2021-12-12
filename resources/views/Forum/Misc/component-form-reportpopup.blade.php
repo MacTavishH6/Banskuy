@@ -17,8 +17,6 @@
                                 <h5>Type of violation</h5>
                             </div>
                             <select class="form-control" id="ddlReportType" name="ddlReportType">
-                                <option>Scamming</option>
-                                <option>Fraud</option>
                             </select>
                         </div>
 
