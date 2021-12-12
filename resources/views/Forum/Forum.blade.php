@@ -87,7 +87,7 @@
 <div class="container" >
 
         {{-- SLIDER START HERE --}}
-        <div class="slider"  >
+        <div class="slider" >
             @include('Shared.Slider')
         </div>
         {{-- SLIDER END HERE --}}
