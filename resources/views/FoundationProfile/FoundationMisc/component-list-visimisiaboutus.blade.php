@@ -24,7 +24,7 @@
 
 <div class="row justify-content-around">
     <div class="col-12">
-        <p style="font-size: 130%">{{$foundation->Misi}}</p>
+        <label style="font-size: 130%; white-space: pre-wrap">{{$foundation->Misi}}</label>
     </div>
 </div>
 

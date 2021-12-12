@@ -12,14 +12,14 @@
             </div>
             <div class="col-10">
                 <div class="row">
-                    <h4>Judul: <a href="/ViewPost/{{ $post->PostID }}" class="PostTitle"
+                    <h4>Nama Kebutuhan : <a href="/ViewPost/{{ $post->PostID }}" class="PostTitle"
                             style="text-decoration:none">{{ $post->PostTitle }}</a></h4>
                 </div>
                 <div class="row">
-                    <h6>Description: {{ $post->PostDescription }}</h6>
+                    <h6>Deskripsi : {{ $post->PostDescription }}</h6>
                 </div>
                 <div class="row">
-                    <h6>Tanggal Post: {{ date('d M Y', strtotime($post->created_at)) }} at
+                    <h6>Tanggal Post : {{ date('d M Y', strtotime($post->created_at)) }} at
                         {{ date('h:i A', strtotime($post->created_at)) }}</h6>
                 </div>
             </div>

@@ -49,7 +49,7 @@ Route::middleware(['auth:foundations'])->group(function () {
     Route::delete('/deleteprofilephoto', [App\Http\Controllers\FoundationProfileController::class, 'DeleteProfilePhoto']);
 
     
-    Route::get('/donationapproval/{id}', [App\Http\Controllers\TransactionController::class, 'DonationApproval']);
+    Route::get('/donationapproval', [App\Http\Controllers\TransactionController::class, 'DonationApproval']);
     Route::post(
         '/getdonationapproval',
         [App\Http\Controllers\TransactionController::class, 'GetDonationApproval']

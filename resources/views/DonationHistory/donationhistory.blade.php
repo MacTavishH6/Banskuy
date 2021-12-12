@@ -103,8 +103,8 @@
         }
 
         /* #progressbar li.active+li:after {
-            background: #2F8D46
-        } */
+                    background: #2F8D46
+                } */
 
     </style>
 @endsection
@@ -280,49 +280,55 @@
                 banskuy.postReq('/getdonationhistory', data)
                     .then((response) => {
                         var listDonation = response.payload;
-                        var counter = 1;
-                        _.each(listDonation, function(donation, donationKey) {
-                            var data = {};
-                            if ((counter++) % 2 == 1) {
-                                data.headerColor = "bg-secondary";
-                                data.headerTextColor = "text-white";
-                            } else {
-                                data.headerColor = "";
-                                data.headerTextColor = "";
-                            }
-                            var transactionDate = new Date(donation.TransactionDate);
-                            var formattedDate = transactionDate.toString(
-                                "d MMMM yyyy");
-                            data.transactionDate = formattedDate;
-                            data.transactionID = donation.DonationTransactionID;
-                            data.status = donation.approval_status.ApprovalStatusName;
-                            switch (donation.approval_status.ApprovalStatusID) {
-                                case 1:
-                                    data.statusColor = 'btn-warning';
-                                    break;
-                                case 2:
-                                    data.statusColor = 'btn-primary';
-                                    break;
-                                case 3:
-                                    data.statusColor = 'btn-danger';
-                                    break;
-                                case 4:
-                                    data.statusColor = 'btn-warning';
-                                    break;
-                                case 5:
-                                    data.statusColor = 'btn-success';
-                                    break;
-                            }
-                            data.donationTitle = donation.DonationDescriptionName;
-                            data.donationType = donation.donation_type_detail
-                                .donation_type.DonationTypeName;
-                            data.foundationName = donation.foundation.FoundationName;
-                            var divtemplate = _.template($("#component-list-donation")
-                                .html());
-                            $("#list-containter").append(divtemplate({
-                                data: data
-                            }));
-                        });
+                        if (listDonation.length < 1) {
+                            $("#list-containter").html(
+                                "<h3 class=\"text-center mb-3\">Tidak ada Data</h3>");
+                        } else {
+                            $("#list-containter").html('');
+                            var counter = 1;
+                            _.each(listDonation, function(donation, donationKey) {
+                                var data = {};
+                                if ((counter++) % 2 == 1) {
+                                    data.headerColor = "bg-secondary";
+                                    data.headerTextColor = "text-white";
+                                } else {
+                                    data.headerColor = "";
+                                    data.headerTextColor = "";
+                                }
+                                var transactionDate = new Date(donation.TransactionDate);
+                                var formattedDate = transactionDate.toString(
+                                    "d MMMM yyyy");
+                                data.transactionDate = formattedDate;
+                                data.transactionID = donation.DonationTransactionID;
+                                data.status = donation.approval_status.ApprovalStatusName;
+                                switch (donation.approval_status.ApprovalStatusID) {
+                                    case 1:
+                                        data.statusColor = 'btn-warning';
+                                        break;
+                                    case 2:
+                                        data.statusColor = 'btn-primary';
+                                        break;
+                                    case 3:
+                                        data.statusColor = 'btn-danger';
+                                        break;
+                                    case 4:
+                                        data.statusColor = 'btn-warning';
+                                        break;
+                                    case 5:
+                                        data.statusColor = 'btn-success';
+                                        break;
+                                }
+                                data.donationTitle = donation.DonationDescriptionName;
+                                data.donationType = donation.donation_type_detail
+                                    .donation_type.DonationTypeName;
+                                data.foundationName = donation.foundation.FoundationName;
+                                var divtemplate = _.template($("#component-list-donation")
+                                    .html());
+                                $("#list-containter").append(divtemplate({
+                                    data: data
+                                }));
+                            });
+                        }
 
                     })
                     .finally(function() {
@@ -336,7 +342,13 @@
                             banskuy.postReq('/gettransactiondetail', data)
                                 .then(function(response) {
                                     var transaction = response.payload;
-                                    console.log(transaction);
+                                    let quantity = transaction.Quantity;
+                                    if (transaction.donation_type_detail
+                                        .donation_type.DonationTypeID != 3) {
+                                        quantity = transaction.Quantity.substring(0,
+                                            transaction.Quantity.indexOf('.'));
+                                    }
+                                    console.log(quantity);
                                     var data = {
                                         DonationType: transaction.donation_type_detail
                                             .donation_type.DonationTypeName,
@@ -346,7 +358,7 @@
                                             .DonationDescriptionName,
                                         Status: transaction.approval_status
                                             .ApprovalStatusName,
-                                        Quantity: transaction.Quantity,
+                                        Quantity: quantity,
                                         Foundation: transaction.foundation
                                             .FoundationName
                                     };

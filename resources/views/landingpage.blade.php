@@ -98,9 +98,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="row">
-                            <div class="col-6 text-center"><a href="https://donate.{{ env('APP_URL') }}/login"
+                            <div class="col-6 text-center"><a href="{{env('APP_SECURE')}}donate.{{ env('APP_URL') }}/login"
                                     class="btn-banskuy">Donatur</a></div>
-                        <div class="col-6 text-center"><a href="https://foundation.{{ env('APP_URL') }}/login"
+                        <div class="col-6 text-center"><a href="{{env('APP_SECURE')}}foundation.{{ env('APP_URL') }}/login"
                                 class="btn-banskuy">Yayasan</a></div>
                     </div>
 
@@ -141,8 +141,10 @@
                 </div>
             </div>
             <div class="card" style="margin:1%; background-color: #18171f; border-radius: 20px">
-                <img class="text-center" src="{{ env('FTP_URL') }}assets/comserv.png" alt="image"
+                <div class="text-center my-2">
+                    <img  src="{{ env('FTP_URL') }}assets/comserv.png" alt="image"
                     style="max-width:200px; color: white">
+                </div>
                 <div class="container text-center" style="color: white">
                     <h2><b>Pelayanan Masyarakat</b></h2> <br>
                     <p style="font-size: 140%" align="justify">Menolong orang lain adalah hal yang sederhana, jika anda

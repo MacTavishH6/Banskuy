@@ -6,6 +6,8 @@ use App\Models\Address;
 use App\Models\Foundation;
 use App\Models\UserDocumentation;
 use App\Models\FoundationPhoto;
+use App\Models\Post;
+use App\Models\DonationTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
@@ -23,9 +25,10 @@ class FoundationProfileController extends Controller
     public function FoundationProfile($id){
         $foundationID = Crypt::decrypt($id);
         $foundation = Foundation::where('FoundationID', $foundationID)->with('FoundationPhoto')->first();
-        $documentation = UserDocumentation::where('ID', $foundationID)->with('Documentation')->get();
+        $post = Post::where([['ID', $foundationID],['RoleID', '2']])->paginate(15);
+        $donationTransaction = DonationTransaction::where([['FoundationID',$foundationID],['ApprovalStatusID',5]])->with('Documentation.DocumentationPhoto')->get();
 
-        return view('FoundationProfile.profileyayasan', ['foundation'=>$foundation,'documentation'=>$documentation]);
+        return view('FoundationProfile.profileyayasan', ['foundation'=>$foundation, 'posts' => $post, 'donationTransaction' => $donationTransaction]);
     }
 
     public function EditFoundationProfile($id){
@@ -428,6 +431,13 @@ class FoundationProfileController extends Controller
         ];
 
         $response = ['payload' => $DocumentDetail];
+        return response()->json($response);
+    }
+
+    public function GetUserListPost($id){
+        $foundationid = Crypt::decrypt($id);
+        $post = Post::where([["ID", $foundationid],["RoleID", "2"]])->get();
+        $response = ['payload' => $post];
         return response()->json($response);
     }
 
