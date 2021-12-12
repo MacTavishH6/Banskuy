@@ -81,11 +81,11 @@
                                     style="border-radius: 20px; background-color: #AC8FFF; border: none;"
                                     data-toggle="modal" data-target="#mdlMakeReport" onclick="btnMakeReportOnClick()">Laporkan</button>
 
-                                {{-- POP UP CREATE POST START HERE --}}
+                                {{-- POP UP report START HERE --}}
                                 <div class="slider">
                                     @include('Profile.Misc.component-form-reportuserpopup')
                                 </div>
-                                {{-- POP UP CREATE POST End HERE --}}
+                                {{-- POP UP report End HERE --}}
                             @endif
 
                         </div>
