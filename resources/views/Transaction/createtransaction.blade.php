@@ -339,8 +339,8 @@
 
         function bindListPost($id){
             //var id = $('#FoundationID').val();
-            //console.log(id);
-            console.log($('#TipePost').val());
+            //console.log($id);
+
             var data = {
                         UserID: $id,
                         TipePost: $('#TipePost').val(),
@@ -348,12 +348,13 @@
                     }
             banskuy.postReq('/getpostlist', data)
                 .then(function(data) {
+                    // console.log(data.msg);
                     var SelectPost = document.getElementById('SelectPost');
                     $(SelectPost).empty();
                     var listPost = data.msg;
                     let newOption = new Option('','');
                     SelectPost.add(newOption,undefined);
-                    console.log(data.msg);
+                    //console.log(data.msg);
                     listPost.forEach(element=>{
                         // let newOption = new Option(element.PostTitle,element.PostID);
                         // SelectPost.add(newOption,undefined);
@@ -400,7 +401,7 @@
                 banskuy.getReq('/getdonationtype')
                     .then(function(data) {
                         var donationtype = data.msg;
-                        console.log(donationtype);
+                        //console.log(donationtype);
                         var donationtypeval = $("#DonationType").val();
                         var donationtypedetail = donationtype.find(function(x) {
                             return x.DonationTypeID == donationtypeval
@@ -408,7 +409,7 @@
                         var optiondetail = document.getElementById("Unit");
                         let newOptionDetail = new Option('', '');
                         optiondetail.add(newOptionDetail, undefined);
-                        console.log(donationtypedetail);
+                        //console.log(donationtypedetail);
                         donationtypedetail.forEach(element2 => {
                             // let newOptionDetail = new Option(element2.DonationTypeDetail,
                             //     element2.DonationTypeDetailID);
@@ -481,8 +482,22 @@
                                     $("#modal-foundation").modal('hide');
                                     CheckPostEnabled();
                                 });
-                                
+ 
+                            $("#select-tipepost").removeClass('d-none'); 
+                            $('#TipePost').empty();
+                            if({{isset($Post) ? $Post->RoleID : 0}} == 1){
+                                $('#TipePost').append('<option value ="1" selected>Post Donatur</option>');
+                                $('#TipePost').append('<option value ="2">Post Yayasan</option>');
+                            }
+                               
+                            else{
+                                $('#TipePost').append('<option value ="1">Post Donatur</option>');
+                                $('#TipePost').append('<option value ="2" selected>Post Yayasan</option>');
+                            }
+                            
+      
             }
+            
             CheckPostEnabled();
             $("#SelectPost").prop('disabled', false);
             bindListPost('{{Crypt::encrypt(isset($Post) ? $Post->ID : 0)}}');
