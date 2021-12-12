@@ -302,6 +302,7 @@ class TransactionController extends Controller
         $Post = Post::where('PostID', $PostID)->first();
         $Foundation = Foundation::where('FoundationID', $Post->ID)->first();
         $StatusRedirect = 1;
+        
         return view('Transaction.createtransaction', compact('user', 'Foundation', 'Post', 'StatusRedirect'));
     }
 }

@@ -187,7 +187,7 @@ class ForumController extends Controller
         $commentForm = Comment::where('CommentID',$id)->first();
         if(Auth::guard('foundations')->check()){
             $UserName = Auth::guard('foundations')->user()->FoundationName;
-            $hrefProfile = "foundationProfile/" . Crypt::encrypt(Auth::guard('foundations')->user->FoundationID);
+            $hrefProfile = "foundationProfile/" . Crypt::encrypt(Auth::guard('foundations')->user()->FoundationID);
             if(Auth::guard('foundations')->user()->FoundationPhoto){
                 $PhotoPath = env('FTP_URL').'ProfilePicture/Yayasan/' .Auth::guard('foundations')->user()->FoundationPhoto->Path;
             }
