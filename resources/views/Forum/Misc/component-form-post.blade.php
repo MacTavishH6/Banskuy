@@ -55,7 +55,12 @@
                         @endif
                     </div>
                     <div class="p-1 bd-higlight mb-2">
+                        @if ($ItemTypeDetail->DonationTypeID != 3)
+                        {{$ItemPost->Quantity + 0}} 
+                        @else
                         {{$ItemPost->Quantity}} 
+                        @endif
+                        
                     </div>
                 </div>
 
