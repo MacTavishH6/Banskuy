@@ -26,7 +26,7 @@ class ReportController extends Controller
         $Report->ReportCategoryID = $request->ddlReportType;
         $Report->Reason = $request->txaReportDesc;
         $Report->RoleIDSource = $sourceRole;
-        
+        $Report->IsTakenAction = 0;
         try{
             $Report->save();
             $request->session()->flash('toastsuccess', 'Laporan berhasil dibuat');
@@ -53,6 +53,7 @@ class ReportController extends Controller
         $Report->Reason = $request->txaReportDesc;
         $Report->RoleIDTarget = $request->roleId;
         $Report->RoleIDSource = $sourceRole;
+        $Report->IsTakenAction = 0;
         try{
             $Report->save();
             $request->session()->flash('toastsuccess', 'Laporan berhasil dibuat');
