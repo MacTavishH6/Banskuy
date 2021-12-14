@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
+use App\Models\User;
+
+use App\Models\Foundation;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +19,29 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('App.Models.Foundation.{id}', function ($foundation, $id) {
+    return (int) $foundation->id === (int) $id;
+});
+
+Broadcast::channel('chat.{Receiver}',function($user,User $Receiver){
+    
+    // if(Auth::check()){
+    //     return Auth::check();
+    // }
+    // else{
+    //     return Auth::guard('foundations')->check();
+    // }
+    return true;
+});
+
+Broadcast::channel('chatFoundation.{Receiver}',function($foundation,Foundation $Receiver){
+
+    // if(Auth::check()){
+    //     return Auth::check();
+    // }
+    // else{
+    //     return Auth::guard('foundations')->check();
+    // }
+    return true;
+},['guards' => ['web','foundations']]);

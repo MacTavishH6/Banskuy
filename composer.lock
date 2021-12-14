@@ -1381,6 +1381,7 @@
         },
         {
             "name": "laravel/framework",
+<<<<<<< Updated upstream
             "version": "v8.75.0",
             "source": {
                 "type": "git",
@@ -1391,6 +1392,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/0bb91d3176357da232da69762a64b0e0a0988637",
                 "reference": "0bb91d3176357da232da69762a64b0e0a0988637",
+=======
+            "version": "v8.74.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/framework.git",
+                "reference": "004ea195012d5132eca07a176a6e587c6a74815e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/004ea195012d5132eca07a176a6e587c6a74815e",
+                "reference": "004ea195012d5132eca07a176a6e587c6a74815e",
+>>>>>>> Stashed changes
                 "shasum": ""
             },
             "require": {
@@ -1549,7 +1562,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
+<<<<<<< Updated upstream
             "time": "2021-12-07T14:55:46+00:00"
+=======
+            "time": "2021-11-30T15:26:05+00:00"
+>>>>>>> Stashed changes
         },
         {
             "name": "laravel/sanctum",
@@ -2858,6 +2875,55 @@
             "time": "2016-08-06T20:24:11+00:00"
         },
         {
+            "name": "psr/cache",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/cache.git",
+                "reference": "aa5030cfa5405eccfdcb1083ce040c2cb8d253bf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/aa5030cfa5405eccfdcb1083ce040c2cb8d253bf",
+                "reference": "aa5030cfa5405eccfdcb1083ce040c2cb8d253bf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for caching libraries",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr-6"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/cache/tree/3.0.0"
+            },
+            "time": "2021-02-03T23:26:27+00:00"
+        },
+        {
             "name": "psr/container",
             "version": "1.1.2",
             "source": {
@@ -3954,6 +4020,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
+<<<<<<< Updated upstream
             "version": "v5.4.0",
             "source": {
                 "type": "git",
@@ -3971,16 +4038,34 @@
                 "symfony/deprecation-contracts": "^2.1|^3",
                 "symfony/event-dispatcher-contracts": "^2|^3",
                 "symfony/polyfill-php80": "^1.16"
+=======
+            "version": "v6.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/event-dispatcher.git",
+                "reference": "2774908d5ae32fd94e363e7cbbd87462712c4576"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/2774908d5ae32fd94e363e7cbbd87462712c4576",
+                "reference": "2774908d5ae32fd94e363e7cbbd87462712c4576",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.2",
+                "symfony/event-dispatcher-contracts": "^2|^3"
+>>>>>>> Stashed changes
             },
             "conflict": {
-                "symfony/dependency-injection": "<4.4"
+                "symfony/dependency-injection": "<5.4"
             },
             "provide": {
                 "psr/event-dispatcher-implementation": "1.0",
-                "symfony/event-dispatcher-implementation": "2.0"
+                "symfony/event-dispatcher-implementation": "2.0|3.0"
             },
             "require-dev": {
                 "psr/log": "^1|^2|^3",
+<<<<<<< Updated upstream
                 "symfony/config": "^4.4|^5.0|^6.0",
                 "symfony/dependency-injection": "^4.4|^5.0|^6.0",
                 "symfony/error-handler": "^4.4|^5.0|^6.0",
@@ -3988,6 +4073,15 @@
                 "symfony/http-foundation": "^4.4|^5.0|^6.0",
                 "symfony/service-contracts": "^1.1|^2|^3",
                 "symfony/stopwatch": "^4.4|^5.0|^6.0"
+=======
+                "symfony/config": "^5.4|^6.0",
+                "symfony/dependency-injection": "^5.4|^6.0",
+                "symfony/error-handler": "^5.4|^6.0",
+                "symfony/expression-language": "^5.4|^6.0",
+                "symfony/http-foundation": "^5.4|^6.0",
+                "symfony/service-contracts": "^1.1|^2|^3",
+                "symfony/stopwatch": "^5.4|^6.0"
+>>>>>>> Stashed changes
             },
             "suggest": {
                 "symfony/dependency-injection": "",
@@ -4019,7 +4113,11 @@
             "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< Updated upstream
                 "source": "https://github.com/symfony/event-dispatcher/tree/v5.4.0"
+=======
+                "source": "https://github.com/symfony/event-dispatcher/tree/v6.0.0"
+>>>>>>> Stashed changes
             },
             "funding": [
                 {
@@ -4035,6 +4133,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< Updated upstream
             "time": "2021-11-23T10:19:22+00:00"
         },
         {
@@ -4049,10 +4148,26 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/66bea3b09be61613cd3b4043a65a8ec48cfa6d2a",
                 "reference": "66bea3b09be61613cd3b4043a65a8ec48cfa6d2a",
+=======
+            "time": "2021-11-23T19:05:29+00:00"
+        },
+        {
+            "name": "symfony/event-dispatcher-contracts",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/event-dispatcher-contracts.git",
+                "reference": "aa5422287b75594b90ee9cd807caf8f0df491385"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/aa5422287b75594b90ee9cd807caf8f0df491385",
+                "reference": "aa5422287b75594b90ee9cd807caf8f0df491385",
+>>>>>>> Stashed changes
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
+                "php": ">=8.0.2",
                 "psr/event-dispatcher": "^1"
             },
             "suggest": {
@@ -4061,7 +4176,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< Updated upstream
                     "dev-main": "2.5-dev"
+=======
+                    "dev-main": "3.0-dev"
+>>>>>>> Stashed changes
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -4098,7 +4217,11 @@
                 "standards"
             ],
             "support": {
+<<<<<<< Updated upstream
                 "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v2.5.0"
+=======
+                "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.0.0"
+>>>>>>> Stashed changes
             },
             "funding": [
                 {
@@ -4114,7 +4237,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< Updated upstream
             "time": "2021-07-12T14:48:14+00:00"
+=======
+            "time": "2021-07-15T12:33:35+00:00"
+>>>>>>> Stashed changes
         },
         {
             "name": "symfony/finder",
@@ -5492,6 +5619,7 @@
         },
         {
             "name": "symfony/string",
+<<<<<<< Updated upstream
             "version": "v5.4.0",
             "source": {
                 "type": "git",
@@ -5502,24 +5630,45 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/string/zipball/9ffaaba53c61ba75a3c7a3a779051d1e9ec4fd2d",
                 "reference": "9ffaaba53c61ba75a3c7a3a779051d1e9ec4fd2d",
+=======
+            "version": "v6.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/string.git",
+                "reference": "ba727797426af0f587f4800566300bdc0cda0777"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/string/zipball/ba727797426af0f587f4800566300bdc0cda0777",
+                "reference": "ba727797426af0f587f4800566300bdc0cda0777",
+>>>>>>> Stashed changes
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
+                "php": ">=8.0.2",
                 "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-intl-grapheme": "~1.0",
                 "symfony/polyfill-intl-normalizer": "~1.0",
-                "symfony/polyfill-mbstring": "~1.0",
-                "symfony/polyfill-php80": "~1.15"
+                "symfony/polyfill-mbstring": "~1.0"
+            },
+            "conflict": {
+                "symfony/translation-contracts": "<2.0"
             },
             "conflict": {
                 "symfony/translation-contracts": ">=3.0"
             },
             "require-dev": {
+<<<<<<< Updated upstream
                 "symfony/error-handler": "^4.4|^5.0|^6.0",
                 "symfony/http-client": "^4.4|^5.0|^6.0",
                 "symfony/translation-contracts": "^1.1|^2",
                 "symfony/var-exporter": "^4.4|^5.0|^6.0"
+=======
+                "symfony/error-handler": "^5.4|^6.0",
+                "symfony/http-client": "^5.4|^6.0",
+                "symfony/translation-contracts": "^2.0|^3.0",
+                "symfony/var-exporter": "^5.4|^6.0"
+>>>>>>> Stashed changes
             },
             "type": "library",
             "autoload": {
@@ -5558,7 +5707,11 @@
                 "utf8"
             ],
             "support": {
+<<<<<<< Updated upstream
                 "source": "https://github.com/symfony/string/tree/v5.4.0"
+=======
+                "source": "https://github.com/symfony/string/tree/v6.0.0"
+>>>>>>> Stashed changes
             },
             "funding": [
                 {
@@ -5574,6 +5727,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< Updated upstream
             "time": "2021-11-24T10:02:00+00:00"
         },
         {
@@ -5593,23 +5747,52 @@
             "require": {
                 "php": ">=7.2.5",
                 "symfony/deprecation-contracts": "^2.1|^3",
+=======
+            "time": "2021-10-29T07:35:21+00:00"
+        },
+        {
+            "name": "symfony/translation",
+            "version": "v6.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation.git",
+                "reference": "5e3848083ef1abc4814be154095946b8193f41d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/5e3848083ef1abc4814be154095946b8193f41d6",
+                "reference": "5e3848083ef1abc4814be154095946b8193f41d6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.2",
+>>>>>>> Stashed changes
                 "symfony/polyfill-mbstring": "~1.0",
-                "symfony/polyfill-php80": "^1.16",
-                "symfony/translation-contracts": "^2.3"
+                "symfony/translation-contracts": "^2.3|^3.0"
             },
             "conflict": {
+<<<<<<< Updated upstream
                 "symfony/config": "<4.4",
                 "symfony/console": "<5.3",
                 "symfony/dependency-injection": "<5.0",
                 "symfony/http-kernel": "<5.0",
                 "symfony/twig-bundle": "<5.0",
                 "symfony/yaml": "<4.4"
+=======
+                "symfony/config": "<5.4",
+                "symfony/console": "<5.4",
+                "symfony/dependency-injection": "<5.4",
+                "symfony/http-kernel": "<5.4",
+                "symfony/twig-bundle": "<5.4",
+                "symfony/yaml": "<5.4"
+>>>>>>> Stashed changes
             },
             "provide": {
-                "symfony/translation-implementation": "2.3"
+                "symfony/translation-implementation": "2.3|3.0"
             },
             "require-dev": {
                 "psr/log": "^1|^2|^3",
+<<<<<<< Updated upstream
                 "symfony/config": "^4.4|^5.0|^6.0",
                 "symfony/console": "^5.4|^6.0",
                 "symfony/dependency-injection": "^5.0|^6.0",
@@ -5620,6 +5803,18 @@
                 "symfony/polyfill-intl-icu": "^1.21",
                 "symfony/service-contracts": "^1.1.2|^2|^3",
                 "symfony/yaml": "^4.4|^5.0|^6.0"
+=======
+                "symfony/config": "^5.4|^6.0",
+                "symfony/console": "^5.4|^6.0",
+                "symfony/dependency-injection": "^5.4|^6.0",
+                "symfony/finder": "^5.4|^6.0",
+                "symfony/http-client-contracts": "^1.1|^2.0|^3.0",
+                "symfony/http-kernel": "^5.4|^6.0",
+                "symfony/intl": "^5.4|^6.0",
+                "symfony/polyfill-intl-icu": "^1.21",
+                "symfony/service-contracts": "^1.1.2|^2|^3",
+                "symfony/yaml": "^5.4|^6.0"
+>>>>>>> Stashed changes
             },
             "suggest": {
                 "psr/log-implementation": "To use logging capability in translator",
@@ -5655,7 +5850,11 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< Updated upstream
                 "source": "https://github.com/symfony/translation/tree/v5.4.0"
+=======
+                "source": "https://github.com/symfony/translation/tree/v6.0.0"
+>>>>>>> Stashed changes
             },
             "funding": [
                 {
@@ -5671,6 +5870,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< Updated upstream
             "time": "2021-11-29T15:30:56+00:00"
         },
         {
@@ -5685,10 +5885,26 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/d28150f0f44ce854e942b671fc2620a98aae1b1e",
                 "reference": "d28150f0f44ce854e942b671fc2620a98aae1b1e",
+=======
+            "time": "2021-11-29T15:32:57+00:00"
+        },
+        {
+            "name": "symfony/translation-contracts",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation-contracts.git",
+                "reference": "1b6ea5a7442af5a12dba3dbd6d71034b5b234e77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/1b6ea5a7442af5a12dba3dbd6d71034b5b234e77",
+                "reference": "1b6ea5a7442af5a12dba3dbd6d71034b5b234e77",
+>>>>>>> Stashed changes
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5"
+                "php": ">=8.0.2"
             },
             "suggest": {
                 "symfony/translation-implementation": ""
@@ -5696,7 +5912,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< Updated upstream
                     "dev-main": "2.5-dev"
+=======
+                    "dev-main": "3.0-dev"
+>>>>>>> Stashed changes
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -5733,7 +5953,11 @@
                 "standards"
             ],
             "support": {
+<<<<<<< Updated upstream
                 "source": "https://github.com/symfony/translation-contracts/tree/v2.5.0"
+=======
+                "source": "https://github.com/symfony/translation-contracts/tree/v3.0.0"
+>>>>>>> Stashed changes
             },
             "funding": [
                 {
@@ -5749,7 +5973,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< Updated upstream
             "time": "2021-08-17T14:20:01+00:00"
+=======
+            "time": "2021-09-07T12:43:40+00:00"
+>>>>>>> Stashed changes
         },
         {
             "name": "symfony/var-dumper",
@@ -6559,6 +6787,7 @@
         },
         {
             "name": "laravel/sail",
+<<<<<<< Updated upstream
             "version": "v1.12.10",
             "source": {
                 "type": "git",
@@ -6569,6 +6798,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/sail/zipball/9d5000703c7f811588a780b9aab91cca5c336319",
                 "reference": "9d5000703c7f811588a780b9aab91cca5c336319",
+=======
+            "version": "v1.12.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/sail.git",
+                "reference": "81609c1c8ce069aa6c3613ccb843cdec299424be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/81609c1c8ce069aa6c3613ccb843cdec299424be",
+                "reference": "81609c1c8ce069aa6c3613ccb843cdec299424be",
+>>>>>>> Stashed changes
                 "shasum": ""
             },
             "require": {
@@ -6615,7 +6856,11 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
+<<<<<<< Updated upstream
             "time": "2021-12-07T16:25:11+00:00"
+=======
+            "time": "2021-11-30T15:50:24+00:00"
+>>>>>>> Stashed changes
         },
         {
             "name": "mockery/mockery",
@@ -7174,6 +7419,7 @@
         },
         {
             "name": "phpunit/php-code-coverage",
+<<<<<<< Updated upstream
             "version": "9.2.10",
             "source": {
                 "type": "git",
@@ -7184,6 +7430,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/d5850aaf931743067f4bfc1ae4cbd06468400687",
                 "reference": "d5850aaf931743067f4bfc1ae4cbd06468400687",
+=======
+            "version": "9.2.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
+                "reference": "f301eb1453c9e7a1bc912ee8b0ea9db22c60223b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/f301eb1453c9e7a1bc912ee8b0ea9db22c60223b",
+                "reference": "f301eb1453c9e7a1bc912ee8b0ea9db22c60223b",
+>>>>>>> Stashed changes
                 "shasum": ""
             },
             "require": {
@@ -7239,7 +7497,11 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
+<<<<<<< Updated upstream
                 "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.10"
+=======
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.9"
+>>>>>>> Stashed changes
             },
             "funding": [
                 {
@@ -7247,7 +7509,11 @@
                     "type": "github"
                 }
             ],
+<<<<<<< Updated upstream
             "time": "2021-12-05T09:12:13+00:00"
+=======
+            "time": "2021-11-19T15:21:02+00:00"
+>>>>>>> Stashed changes
         },
         {
             "name": "phpunit/php-file-iterator",
