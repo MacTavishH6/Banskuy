@@ -71,6 +71,7 @@ class TransactionController extends Controller
         $donationtransaction->TransactionDate = date('Y-m-d');
         $donationtransaction->Quantity = $request->Quantity;
         $donationtransaction->created_at = date('Y-m-d H:i:s');
+        $donationtransaction->PostID = $request->SelectPost;
         $donationtransaction->save();
         $request->session()->flash('toastsuccess', 'Request submitted');
         return redirect()->action('App\Http\Controllers\TransactionController@DonationHistory');
