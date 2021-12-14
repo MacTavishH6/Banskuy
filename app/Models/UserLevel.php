@@ -8,6 +8,7 @@ class UserLevel extends Model
 {
     //
     protected $table = "msuserlevel";
+    protected $primaryKey = "LevelID";
 
     public function User(){
         return $this->belongsTo(User::class,'UserID','UserID');
