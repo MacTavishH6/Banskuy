@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Foundation;
 
 
-class MessageFoundation
+class MessageFoundation implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -40,7 +40,7 @@ class MessageFoundation
      */
     public function broadcastOn()
     {
-        
+    
         return new PrivateChannel('chatFoundation.'.$this->user->FoundationID);
         
         // return new Channel('chat');
