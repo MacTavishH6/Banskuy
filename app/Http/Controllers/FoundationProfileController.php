@@ -263,38 +263,38 @@ class FoundationProfileController extends Controller
     public function UploadDocument(Request $request){
         if($this->ValidateDocument($request)){
             //Upload to FTP
-            if($request->hasFile('OwnerIdentityCard')){
-                $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('OwnerIdentityCard')->getClientOriginalName());
-                $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
-                $FoundationID = Auth::guard('foundations')->user()->FoundationID;
-                $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',1)->first();
-                if($ExistingDocument == null){
-                    $Document = new Document();
-                    $Document->FoundationID = $FoundationID;
-                    $Document->DocumentTypeID = 1;
-                    $Document->DocumentName = $request->file('OwnerIdentityCard')->getClientOriginalName();
-                    $Document->ApprovalStatusID = 1;
-                    $Document->UploadDate = Carbon::now();
-                    $Document->ReviewDate = Carbon::now();
-                    $Document->Path = $EncodeFile;
-                    $Document->save();
-                }
-                else{
-                    if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
-                        $ExistingDocument->DocumentName = $request->file('OwnerIdentityCard')->getClientOriginalName();
-                        $ExistingDocument->Path = $EncodeFile;
-                        $ExistingDocument->save();
-                    }
-                    else{
-                        $request->session()->flash('toastfailed', 'Error when upload document');
-                        return redirect()->back();
-                    }
-                }
+            // if($request->hasFile('OwnerIdentityCard')){
+            //     $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('OwnerIdentityCard')->getClientOriginalName());
+            //     $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
+            //     $FoundationID = Auth::guard('foundations')->user()->FoundationID;
+            //     $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',1)->first();
+            //     if($ExistingDocument == null){
+            //         $Document = new Document();
+            //         $Document->FoundationID = $FoundationID;
+            //         $Document->DocumentTypeID = 1;
+            //         $Document->DocumentName = $request->file('OwnerIdentityCard')->getClientOriginalName();
+            //         $Document->ApprovalStatusID = 1;
+            //         $Document->UploadDate = Carbon::now();
+            //         $Document->ReviewDate = Carbon::now();
+            //         $Document->Path = $EncodeFile;
+            //         $Document->save();
+            //     }
+            //     else{
+            //         if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
+            //             $ExistingDocument->DocumentName = $request->file('OwnerIdentityCard')->getClientOriginalName();
+            //             $ExistingDocument->Path = $EncodeFile;
+            //             $ExistingDocument->save();
+            //         }
+            //         else{
+            //             $request->session()->flash('toastfailed', 'Error when upload document');
+            //             return redirect()->back();
+            //         }
+            //     }
                 
-                Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('OwnerIdentityCard'),'r+'));              
+            //     Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('OwnerIdentityCard'),'r+'));              
 
 
-            }
+            // }
             if($request->hasFile('FoundationCertificate')){
                 $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('FoundationCertificate')->getClientOriginalName());
                 $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
@@ -356,36 +356,36 @@ class FoundationProfileController extends Controller
 
             }
 
-            if($request->hasFile('FoundationRegistrationPermit')){
-                $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('FoundationRegistrationPermit')->getClientOriginalName());
-                $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
-                $FoundationID = Auth::guard('foundations')->user()->FoundationID;
-                $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',4)->first();
-                if($ExistingDocument == null){
-                    $Document = new Document();
-                    $Document->FoundationID = $FoundationID;
-                    $Document->DocumentTypeID = 4;
-                    $Document->DocumentName = $request->file('FoundationRegistrationPermit')->getClientOriginalName();
-                    $Document->ApprovalStatusID = 1;
-                    $Document->UploadDate = Carbon::now();
-                    $Document->ReviewDate = Carbon::now();
-                    $Document->Path = $EncodeFile;
-                    $Document->save();
-                }
-                else{
-                    if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
-                        $ExistingDocument->DocumentName = $request->file('FoundationRegistrationPermit')->getClientOriginalName();
-                        $ExistingDocument->Path = $EncodeFile;
-                        $ExistingDocument->save();
-                    }
-                    else{
-                        $request->session()->flash('toastfailed', 'Error when upload document');
-                        return redirect()->back();
-                    }
-                }
-                Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationRegistrationPermit'),'r+'));
+            // if($request->hasFile('FoundationRegistrationPermit')){
+            //     $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('FoundationRegistrationPermit')->getClientOriginalName());
+            //     $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
+            //     $FoundationID = Auth::guard('foundations')->user()->FoundationID;
+            //     $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',4)->first();
+            //     if($ExistingDocument == null){
+            //         $Document = new Document();
+            //         $Document->FoundationID = $FoundationID;
+            //         $Document->DocumentTypeID = 4;
+            //         $Document->DocumentName = $request->file('FoundationRegistrationPermit')->getClientOriginalName();
+            //         $Document->ApprovalStatusID = 1;
+            //         $Document->UploadDate = Carbon::now();
+            //         $Document->ReviewDate = Carbon::now();
+            //         $Document->Path = $EncodeFile;
+            //         $Document->save();
+            //     }
+            //     else{
+            //         if($this->DeleteDocument($ExistingDocument->DocumentTypeID)){
+            //             $ExistingDocument->DocumentName = $request->file('FoundationRegistrationPermit')->getClientOriginalName();
+            //             $ExistingDocument->Path = $EncodeFile;
+            //             $ExistingDocument->save();
+            //         }
+            //         else{
+            //             $request->session()->flash('toastfailed', 'Error when upload document');
+            //             return redirect()->back();
+            //         }
+            //     }
+            //     Storage::disk('ftp')->put('DocumentYayasan/'.$EncodeFile,fopen($request->file('FoundationRegistrationPermit'),'r+'));
 
-            }
+            // }
 
 
 
