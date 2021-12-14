@@ -71,6 +71,7 @@ class TransactionController extends Controller
         $donationtransaction->TransactionDate = date('Y-m-d');
         $donationtransaction->Quantity = $request->Quantity;
         $donationtransaction->created_at = date('Y-m-d H:i:s');
+        $donationtransaction->PostID = $request->SelectPost;
         $donationtransaction->save();
         $request->session()->flash('toastsuccess', 'Request submitted');
         return redirect()->action('App\Http\Controllers\TransactionController@DonationHistory');
@@ -126,7 +127,7 @@ class TransactionController extends Controller
     public function GetDonationApproval(Request $request)
     {
         $foundationid = Crypt::decrypt($request->FoundationID);
-        $donationapproval = DonationTransaction::where('FoundationID', $foundationid)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->orderBy('TransactionDate', 'DESC')->get();
+        $donationapproval = DonationTransaction::where('FoundationID', $foundationid)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->with('Post')->orderBy('TransactionDate', 'DESC')->orderBy('ApprovalStatusID','ASC')->orderBy('created_at','DESC')->get();
         // echo ($donationhistory);
         $donationapproval = $donationapproval->filter(function ($x) use ($request) {
             if ($request->keyword) $x = (str_contains($x->DonationDescriptionName, $request->keyword) || str_contains($x->DonationTypeDetail->DonationType->DonationTypeName, $request->keyword)) ? $x : [];
@@ -158,7 +159,7 @@ class TransactionController extends Controller
 
     public function GetDonationApprovalDetail(Request $request)
     {
-        $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->first();
+        $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->with('Post')->first();
         $response = ['payload' => $donation];
         return response()->json($response);
     }
@@ -274,6 +275,7 @@ class TransactionController extends Controller
         $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
 
         $donation = DonationTransaction::where('DonationTransactionID', $request->transactionID)->first();
+        $post = Post::where('PostID', $donation->PostID)->first();
 
         $documentation = new Documentation();
         $documentation->DocumentationDate = date('Y-m-d H:i:s');
@@ -281,6 +283,16 @@ class TransactionController extends Controller
         $documentation->updated_at = date('Y-m-d H:i:s');
         $documentation->save();
 
+        if($post){
+            if($post->Quantity > $donation->Quantity){
+                $post->Quantity = $post->Quantity - $donation->Quantity;
+                
+            }else{
+                $post->Quantity = 0;
+                $post->StatusPostId = 2;
+            }
+            $post->save();
+        }
         $donation->DocumentationID = $documentation->DocumentationID;
         $donation->save();
 
