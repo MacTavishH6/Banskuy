@@ -31,11 +31,13 @@
         var message_username = document.getElementById('txtUsername');
         var message_content = document.getElementById('txtMessage');
         var receiverId = $('#txtId').val();
+        var roleId = $('#roleId').val();
         //console.log(receiverId);
                 $.ajax({
                     method: 'POST',
                     url : '\sendMessage',
                     data: {
+                    role : roleId,
                     receiverId : receiverId,
                     message : message_content.value,
                     _token: "<?php echo csrf_token(); ?>"
@@ -68,14 +70,16 @@
                     $($val).addClass("active");
                     $('#titleMessage').html($('#body_User').find('.active div strong').html());
                     $('#txtId').val(receiverId);
-                    $('#statusActive').val("1");
+                    $('#roleId').val($('#body_User').find('.active div input').val());
                     FetchMessage();
             }
 
             function FetchUser(){
-              var chatTo = "";
+              console.log({{isset($result)}});
+              var chatTo = "{{$result['id']}}" != "0" ? "{{$result['id']}}" : "";
+              var roleToId = "{{$result['roleId']}}" != "0" ? "{{$result['roleId']}}" : "";
             
-                chatTo = "{{$result}}" != "0" ? "{{$result}}" : "";
+                
                 var currUser = {{isset(Auth::guard('foundations')->user()->FoundationID) ? Auth::guard('foundations')->user()->FoundationID: Auth::user()->UserID}};
 
               $.ajax({
@@ -84,7 +88,8 @@
                   data : {
                     _token: "<?php echo csrf_token(); ?>",
                     currUserId : currUser ,
-                    chatTo : chatTo
+                    chatTo : chatTo,
+                    roleId : roleToId
                   },
                   success:function(response){
                      // console.log(response.payload);
@@ -99,6 +104,7 @@
                               data.message = element.lastMessage;
                               data.id = element.userId;
                               data.name = "btn" + index;
+                              data.role = element.roleId;
                               
                               if(chatTo != ""){
                                 if(data.id == chatTo){
@@ -158,17 +164,15 @@
 
 
             $(function(){
-              
+              FetchUser();
               if({{isset(Auth::user()->UserID) ? "true": "false"}}){
+                console.log("user");
+
                 var Id = {{isset(Auth::user()->UserID) ? Auth::user()->UserID : "0"}};
                 window.Echo.private('chat.' + Id)
                 .listen('.message', (e) => {
-                  var statusActive = $('#statusActive').val();
-                  
-                  if(statusActive == 1){
+                  var role = $('#roleId').val();
                     var username = $('#titleMessage').html();
-                    console.log(username);
-                    console.log(e.username);
                     if(username == e.username){
                         var Data = {};  
                         Data.message = e.message;
@@ -182,18 +186,18 @@
                         // div.scrollTop = div.scrollHeight;
                         $("#bodyMessage").animate({ scrollTop: $('#bodyMessage').prop("scrollHeight")}, 0);
                     }
-                  }
                   FetchUser();
                 });
-                FetchUser();
               }
               else{
                 var id = {{isset(Auth::guard('foundations')->user()->FoundationID) ? Auth::guard('foundations')->user()->FoundationID: "0"}};
+                console.log("found");
                 window.Echo.private('chatFoundation.' + id)
                 .listen('.messageFoundation', (e) => {
-                  var statusActive = $('#statusActive').val();
+                  var role = $('#roleId').val();
                   
-                  if(statusActive == 1){
+                  
+  
                     var username = $('#body_User').find('.active div strong').html();
                     if(username == e.username){
                         var Data = {};  
@@ -204,15 +208,10 @@
                         $('.body_Message').append(divMessage({
                             data: Data
                         }));
-                    }
-                  }
+                   }
                   FetchUser();
                 });
               }
-                
-                
-                
-
             });
 </script>
 
@@ -246,7 +245,7 @@
                 <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
                 <span class="fs-5 fw-semibold" id="titleMessage"></span>
               </a>
-              <div id="bodyMessage" class="body_Message" style="max-height:77%;">
+              <div id="bodyMessage" class="body_Message" style="max-height:78%;">
                 {{-- <div class="d-flex flex-row">
                   <div class="p-2 border ml-2 mr-2">
                     <span style="font-size: 14pt" class="mr-3">Test</span>
@@ -263,8 +262,9 @@
               <div class="Form_Message mt-auto d-none" id="formSendMessage">
                     <div class="form-inline">
                         <div class="form-group w-100">
-                            <input type="hidden" id="txtId" name="txtId">
-                            <input type="hidden" id="statusActive" value="0">
+                            <input type="hidden" id="txtId" name="txtId" >
+                            <input type="hidden" id="roleId" value="0">
+                            <input type="hidden" id="statusActive">
                             <input type="text" class="form-control mr-3 ml-2 mb-2" autocomplete="off" style="min-width: 85%" id="txtMessage" name="txtMessage">
                             <button type="button" class="btn btn-banskuy text-white px-4 mb-2" onclick="btnSendCommentOnClick()">Send</button>
                         </div>

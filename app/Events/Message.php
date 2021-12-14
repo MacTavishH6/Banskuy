@@ -39,7 +39,7 @@ class Message implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        
+     
         return new PrivateChannel('chat.'.$this->user->UserID);
         
         // return new Channel('chat');

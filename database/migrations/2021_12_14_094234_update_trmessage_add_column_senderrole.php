@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MessageFoundation extends Migration
+class UpdateTrmessageAddColumnSenderrole extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,9 @@ class MessageFoundation extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('trmessage', function (Blueprint $table) {
+            $table->tinyInteger('SenderRoleID');
+        });
     }
 
     /**

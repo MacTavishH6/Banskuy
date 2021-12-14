@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Messages;
 use App\Events\Message;
+use App\Events\MessageFoundation;
 use App\Models\User;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\Foundation;
 
 class MessageController extends Controller
 {
@@ -44,27 +46,45 @@ class MessageController extends Controller
     public function SendMessages(Request $request){
         
         if(Auth::guard('foundations')->check()){
-            $User = Auth::guard('foundations');
+            $user = Auth::guard('foundations')->user();
             $id = Auth::guard('foundations')->user()->FoundationID;
+            $senderRoleId = 2;
+ 
+            
         }
         else{
-            $User = Auth::user();
+            $user = Auth::user();
             $id = Auth::user()->UserID;
+            $senderRoleId = 1;
+      
         }
+       
         $receiverId = Crypt::decrypt($request->receiverId);
      
         $Messages = new Messages;
         $Messages->ReceiverID = $receiverId;
         $Messages->SenderID = $id ;
         $Messages->Messages = $request->input('message');   
-        $Messages->RoleId = 1;
-
-        $Receiver = User::where('UserID',$Messages->ReceiverID)->first();
-
+        $Messages->RoleId = $request->role;
+        $Messages->SenderRoleID = $senderRoleId;
         $Messages->save();
-        
+
         $date = date('d M Y',strtotime($Messages->created_at));
-        broadcast(new Message($Receiver,$request->input('message'),$date,$User->Username));
+     
+        if($Messages->RoleId == 1){
+        
+            $Receiver = User::where('UserID',$Messages->ReceiverID)->first();
+            broadcast(new Message($Receiver,$request->input('message'),$date,$user->Username));
+
+        }
+        else{
+            
+            $Receiver = Foundation::where('FoundationID',$Messages->ReceiverID)->first();
+            
+            broadcast(new MessageFoundation($Receiver,$request->input('message'),$date,$user->Username));
+        }
+        
+        
 
         $response = ['payload' => $date];
         return response()->json($response); 
@@ -97,7 +117,7 @@ class MessageController extends Controller
     }
 
     public function Chat(){
-        $result = "0";
+        $result =  ['id'=>"0",'roleId'=>"0"];
         return view('/Message/Message',compact('result'));
     }
 
@@ -121,7 +141,7 @@ class MessageController extends Controller
         //     $messageExists = 1;
         // }
         
-        $result =  $id;
+        $result =  ['id'=>$id,'roleId'=>$roleId];
 
         return view('/Message/Message',compact('result'));
     }
@@ -129,17 +149,17 @@ class MessageController extends Controller
     public function GetListUserMessage(Request $request){
         $currUserId = $request->currUserId;
 
-        $User = DB::table('trmessage')->select('SenderID','ReceiverID')->where('ReceiverID',$currUserId)->orWhere('SenderID',$currUserId)->orderBy('created_at','asc')->distinct()->get();
+        $User = DB::table('trmessage')->select('SenderID','ReceiverID','RoleID','SenderRoleID')->where('ReceiverID',$currUserId)->orWhere('SenderID',$currUserId)->orderBy('created_at','asc')->distinct()->get();
         //$User = Messages::select('SenderID','ReceiverID')->where('ReceiverID',$currUserId)->orWhere('SenderID',$currUserId)->distinct()->get();
-        
+        // dd($User);
         // $ListUser = [];
         $ListUser = array();
         foreach($User as $val){
             if($val->SenderID == $currUserId){
-                $ListUser[] = $val->ReceiverID;
+                $ListUser[] = ['UserID' =>$val->ReceiverID, 'RoleID' => $val->RoleID];
             }
             else{
-                $ListUser[] = $val->SenderID;
+                $ListUser[] = ['UserID' =>$val->SenderID, 'RoleID' => $val->SenderRoleID];
             }
         }   
 
@@ -152,30 +172,43 @@ class MessageController extends Controller
         
         if(count($User) > 0){
             $distinct  = array_unique($ListUser,SORT_REGULAR);
-       
+            
             foreach($distinct as $val){
-                $Name =  User::select('Username')->where('UserID',$val)->first();
-                $LastMessage = DB::table('trmessage')->whereIn('SenderID', [$currUserId,$val])->whereIn('ReceiverID',[$currUserId,$val])->orderBy('created_at','desc')->first();
+                
+                if($val['RoleID'] == 1){
+                    $Name =  User::select('Username')->where('UserID',$val['UserID'])->first();
+                }
+                else{
+                    $Name =  Foundation::select('Username')->where('FoundationID',$val['UserID'])->first();
+                }
+
+                $LastMessage = DB::table('trmessage')->whereIn('SenderID', [$currUserId,$val['UserID']])->whereIn('ReceiverID',[$currUserId,$val['UserID']])->orderBy('created_at','desc')->first();
                 // $LastMessage = Messages::where('ReceiverID',$val)->where('SenderID',$currUserId)->orderBy('created_at','desc')->first();
                 // if($LastMessage == null){
                 // $LastMessage = Messages::where('ReceiverID',$currUserId)->where('SenderID',$val)->orderBy('created_at','desc')->first();
                 // }
                 
-                $id = Crypt::encrypt($val);
-                    if($chatTo == $val){
+                $id = Crypt::encrypt($val['UserID']);
+                    if($chatTo == $val['UserID']){
                         $exists = true;
                         $id = $request->chatTo;
                     }
                 if($val != $currUserId){
-                    $ListResponse[] = ['userId' => $id,'username' => $Name->Username,'lastMessage'=>$LastMessage->Messages,'date' => date('d M Y',strtotime($LastMessage->created_at))];
+                    $ListResponse[] = ['userId' => $id,'roleId'=>$val['RoleID'],'username' => $Name->Username,'lastMessage'=>$LastMessage->Messages,'date' => date('d M Y',strtotime($LastMessage->created_at))];
                 }
             }
         }
         
         //dd($ListResponse);
         if($exists == false && $chatTo != ""){
-            $userTo = User::select('Username')->where('UserID',$chatTo)->first();
-            $ListResponse[] = ['userId' => $request->chatTo, 'username' => $userTo->Username,'lastMessage'=> "",'date'=> date('d M Y',strtotime(Carbon::now()))];
+            $roleId = $request->roleId;
+            if($roleId == 1){
+                $userTo =  User::select('Username')->where('UserID',$chatTo)->first();
+            }
+            else{
+                $userTo =  Foundation::select('Username')->where('FoundationID',$chatTo)->first();
+            }
+            $ListResponse[] = ['userId' => $request->chatTo,'roleId' => $roleId,'username' => $userTo->Username,'lastMessage'=> "",'date'=> date('d M Y',strtotime(Carbon::now()))];
         }
 
         $ListResponse = array_reverse($ListResponse);
