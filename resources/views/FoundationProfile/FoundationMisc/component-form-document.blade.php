@@ -6,7 +6,7 @@
 
 <form action="/UpdateDocument" method="POST" enctype="multipart/form-data">
     @csrf
-    <div class="form-row py-1">
+    {{-- <div class="form-row py-1">
         <div class="col-4">
             <label for="FirstName">Kartu Tanda Penduduk Pemilik</label>
         </div>
@@ -16,7 +16,7 @@
                 <label class="custom-file-label" for="OwnerIdentityCard" id="lblOwnerIdentityCard">Choose File</label>
             </div>
         </div>
-    </div>
+    </div>--}}
     <div class="form-row py-1">
         <div class="col-4">
             <label for="FirstName">Sertifikat Yayasan</label>
@@ -38,8 +38,8 @@
                 <label class="custom-file-label" for="FoundationOperationalPermit" id="lblFoundationOperationalPermit" >Choose File</label>
             </div>
         </div>
-    </div>
-    <div class="form-row py-1">
+    </div> 
+    {{-- <div class="form-row py-1">
         <div class="col-4">
             <label for="FirstName">Izin Pendaftaran Yayasan</label>
         </div>
@@ -49,7 +49,7 @@
                 <label class="custom-file-label" for="FoundationRegistrationPermit" id="lblFoundationRegistrationPermit" >Choose File</label>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8 pr-2">
