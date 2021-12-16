@@ -72,12 +72,12 @@ class LoginController extends Controller
         if($request->rememberMe != null) $isRemember = true;
 
         Auth::attempt($credential,$isRemember);
-        if(Auth::user()->EmailVerified != 1){
-            Auth::logout();
-            return redirect('/login')->with('failed',"Silahkan verifikasi email anda terlebih dahulu"); 
-        }
+  
         if(Auth::check()){
-
+            if(Auth::user()->EmailVerified != 1){
+                Auth::logout();
+                return redirect('/login')->with('failed',"Silahkan verifikasi email anda terlebih dahulu"); 
+            }
             if($isRemember == true){
                 $minute = 120;
                 $rememberToken = Auth::getRecallerName();
