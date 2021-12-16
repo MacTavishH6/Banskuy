@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\GeneratePdfController;
+use App\Http\Controllers\LOVController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -70,8 +72,12 @@ Route::middleware(['auth:web,foundations'])->group(function () {
     Route::post('/MakeReportUser', [ReportController::class, 'MakeReportUser']);
 
 
+
     Route::post('/sendMessage',[MessageController::class,'SendMessages']);
 
+    Route::get('/SendNotification',[ForumController::class,'SendNotification']);
+    Route::get('/GetListNotificationPost',[LOVController::class,'GetListNotificationPost']);
+    Route::get('/GetUnReadNotificationPost',[LOVController::class,'GetUnReadNotificationPost']);
     Route::get('/chat',[MessageController::class,'Chat']);
     Route::post('/chatTo',[MessageController::class,'ChatTo']);
     Route::post('/getMessage',[MessageController::class,'GetMessage']);

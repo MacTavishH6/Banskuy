@@ -6,31 +6,25 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Foundation;
+use App\Models\HtrNotification;
 
-
-class MessageFoundation implements ShouldBroadcast
+class NotificationEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
-    public $message;
-    public $date;
-    public $username;
+    public $notification;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Foundation $user, $message, $date,$username)
+    public function __construct(HtrNotification $notification)
     {
-        $this->user = $user;
-        $this->message  =$message;
-        $this->date = $date;
-        $this->username = $username;
+        $this->notification = $notification;
     }
 
     /**
@@ -40,13 +34,11 @@ class MessageFoundation implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-    
-        return new PrivateChannel('chatFoundation.'.$this->user->FoundationID);
-        
-        // return new Channel('chat');
+        // return new PrivateChannel('notification');
+         return new Channel('notification1');
     }
 
     public function broadcastAs(){
-        return 'messageFoundation';
+        return 'notif';
     }
 }
