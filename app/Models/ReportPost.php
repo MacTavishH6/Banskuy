@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ReportPost extends Model
 {
     protected $table = "msreportpost";
+    protected $primaryKey = "ReportID";
+
+    public function Post(){
+        return $this->hasOne(Post::class, 'PostID', 'PostID');
+    }
 }

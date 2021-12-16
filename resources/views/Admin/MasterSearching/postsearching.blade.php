@@ -12,16 +12,7 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="col-12">
-                    <h2>Tipe User</h2>
-                </div>
-                <div class="col-4">
-                    <div class="form-row">
-                        <select name="UserType" id="UserType" class="form-control">
-                            <option value="">Semua</option>
-                            <option value="1">Donatur</option>
-                            <option value="2">Yayasan</option>
-                        </select>
-                    </div>
+                    <h2>Post Terlapor</h2>
                 </div>
             </div>
             <div class="row">
@@ -29,25 +20,28 @@
                     <table class="table table-bordered" id="table-pengguna">
                         <thead>
                             <tr>
-                                <th scope="col">Nama Pengguna</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Anggota sejak</th>
+                                <th scope="col">Nama Pembuat</th>
+                                <th scope="col">Judul Post</th>
+                                <th scope="col">Waktu terbuat</th>
                                 <th scope="col">Status Laporan</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($report as $rprt)
+                            @foreach ($reportedPost as $rprt)
                                 <tr>
                                     <td>
-                                        <a
-                                            href="/profile/{{ Crypt::encrypt($rprt->UserTarget->UserID) }}">{{ $rprt->UserTarget->Username }}</a>
+                                        {{ $rprt->User->Username }}
                                     </td>
-                                    <td>{{ $rprt->UserTarget->Email }}</td>
-                                    <td>{{ date('d M Y', strtotime($rprt->UserTarget->RegisterDate)) }}</td>
+                                    <td>
+                                        <a
+                                            href="/ViewPost/{{ Crypt::encrypt($rprt->PostID) }}">{{ $rprt->Post->PostTitle }}</a>
+                                    </td>
+                                    <td>{{ date('d M Y', strtotime($rprt->created_at)) }}</td>
                                     <td>Terlapor</td>
                                     <td>
-                                        <a href="/usersearching/detail/{{Crypt::encrypt($rprt->UserTarget->UserID)}}" class="btn btn-link report-detail">
+                                        <a href="/postsearching/detail/{{ Crypt::encrypt($rprt->PostID) }}"
+                                            class="btn btn-link report-detail">
                                             <img src="{{ env('FTP_URL') }}/assets/details.png" alt=""
                                                 style="max-width: 20px">
                                         </a>
@@ -56,7 +50,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{$report->links()}}
+                    {{ $reportedPost->links() }}
                 </div>
             </div>
         </div>
