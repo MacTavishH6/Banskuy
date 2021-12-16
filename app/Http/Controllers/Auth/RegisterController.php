@@ -101,7 +101,7 @@ class RegisterController extends Controller
             $userlevel->created_at = date('Y-m-d H:i:s');
             $userlevel->save();
 
-            $userlevellastid = $userlevel->id;
+            $userlevellastid = $userlevel->LevelID;
 
             $level = new Level();
             $level->LevelID = $userlevellastid;

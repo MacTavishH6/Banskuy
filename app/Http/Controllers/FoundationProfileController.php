@@ -25,7 +25,7 @@ class FoundationProfileController extends Controller
     public function FoundationProfile($id){
         $foundationID = Crypt::decrypt($id);
         $foundation = Foundation::where('FoundationID', $foundationID)->with('FoundationPhoto')->first();
-        $post = Post::where([['ID', $foundationID],['RoleID', '2']])->paginate(15);
+        $post = Post::where([['ID', $foundationID],['RoleID', '2'],['StatusPostId', '1']])->paginate(15);
         $donationTransaction = DonationTransaction::where([['FoundationID',$foundationID],['ApprovalStatusID',5]])->with('Documentation.DocumentationPhoto')->get();
 
         return view('FoundationProfile.profileyayasan', ['foundation'=>$foundation, 'posts' => $post, 'donationTransaction' => $donationTransaction]);
@@ -181,7 +181,7 @@ class FoundationProfileController extends Controller
         $foundation->save();
 
         $request->session()->flash('toastsuccess', 'Profile picture updated successfully');
-        //return redirect()->action('App\Http\Controllers\FoundationProfileController@foundationprofile', ['id' => $request->FoundationID]);
+        return redirect()->action('App\Http\Controllers\FoundationProfileController@foundationprofile', ['id' => $request->FoundationID]);
     }
 
     public function DeleteProfilePhoto(Request $request)

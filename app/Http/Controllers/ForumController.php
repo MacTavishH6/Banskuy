@@ -127,7 +127,7 @@ class ForumController extends Controller
             $Post->save();
 
             //Upload to FTP
-            //Storage::disk('ftp')->put('Forum/Post/'.$Post->id.'/'.$EncodeFile,fopen($request->file('fuAttachment'),'r+'));
+            Storage::disk('ftp')->put('Forum/Post/'.$Post->PostID.'/'.$EncodeFile,fopen($request->file('fuAttachment'),'r+'));
             $request->session()->flash('toastsuccess', 'Post Created');
 
         //Send Notification

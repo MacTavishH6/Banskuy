@@ -43,27 +43,6 @@ Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'pro
 Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
 
 
-// Route::get('/email', function () {
-//     Mail::to('fikrifadillah231@gmail.com')->send(new VerificationMail());
-// });
-
-// Route::get('/email', function () {
-//     Mail::to('fikrifadillah231@gmail.com')->send(new VerificationMail());
-// });
-
-use App\Events\Message;
-// Route::post('/sendMessage',function(Request $request){
-//     event(new Message($request->input('username'),$request->input('message')));
-// });
-
-// Route::post('/sendMessage',[MessageController::class,'SendMessages']);
-
-// Route::get('/chat',[MessageController::class,'Chat']);
-// Route::post('/chatTo',[MessageController::class,'ChatTo']);
-// Route::post('/getMessage',[MessageController::class,'GetMessage']);
-// Route::post('/GetListUserMessage',[MessageController::class,'GetListUserMessage']);
-
-
 Route::middleware(['auth:web,foundations'])->group(function () {
 
 
