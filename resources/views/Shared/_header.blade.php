@@ -60,6 +60,19 @@
                             </a>
                         @endif
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toogle mr-4 ml-2" id="navbarNotification"
+                                href="#" role="button" aria-expanded="true" aria-haspopup="true">
+                                <i class="fa fa-bell" style="z-index: 0;color:blue"></i>
+                                <small id="lblPostNotificationCount" style="padding:0 3px 0 2px;z-index: 2;position: absolute;border-radius:40%;border:5px;">1</small>
+                        </a>
+                        <div class="dropdown-menu" id="dropdownNotification" style="max-width:215px;">
+                                <a class="dropdown-item" href="/Forum" style="text-align: center" id="dropdownAllPostNotif">
+                                    <p>Lihat semua</p>
+                                </a>
+                        </div>
+                        <input type="hidden" id="ddlNotifStatus" value="hide">
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-white py-1 px-3"
                             style="background-color: #AC8FFF; border-radius: 20px;" href="{{ '/logout' }}"
@@ -124,3 +137,5 @@
     </div>
 </div>
 </nav>
+
+@include('layouts.Misc.component-view-postnotification')

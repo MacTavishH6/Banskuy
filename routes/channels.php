@@ -35,6 +35,11 @@ Broadcast::channel('chat.{Receiver}',function($user,User $Receiver){
     return true;
 });
 
+Broadcast::channel('notification',function($user){
+
+    return true;
+});
+
 Broadcast::channel('chatFoundation.{Receiver}',function($foundation,Foundation $Receiver){
 
     // if(Auth::check()){

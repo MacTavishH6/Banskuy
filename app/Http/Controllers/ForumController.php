@@ -15,11 +15,22 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Document;
 use Illuminate\Support\Facades\Crypt;
+use App\Events\NotificationEvent;
+use App\Models\User;
+use App\Models\Foundation;
+use App\Models\HtrNotification;
+use App\Models\TrNotification;
+
 
 class ForumController extends Controller
 {
 
-   
+    public function SendNotification(){
+        broadcast(new NotificationEvent("1","Post Baru","Ada post baru nih bang"));
+
+        
+    }
+
     public function Index(){
       
         $DonationType = $this->GetCategory();
@@ -116,8 +127,62 @@ class ForumController extends Controller
             $Post->save();
 
             //Upload to FTP
-            Storage::disk('ftp')->put('Forum/Post/'.$Post->id.'/'.$EncodeFile,fopen($request->file('fuAttachment'),'r+'));
+            //Storage::disk('ftp')->put('Forum/Post/'.$Post->id.'/'.$EncodeFile,fopen($request->file('fuAttachment'),'r+'));
             $request->session()->flash('toastsuccess', 'Post Created');
+
+        //Send Notification
+        $ListUser = User::all();
+        $ListFoundation = Foundation::all();
+
+        $CurrUser = "";
+        $CurrFoundation = "";
+
+        if(Auth::guard('foundations')->check()){
+            $CurrFoundation = Auth::guard('foundations')->user()->FoundationID;
+        }
+        else{
+            $CurrUser = Auth::user()->UserID;
+        }
+
+        //save header first
+        $DonationType = DonationType::where('DonationTypeID',$Post->DonationTypeID)->first();
+        $NewNotif = new HtrNotification();
+        $NewNotif->NotificationType = "1";
+        if(strlen($Post->PostTitle) > 27){
+            $NewNotif->NotificationContent = substr($Post->PostTitle,0,25) . "...";
+        }
+        else{
+            $NewNotif->NotificationContent = $Post->PostTitle;
+        }
+        $NewNotif->NotificationHeader = $DonationType->DonationTypeName;
+        
+        $NewNotif->PostID = $Post->PostID;
+        $NewNotif->save();
+
+        foreach($ListUser as $val){
+            if($CurrUser == $val->UserID){
+                continue;
+            }
+            $NewTrNotif = new TrNotification();
+            $NewTrNotif->HtrNotificationID = $NewNotif->HtrNotificationID;
+            $NewTrNotif->ReceiverID = $val->UserID;
+            $NewTrNotif->StatusNotification = 1;
+            $NewTrNotif->RoleID = 1;
+            $NewTrNotif->save();
+        }
+
+        foreach($ListFoundation as $val){
+            if($CurrFoundation == $val->FoundationID){
+                continue;
+            }
+            $NewTrNotif = new TrNotification();
+            $NewTrNotif->HtrNotificationID = $NewNotif->HtrNotificationID;
+            $NewTrNotif->ReceiverID = $val->FoundationID;
+            $NewTrNotif->StatusNotification = 1;
+            $NewTrNotif->RoleID = 2;
+            $NewTrNotif->save();
+        }
+        broadcast(new NotificationEvent($NewNotif));
             return redirect('/Forum');
         }
         catch(Exception $e){
