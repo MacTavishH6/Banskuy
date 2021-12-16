@@ -16,30 +16,45 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
-                @if (!Auth::guard('foundations')->check())
-                    @if (Auth::check())
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="/makerequest/{{ Crypt::encrypt(Auth::id()) }}">{{ __('Ayo berdonasi!') }}</a>
-                        </li>
-                    @else
-                        @if (!str_contains($_SERVER['HTTP_HOST'], 'foundation.'))
+                @if (!Auth::guard('admin')->check())
+                    @if (!Auth::guard('foundations')->check())
+                        @if (Auth::check())
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Ayo berdonasi!') }}</a>
+                                <a class="nav-link"
+                                    href="/makerequest/{{ Crypt::encrypt(Auth::id()) }}">{{ __('Ayo berdonasi!') }}</a>
                             </li>
+                        @else
+                            @if (!str_contains($_SERVER['HTTP_HOST'], 'foundation.'))
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="{{ route('login') }}">{{ __('Ayo berdonasi!') }}</a>
+                                </li>
+                            @endif
                         @endif
                     @endif
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="/usersearching">{{ __('Lihat pengguna terlapor') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="/postsearching">{{ __('Lihat post terlapor') }}</a>
+                    </li>
                 @endif
 
+                @if (!Auth::guard('admin')->check())
                 @if (Auth::check())
                     <li class="nav-item">
                         <a class="nav-link" href="/donationhistory">{{ __('Check Progress Anda di sini!') }}</a>
                     </li>
                 @elseif(Auth::guard('foundations')->check())
                     <li class="nav-item">
-                        <a class="nav-link" href="/donationapproval">{{ __('Check Progress Anda di sini!') }}</a>
+                        <a class="nav-link"
+                            href="/donationapproval">{{ __('Check Progress Anda di sini!') }}</a>
                     </li>
-                @endauth
+                @endif
+                @endif
                 <li class="nav-item">
                     <a class="nav-link" href="/Forum">{{ __('Forum') }}</a>
                 </li>
@@ -47,6 +62,7 @@
                 <!-- Authentication Links -->
                 @if (Auth::guard('foundations')->check() || Auth::check() || Auth::guard('admin')->check())
                     <li class="nav-item">
+                        @if (!Auth::guard('admin')->check())
                         @if (Auth::guard('foundations')->check())
                             <a class="nav-link"
                                 href="/foundationprofile/{{ Crypt::encrypt(Auth::guard('foundations')->id()) }}">
@@ -59,10 +75,11 @@
                                 Profil
                             </a>
                         @endif
+                        @endif
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white py-1 px-3"
-                            style="background-color: #AC8FFF; border-radius: 20px;" href="{{ '/logout' }}"
+                        <a class="nav-link text-white py-1 px-3" style="background-color: #AC8FFF; border-radius: 20px;"
+                            href="{{ '/logout' }}"
                             onclick="event.preventDefault();
                                                                                     document.getElementById('logout-form').submit();">
                             {{ __('Keluar') }}
@@ -112,7 +129,7 @@
                         @endif
                     @endif
 
-                    @if ((Request::is('login') || Request::is('foundationlogin')) && !str_contains($_SERVER['HTTP_HOST'],'admin.'))
+                    @if ((Request::is('login') || Request::is('foundationlogin')) && !str_contains($_SERVER['HTTP_HOST'], 'admin.'))
                         <li class="nav-item">
                             <a class="nav-link"
                                 href="{{ Request::is('login') ? route('register') : '/foundationregister' }}">{{ __('Daftar Sekarang') }}</a>
@@ -120,7 +137,7 @@
                     @endif
 
                 @endif
-        </ul>
+            </ul>
+        </div>
     </div>
-</div>
 </nav>

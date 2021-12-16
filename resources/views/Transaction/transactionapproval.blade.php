@@ -239,6 +239,7 @@
                             data.donationTitle = donation.DonationDescriptionName;
                             data.donationType = donation.donation_type_detail
                                 .donation_type.DonationTypeName;
+                                console.log(donation);
                             data.username = donation.user.Username;
                             var divtemplate = _.template($("#component-list-approval")
                                 .html());

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrmessageTable extends Migration
+class UpdateMsbannedaccountChangedurationtointeger extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateTrmessageTable extends Migration
      */
     public function up()
     {
-        Schema::create('trmessage', function (Blueprint $table) {
-            $table->id();
-            $table->integer('UserID');
-            
+        Schema::table('msbannedaccount', function (Blueprint $table) {
+            $table->dropColumn('Duration');
+            $table->integer('BanDuration');
         });
     }
 
@@ -27,6 +26,6 @@ class CreateTrmessageTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trmessage');
+        
     }
 }

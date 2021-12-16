@@ -54,10 +54,4 @@ class AdminController extends Controller
             return redirect('/landingpage');
         } else return redirect('/login')->with('failed', "Email atau password salah");
     }
-
-    public function MasterSearching(){
-        $report = Report::paginate(15);
-        $bannedAccount = BannedAccount::all();
-        return view('MasterSearching', compact('report', 'bannedAccount'));
-    }
 }
