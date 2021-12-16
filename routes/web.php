@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\GeneratePdfController;
 use App\Http\Controllers\LOVController;
 
 /*
@@ -23,6 +24,9 @@ use App\Http\Controllers\LOVController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/pdf_form', [App\Http\Controllers\GeneratePdfController::class, 'pdfForm']);
+Route::post('/pdf_download', [App\Http\Controllers\GeneratePdfController::class, 'pdfDownload']);
 
 Route::get('/', function () {
     return redirect('/landingpage');
