@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Redirect;
 use PDF;
@@ -9,28 +10,18 @@ use PDF;
 class GeneratePdfController extends Controller
 {
 
-    public function pdfForm()
-    {
-        return view('pdf_form');
-    }
-
     public function pdfDownload(Request $request)
     {
 
-        request()->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'message' => 'required'
-        ]);
-
         $data =
             [
-                'name' => $request->name,
-                'email' => $request->email,
-                'message' => $request->message
+            'DonaterName' => $request->DonaterName,
+            'DonationType' => $request->DonationType,
+            'DonationDate' => $request->DonationDate,
+            'DonationTItle' => $request->DonationTItle
             ];
         $pdf = PDF::loadView('pdf_download', $data);
 
-        return $pdf->download('tutsmake.pdf');
+        return $pdf->download('Sertifikat_'.Carbon::now().'_'.$request->DonaterName.'.pdf');
     }
 }
