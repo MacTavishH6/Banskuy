@@ -41,6 +41,10 @@
                         <a class="nav-link"
                             href="/postsearching">{{ __('Lihat post terlapor') }}</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="/DocumentApproval">{{ __('Lihat Dokumen') }}</a>
+                    </li>
                 @endif
 
                 @if (!Auth::guard('admin')->check())

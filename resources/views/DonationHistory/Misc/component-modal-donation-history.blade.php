@@ -57,10 +57,18 @@
                                     
                                     <div class="row <%=data.IsShow%>">
                                         <div class="col text-center">
-                                            <a href="#" class="btn btn-success mb-3 mt-5">Unduh Sertifikat</a>
+                                            <form action="{{ url('pdf_download') }}" method="post" accept-charset="utf-8">
+                                                @csrf
+                                                <input type="hidden" name="DonaterName" value="<%=data.donaterName%>"/>
+                                                <input type="hidden" name="DonationType" value="<%=data.DonationType%>"/>
+                                                <input type="hidden" name="DonationTItle" value="<%=data.donationTitle%>"/>
+                                                <input type="hidden" name="DonationDate" value="<%=data.TransactionDate%>"/>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-success mb-3 mt-5">Unduh Sertifikat</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>

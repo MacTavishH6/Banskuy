@@ -299,11 +299,11 @@ class FoundationProfileController extends Controller
                 $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('FoundationCertificate')->getClientOriginalName());
                 $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
                 $FoundationID = Auth::guard('foundations')->user()->FoundationID;
-                $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',2)->first();
+                $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',1)->first();
                 if($ExistingDocument == null){
                     $Document = new Document();
                     $Document->FoundationID = $FoundationID;
-                    $Document->DocumentTypeID = 2;
+                    $Document->DocumentTypeID = 1;
                     $Document->DocumentName = $request->file('FoundationCertificate')->getClientOriginalName();
                     $Document->ApprovalStatusID = 1;
                     $Document->UploadDate = Carbon::now();
@@ -329,11 +329,11 @@ class FoundationProfileController extends Controller
                 $EncodeFile = Hash::make("document.".Auth::guard('foundations')->user()->FoundationID.$request->file('FoundationOperationalPermit')->getClientOriginalName());
                 $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
                 $FoundationID = Auth::guard('foundations')->user()->FoundationID;
-                $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',3)->first();
+                $ExistingDocument = Document::where('FoundationID',$FoundationID)->where('DocumentTypeID',2)->first();
                 if($ExistingDocument == null){
                     $Document = new Document();
                     $Document->FoundationID = $FoundationID;
-                    $Document->DocumentTypeID = 3;
+                    $Document->DocumentTypeID = 2;
                     $Document->DocumentName = $request->file('FoundationOperationalPermit')->getClientOriginalName();
                     $Document->ApprovalStatusID = 1;
                     $Document->UploadDate = Carbon::now();

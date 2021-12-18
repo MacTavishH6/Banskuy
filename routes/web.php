@@ -25,9 +25,6 @@ use App\Http\Controllers\LOVController;
 |
 */
 
-Route::get('/pdf_form', [App\Http\Controllers\GeneratePdfController::class, 'pdfForm']);
-Route::post('/pdf_download', [App\Http\Controllers\GeneratePdfController::class, 'pdfDownload']);
-
 Route::get('/', function () {
     return redirect('/landingpage');
 });

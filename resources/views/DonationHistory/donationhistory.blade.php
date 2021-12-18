@@ -103,8 +103,8 @@
         }
 
         /* #progressbar li.active+li:after {
-                    background: #2F8D46
-                } */
+                        background: #2F8D46
+                    } */
 
     </style>
 @endsection
@@ -348,7 +348,7 @@
                                         quantity = transaction.Quantity.substring(0,
                                             transaction.Quantity.indexOf('.'));
                                     }
-                                    console.log(quantity);
+                                    console.log(transaction);
                                     var data = {
                                         DonationType: transaction.donation_type_detail
                                             .donation_type.DonationTypeName,
@@ -362,6 +362,9 @@
                                         Foundation: transaction.foundation
                                             .FoundationName
                                     };
+                                    data.donaterName = transaction.user.FirstName + ' ' +
+                                        transaction.user.LastName;
+                                    data.donationTitle = transaction.DonationDescriptionName;
                                     switch (transaction.approval_status.ApprovalStatusID) {
                                         case 5:
                                             data.IsShow = '';
