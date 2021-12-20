@@ -40,6 +40,9 @@ Route::get('/VerifikasiEmailFoundation/{id}',[App\Http\Controllers\Auth\Register
 Route::get('/verifyEmailSent',function(){
     return view('/Verification/verifyEmailSent');
 });
+Route::get('/ResetPassword/{id}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'ResetPassword']);
+Route::get('/ResetPasswordFoundation/{id}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'ResetPasswordFoundation']);
+
 Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'profile']);
 Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
 
