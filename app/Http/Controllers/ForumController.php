@@ -38,7 +38,7 @@ class ForumController extends Controller
 
         $AllowedPost = 3;
         if(Auth::guard('foundations')->check()){
-            $Document = Document::where('FoundationID',Auth::guard('foundations')->user()->FoundationID)->where('ApprovalStatusID','2')->get();
+            $Document = Document::where('FoundationID',Auth::guard('foundations')->user()->FoundationID)->where('ApprovalStatusID','5')->get();
             if($Document->count() == 2 && Auth::guard('foundations')->User()->IsConfirmed == 1){
                 $AllowedPost = 1;
             }

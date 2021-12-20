@@ -74,7 +74,7 @@ Route::middleware(['auth:web,foundations'])->group(function () {
 
     Route::get('/SendNotification',[ForumController::class,'SendNotification']);
     Route::get('/GetListNotificationPost',[LOVController::class,'GetListNotificationPost']);
-    Route::get('/GetUnReadNotificationPost',[LOVController::class,'GetUnReadNotificationPost']);
+    Route::get('/SetReadNotification',[LOVController::class,'SetReadNotification']);
     Route::get('/chat',[MessageController::class,'Chat']);
     Route::post('/chatTo',[MessageController::class,'ChatTo']);
     Route::post('/getMessage',[MessageController::class,'GetMessage']);
