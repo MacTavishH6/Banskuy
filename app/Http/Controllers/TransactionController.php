@@ -80,7 +80,7 @@ class TransactionController extends Controller
     public function GetDonationHistory(Request $request)
     {
         $id = Crypt::decrypt($request->UserID);
-        $donationhistory = DonationTransaction::where('UserID', $id)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('Foundation')->orderBy('TransactionDate', 'DESC')->get();
+        $donationhistory = DonationTransaction::where('UserID', $id)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('Foundation')->join('MsApprovalStatus as as', 'as.ApprovalStatusID', '=', 'TrDonationTransaction.ApprovalStatusID')->orderBy('as.Order','ASC')->select('TrDonationTransaction.*')->orderBy('TransactionDate', 'DESC')->orderBy('created_at','DESC')->get();
         // echo ($donationhistory);
         $donationhistory = $donationhistory->filter(function ($x) use ($request) {
             if ($request->keyword) $x = (str_contains($x->DonationDescriptionName, $request->keyword) || str_contains($x->DonationTypeDetail->DonationType->DonationTypeName, $request->keyword) || str_contains($x->Foundation->FoundationName, $request->keyword)) ? $x : [];
@@ -112,7 +112,7 @@ class TransactionController extends Controller
 
     public function GetDonationHistoryDetail(Request $request)
     {
-        $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('foundation')->first();
+        $donation = DonationTransaction::where("DonationTransactionID", $request->TransactionID)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('foundation')->with('User')->first();
         $response = ['payload' => $donation];
         return response()->json($response);
     }
@@ -127,7 +127,7 @@ class TransactionController extends Controller
     public function GetDonationApproval(Request $request)
     {
         $foundationid = Crypt::decrypt($request->FoundationID);
-        $donationapproval = DonationTransaction::where('FoundationID', $foundationid)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->with('Post')->orderBy('TransactionDate', 'DESC')->orderBy('ApprovalStatusID','ASC')->orderBy('created_at','DESC')->get();
+        $donationapproval = DonationTransaction::where('FoundationID', $foundationid)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->with('Post')->join('MsApprovalStatus as as', 'as.ApprovalStatusID', '=', 'TrDonationTransaction.ApprovalStatusID')->orderBy('as.Order', 'ASC')->select('TrDonationTransaction.*')->orderBy('TransactionDate', 'DESC')->orderBy('created_at', 'DESC')->get();
         // echo ($donationhistory);
         $donationapproval = $donationapproval->filter(function ($x) use ($request) {
             if ($request->keyword) $x = (str_contains($x->DonationDescriptionName, $request->keyword) || str_contains($x->DonationTypeDetail->DonationType->DonationTypeName, $request->keyword)) ? $x : [];
@@ -182,8 +182,8 @@ class TransactionController extends Controller
             switch ($donation->DonationTypeDetail->DonationType->DonationTypeID) {
                 case 1:
                     if ($Level->Exp + 750 >= $NextLevel->LevelExp) {
-                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 750);
                         $Level->Exp = $Level->Exp + 750;
+                        $LastLevelExp = $Level->Exp;
                         $Level->save();
                         $userlevel = new UserLevel;
                         $userlevel->UserID = $UserLevel->UserID;
@@ -197,10 +197,12 @@ class TransactionController extends Controller
 
                         $level = new Level();
                         $level->LevelID = $userlevellastid;
-                        $level->Exp = $Remain;
+                        $level->Exp = $LastLevelExp + 750;
                         $level->ReceivedDate = Carbon::now()->toDateTimeString();
                         $level->created_at = date('Y-m-d H:i:s');
                         $level->save();
+                        $UserLevel->IsCurrentLevel = 0;
+                        $UserLevel->save();
                     } else {
                         $Level->Exp = $Level->Exp + 750;
                         // dd($Level);
@@ -209,8 +211,8 @@ class TransactionController extends Controller
                     break;
                 case 2:
                     if ($Level->Exp + 1000 >= $NextLevel->LevelExp) {
-                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 1000);
                         $Level->Exp = $Level->Exp + 1000;
+                        $LastLevelExp = $Level->Exp;
                         $Level->save();
                         $userlevel = new UserLevel;
                         $userlevel->UserID = $UserLevel->UserID;
@@ -224,10 +226,12 @@ class TransactionController extends Controller
 
                         $level = new Level();
                         $level->LevelID = $userlevellastid;
-                        $level->Exp = $Remain;
+                        $level->Exp = $LastLevelExp + 1000;
                         $level->ReceivedDate = Carbon::now()->toDateTimeString();
                         $level->created_at = date('Y-m-d H:i:s');
                         $level->save();
+                        $UserLevel->IsCurrentLevel = 0;
+                        $UserLevel->save();
                     } else {
                         $Level->Exp = $Level->Exp + 1000;
                         $Level->save();
@@ -235,8 +239,8 @@ class TransactionController extends Controller
                     break;
                 case 3:
                     if ($Level->Exp + 500 >= $NextLevel->LevelExp) {
-                        $Remain = $NextLevel->LevelExp - ($Level->Exp + 500);
                         $Level->Exp = $Level->Exp + 500;
+                        $LastLevelExp = $Level->Exp;
                         $Level->save();
                         $userlevel = new UserLevel;
                         $userlevel->UserID = $UserLevel->UserID;
@@ -250,10 +254,12 @@ class TransactionController extends Controller
 
                         $level = new Level();
                         $level->LevelID = $userlevellastid;
-                        $level->Exp = $Remain;
+                        $level->Exp = $LastLevelExp + 500;
                         $level->ReceivedDate = Carbon::now()->toDateTimeString();
                         $level->created_at = date('Y-m-d H:i:s');
                         $level->save();
+                        $UserLevel->IsCurrentLevel = 0;
+                        $UserLevel->save();
                     } else {
                         $Level->Exp = $Level->Exp + 500;
                         $Level->save();

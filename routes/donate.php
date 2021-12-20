@@ -35,6 +35,8 @@ Route::middleware(['auth:web'])->group(function () {
 
     Route::get('/nextlevel/{id}', [App\Http\Controllers\LevelController::class, 'GetNextLevelInfo']);
 
+    Route::post('/pdf_download', [App\Http\Controllers\GeneratePdfController::class, 'pdfDownload']);
+
     // Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
     // Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
     // Route::get('/getdonationtype', [App\Http\Controllers\LOVController::class, 'DonationType']);

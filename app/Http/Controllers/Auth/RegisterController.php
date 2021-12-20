@@ -101,7 +101,7 @@ class RegisterController extends Controller
             $userlevel->created_at = date('Y-m-d H:i:s');
             $userlevel->save();
 
-            $userlevellastid = $userlevel->id;
+            $userlevellastid = $userlevel->LevelID;
 
             $level = new Level();
             $level->LevelID = $userlevellastid;
@@ -145,7 +145,7 @@ class RegisterController extends Controller
 
 
             if ($response = $this->registered($request, $foundation)) {
-                Mail::to($user->email)->send(new VerificationMail());
+                Mail::to($foundation->email)->send(new VerificationMail());
                 Auth::guard('foundations')->logout();
                 return redirect('/verifyEmailSent');
                 return $response;

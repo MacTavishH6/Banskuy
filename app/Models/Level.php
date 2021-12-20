@@ -8,6 +8,7 @@ class Level extends Model
 {
     //
     protected $table = "trlevel";
+    protected $primaryKey = "id";
 
     public function UserLevel(){
 

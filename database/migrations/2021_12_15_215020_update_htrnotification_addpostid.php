@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrmessageTable extends Migration
+class UpdateHtrnotificationAddpostid extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateTrmessageTable extends Migration
      */
     public function up()
     {
-        Schema::create('trmessage', function (Blueprint $table) {
-            $table->id();
-            $table->integer('UserID');
-            
+        Schema::table('htrnotification', function (Blueprint $table) {
+            $table->integer('PostID');
         });
     }
 
@@ -27,6 +25,6 @@ class CreateTrmessageTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trmessage');
+        //
     }
 }

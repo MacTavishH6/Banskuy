@@ -3,11 +3,17 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DocumentController;
-
+use App\Http\Controllers\MessageController;
 
 Route::get('/login', function () {
     return redirect('/foundationlogin');
 });
+
+Route::get('/password/reset', function() {
+    return view('auth.passwords.email');
+});
+
+Route::post('/password/email', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail']);
 
 Route::get('/register', function () {
     return redirect('/foundationregister');
@@ -23,21 +29,19 @@ Route::get('/foundationregister', function () {
     return view('/auth/foundationRegister');
 });
 
-// Route::get('/DocumentApproval',[App\Http\Controllers\Admin\DocumentController::class,'GetListDocumentApproval']);
-// Route::get('/GetListDocumentType',[App\Http\Controllers\LOVController::class, 'GetDocumentTypeList']);
-// Route::get('/GetApprovalStatus',[App\Http\Controllers\LOVController::class, 'GetApprovalStatus']);
-// Route::post('/GetListDocumentByFilter',[DocumentController::class, 'GetListDocumentByFilter']);
-// Route::post('/GetDocumentApprovalDetail',[DocumentController::class, 'GetDocumentApprovalDetail']);
-// Route::post('/SaveDocumentApproval',[DocumentController::class, 'SaveDocumentApproval']);
+Route::get('/DocumentApproval',[App\Http\Controllers\Admin\DocumentController::class,'GetListDocumentApproval']);
+Route::get('/GetListDocumentType',[App\Http\Controllers\LOVController::class, 'GetDocumentTypeList']);
+Route::get('/GetApprovalStatus',[App\Http\Controllers\LOVController::class, 'GetApprovalStatus']);
+Route::post('/GetListDocumentByFilter',[DocumentController::class, 'GetListDocumentByFilter']);
+Route::post('/GetDocumentApprovalDetail',[DocumentController::class, 'GetDocumentApprovalDetail']);
+Route::post('/SaveDocumentApproval',[DocumentController::class, 'SaveDocumentApproval']);
 
 Route::post('/loginfoundation', [App\Http\Controllers\Auth\LoginController::class, 'loginfoundation']);
 
 Route::middleware(['auth:foundations'])->group(function () {
 
-    // Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
-
     Route::get('/editfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'editfoundationprofile']);
-    //Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
+
     Route::get('/getfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'getfoundationprofile']);
 
     Route::put('/changepassword', [App\Http\Controllers\FoundationProfileController::class, 'ChangePassword']);
@@ -62,7 +66,7 @@ Route::middleware(['auth:foundations'])->group(function () {
     Route::post('/ReUploadDocument',[App\Http\Controllers\FoundationProfileController::class, 'ReUploadDocument']); 
     Route::post('/GetListDocument',[App\Http\Controllers\FoundationProfileController::class, 'GetListDocument']); 
     Route::post('/GetDocumentDetail',[App\Http\Controllers\FoundationProfileController::class, 'GetDocumentDetail']); 
-
+    //Route::get('/chat',[MessageController::class,'Chat']);
     
 
 });

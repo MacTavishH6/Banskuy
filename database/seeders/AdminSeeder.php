@@ -17,6 +17,7 @@ class AdminSeeder extends Seeder
         DB::table('msadmin')->insert([
             'username' => "admin1@banskuy.com",
             'password' => bcrypt("12345678"),
+            'emailVerified' => 1,
         ]);
     }
 }

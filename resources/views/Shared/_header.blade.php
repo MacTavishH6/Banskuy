@@ -16,37 +16,62 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
-                @if (!Auth::guard('foundations')->check())
-                    @if (Auth::check())
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="/makerequest/{{ Crypt::encrypt(Auth::id()) }}">{{ __('Ayo berdonasi!') }}</a>
-                        </li>
-                    @else
-                        @if (!str_contains($_SERVER['HTTP_HOST'], 'foundation.'))
+                @if (!Auth::guard('admin')->check())
+                    @if (!Auth::guard('foundations')->check())
+                        @if (Auth::check())
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Ayo berdonasi!') }}</a>
+                                <a class="nav-link"
+                                    href="/makerequest/{{ Crypt::encrypt(Auth::id()) }}">{{ __('Ayo berdonasi!') }}</a>
                             </li>
+                        @else
+                            @if (!str_contains($_SERVER['HTTP_HOST'], 'foundation.'))
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="{{ route('login') }}">{{ __('Ayo berdonasi!') }}</a>
+                                </li>
+                            @endif
                         @endif
                     @endif
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="/usersearching">{{ __('Lihat pengguna terlapor') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="/postsearching">{{ __('Lihat post terlapor') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="/DocumentApproval">{{ __('Lihat Dokumen') }}</a>
+                    </li>
                 @endif
 
+                @if (!Auth::guard('admin')->check())
                 @if (Auth::check())
                     <li class="nav-item">
                         <a class="nav-link" href="/donationhistory">{{ __('Check Progress Anda di sini!') }}</a>
                     </li>
                 @elseif(Auth::guard('foundations')->check())
                     <li class="nav-item">
-                        <a class="nav-link" href="/donationapproval">{{ __('Check Progress Anda di sini!') }}</a>
+                        <a class="nav-link"
+                            href="/donationapproval">{{ __('Check Progress Anda di sini!') }}</a>
                     </li>
-                @endauth
+                @endif
+                @endif
                 <li class="nav-item">
                     <a class="nav-link" href="/Forum">{{ __('Forum') }}</a>
                 </li>
-
+               
                 <!-- Authentication Links -->
                 @if (Auth::guard('foundations')->check() || Auth::check() || Auth::guard('admin')->check())
                     <li class="nav-item">
+                        <a class="nav-link" href="/chat" }}">
+                            Lihat Pesan
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        @if (!Auth::guard('admin')->check())
                         @if (Auth::guard('foundations')->check())
                             <a class="nav-link"
                                 href="/foundationprofile/{{ Crypt::encrypt(Auth::guard('foundations')->id()) }}">
@@ -59,10 +84,25 @@
                                 Profil
                             </a>
                         @endif
+                        @endif
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toogle mr-4 ml-2" id="navbarNotification"
+                                href="#" role="button" aria-expanded="true" aria-haspopup="true">
+                                <i class="fa fa-bell" id="imgBell" style="z-index: 0;color: gray"></i>
+                                <small id="lblPostNotificationCount" style="padding:0 3px 0 2px;z-index: 2;position: absolute;border-radius:40%;border:5px;"></small>
+                        </a>
+                        <div class="dropdown-menu" id="dropdownNotification" style="max-width:215px;">
+                                <a class="dropdown-item" href="/Forum" style="text-align: center" id="dropdownAllPostNotif">
+                                    <p>Lihat semua</p>
+                                </a>
+                        </div>
+                        <input type="hidden" id="ddlNotifStatus" value="hide">
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white py-1 px-3"
-                            style="background-color: #AC8FFF; border-radius: 20px;" href="{{ '/logout' }}"
+                        <a class="nav-link text-white py-1 px-3" style="background-color: #AC8FFF; border-radius: 20px;"
+                            href="{{ '/logout' }}"
                             onclick="event.preventDefault();
                                                                                     document.getElementById('logout-form').submit();">
                             {{ __('Keluar') }}
@@ -112,7 +152,7 @@
                         @endif
                     @endif
 
-                    @if ((Request::is('login') || Request::is('foundationlogin')) && !str_contains($_SERVER['HTTP_HOST'],'admin.'))
+                    @if ((Request::is('login') || Request::is('foundationlogin')) && !str_contains($_SERVER['HTTP_HOST'], 'admin.'))
                         <li class="nav-item">
                             <a class="nav-link"
                                 href="{{ Request::is('login') ? route('register') : '/foundationregister' }}">{{ __('Daftar Sekarang') }}</a>
@@ -120,7 +160,9 @@
                     @endif
 
                 @endif
-        </ul>
+            </ul>
+        </div>
     </div>
-</div>
 </nav>
+
+@include('layouts.Misc.component-view-postnotification')

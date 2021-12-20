@@ -16,7 +16,11 @@
                 </div>
                 <div class="col-4">
                     <div class="form-row">
-                        <select name="UserType" id="UserType" class="form-control"></select>
+                        <select name="UserType" id="UserType" class="form-control">
+                            <option value="">Semua</option>
+                            <option value="1">Donatur</option>
+                            <option value="2">Yayasan</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -33,25 +37,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Wira</td>
-                                <td>wira@gmail.com</td>
-                                <td>02 Oct 2021</td>
-                                <td>None</td>
-                                <td></td>
-                            </tr>
+                            @foreach ($report as $rprt)
+                                <tr>
+                                    <td>
+                                        <a
+                                            href="/profile/{{ Crypt::encrypt($rprt->UserTarget->UserID) }}">{{ $rprt->UserTarget->Username }}</a>
+                                    </td>
+                                    <td>{{ $rprt->UserTarget->Email }}</td>
+                                    <td>{{ date('d M Y', strtotime($rprt->UserTarget->RegisterDate)) }}</td>
+                                    <td>Terlapor</td>
+                                    <td>
+                                        <a href="/usersearching/detail/{{Crypt::encrypt($rprt->UserTarget->UserID)}}" class="btn btn-link report-detail">
+                                            <img src="{{ env('FTP_URL') }}/assets/details.png" alt=""
+                                                style="max-width: 20px">
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
+                    {{$report->links()}}
                 </div>
             </div>
         </div>
     </section>
-@endsection
-
-@section('Scripts')
-<script>
-    $(document).ready(function () {
-
-    });
-</script>
 @endsection

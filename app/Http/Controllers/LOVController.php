@@ -11,6 +11,8 @@ use App\Models\Post;
 use App\Models\DocumentType;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Auth;
+use App\Models\HtrNotification;
+use App\Models\TrNotification;
 
 class LOVController extends Controller
 {
@@ -65,5 +67,47 @@ class LOVController extends Controller
         return response()->json(array('payload'=>$ApprovalStatus),200);
     }
 
+    public function GetListNotificationPost(){
+
+        $CurrUser = "";
+        $RoleID = "0";
+        if(Auth::guard('foundations')->check()){
+            $CurrUser = Auth::guard('foundations')->user()->FoundationID;
+            $RoleID = "2";
+        }
+        else{
+            $CurrUser = Auth::user()->UserID;
+            $RoleID = "1";
+        }
+
+        // $retVal = HtrNotification::with('TrnsactionNotif')->where()
+         $retVal = TrNotification::where('ReceiverID',$CurrUser)->where('RoleID',$RoleID)->with('notification')->get();
+
+        return response()->json(array('payload'=>$retVal),200);
+    }
+
+    public function SetReadNotification(){
+        $CurrUser = "";
+        $RoleID = "0";
+        if(Auth::guard('foundations')->check()){
+            $CurrUser = Auth::guard('foundations')->user()->FoundationID;
+            $RoleID = "2";
+        }
+        else{
+            $CurrUser = Auth::user()->UserID;
+            $RoleID = "1";
+        }
+
+        $retVal = TrNotification::where('ReceiverID',$CurrUser)
+        ->where('RoleID',$RoleID)
+        ->where('StatusNotification','1')->get();
+
+        foreach($retVal as $val){
+            $val->StatusNotification = 2;
+            $val->save();
+        }
+
+        return response()->json(['payload' => 'success']);
+    }
     
 }

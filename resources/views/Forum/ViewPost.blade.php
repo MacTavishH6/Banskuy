@@ -51,7 +51,7 @@
             function btnSendCommentOnClick(){
                 var Comment = $('#txtComment').val();
                 $('#txtComment').val("");
-                console.log(Comment);
+                //console.log(Comment);
                 $.ajax({
                     type: 'POST',
                     url : '/PostComment/' + {{$Post->PostID}},
@@ -211,7 +211,7 @@
 
     <div class="container" >
         {{-- SLIDER START HERE --}}
-        <div class="slider" style="margin-left: 20%">
+        <div class="slider">
             @include('Shared.Slider')
         </div>
         {{-- SLIDER END HERE --}}
@@ -265,8 +265,14 @@
                            
                                 @if ($StatusPost == true)
                                 <div class="mr-2">
-                                    <button type="submit" class="btn btn-warning pb-2 pt-1 px-1">
-                                        Hubungi Pembuat</button>
+                                    <form action="/chatTo" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input id="id" name="id" type="hidden" value="{{$Post->ID}}">
+                                        <input id="roleId" name="roleId" type="hidden" value="{{$Post->RoleID}}">
+                                        <button type="submit" class="btn btn-warning pb-2 pt-1 px-1">
+                                            Hubungi Pembuat</button>
+                                    </form>
+                                   
                                 </div>
                                 <div>
                                     <button id="btnMakeReport" type="button" class="btn btn-danger pb-2 pt-1 px-3" data-toggle="modal"

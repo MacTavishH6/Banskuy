@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\GeneratePdfController;
+use App\Http\Controllers\LOVController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,29 +40,11 @@ Route::get('/VerifikasiEmailFoundation/{id}',[App\Http\Controllers\Auth\Register
 Route::get('/verifyEmailSent',function(){
     return view('/Verification/verifyEmailSent');
 });
+Route::get('/ResetPassword/{id}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'ResetPassword']);
+Route::get('/ResetPasswordFoundation/{id}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'ResetPasswordFoundation']);
+
 Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'profile']);
 Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
-
-
-// Route::get('/email', function () {
-//     Mail::to('fikrifadillah231@gmail.com')->send(new VerificationMail());
-// });
-
-// Route::get('/email', function () {
-//     Mail::to('fikrifadillah231@gmail.com')->send(new VerificationMail());
-// });
-
-use App\Events\Message;
-// Route::post('/sendMessage',function(Request $request){
-//     event(new Message($request->input('username'),$request->input('message')));
-// });
-
-// Route::post('/sendMessage',[MessageController::class,'SendMessages']);
-
-// Route::get('/chat',[MessageController::class,'Chat']);
-// Route::post('/chatTo',[MessageController::class,'ChatTo']);
-// Route::post('/getMessage',[MessageController::class,'GetMessage']);
-// Route::post('/GetListUserMessage',[MessageController::class,'GetListUserMessage']);
 
 
 Route::middleware(['auth:web,foundations'])->group(function () {
@@ -87,8 +72,12 @@ Route::middleware(['auth:web,foundations'])->group(function () {
     Route::post('/MakeReportUser', [ReportController::class, 'MakeReportUser']);
 
 
+
     Route::post('/sendMessage',[MessageController::class,'SendMessages']);
 
+    Route::get('/SendNotification',[ForumController::class,'SendNotification']);
+    Route::get('/GetListNotificationPost',[LOVController::class,'GetListNotificationPost']);
+    Route::get('/SetReadNotification',[LOVController::class,'SetReadNotification']);
     Route::get('/chat',[MessageController::class,'Chat']);
     Route::post('/chatTo',[MessageController::class,'ChatTo']);
     Route::post('/getMessage',[MessageController::class,'GetMessage']);
