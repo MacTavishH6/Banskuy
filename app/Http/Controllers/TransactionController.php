@@ -80,7 +80,7 @@ class TransactionController extends Controller
     public function GetDonationHistory(Request $request)
     {
         $id = Crypt::decrypt($request->UserID);
-        $donationhistory = DonationTransaction::where('UserID', $id)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('Foundation')->orderBy('ApprovalStatusID','ASC')->orderBy('TransactionDate', 'DESC')->orderBy('created_at','DESC')->get();
+        $donationhistory = DonationTransaction::where('UserID', $id)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('Foundation')->join('MsApprovalStatus as as', 'as.ApprovalStatusID', '=', 'TrDonationTransaction.ApprovalStatusID')->orderBy('as.Order','ASC')->select('TrDonationTransaction.*')->orderBy('TransactionDate', 'DESC')->orderBy('created_at','DESC')->get();
         // echo ($donationhistory);
         $donationhistory = $donationhistory->filter(function ($x) use ($request) {
             if ($request->keyword) $x = (str_contains($x->DonationDescriptionName, $request->keyword) || str_contains($x->DonationTypeDetail->DonationType->DonationTypeName, $request->keyword) || str_contains($x->Foundation->FoundationName, $request->keyword)) ? $x : [];
@@ -127,7 +127,7 @@ class TransactionController extends Controller
     public function GetDonationApproval(Request $request)
     {
         $foundationid = Crypt::decrypt($request->FoundationID);
-        $donationapproval = DonationTransaction::where('FoundationID', $foundationid)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->with('Post')->orderBy('ApprovalStatusID', 'ASC')->orderBy('TransactionDate', 'DESC')->orderBy('created_at', 'DESC')->get();
+        $donationapproval = DonationTransaction::where('FoundationID', $foundationid)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->with('Post')->join('MsApprovalStatus as as', 'as.ApprovalStatusID', '=', 'TrDonationTransaction.ApprovalStatusID')->orderBy('as.Order', 'ASC')->select('TrDonationTransaction.*')->orderBy('TransactionDate', 'DESC')->orderBy('created_at', 'DESC')->get();
         // echo ($donationhistory);
         $donationapproval = $donationapproval->filter(function ($x) use ($request) {
             if ($request->keyword) $x = (str_contains($x->DonationDescriptionName, $request->keyword) || str_contains($x->DonationTypeDetail->DonationType->DonationTypeName, $request->keyword)) ? $x : [];
