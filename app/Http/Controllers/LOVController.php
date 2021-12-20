@@ -86,7 +86,7 @@ class LOVController extends Controller
         return response()->json(array('payload'=>$retVal),200);
     }
 
-    public function GetUnReadNotificationPost(){
+    public function SetReadNotification(){
         $CurrUser = "";
         $RoleID = "0";
         if(Auth::guard('foundations')->check()){
@@ -102,7 +102,12 @@ class LOVController extends Controller
         ->where('RoleID',$RoleID)
         ->where('StatusNotification','1')->get();
 
-        return response()->json(['payload' => count($retVal)]);
+        foreach($retVal as $val){
+            $val->StatusNotification = 2;
+            $val->save();
+        }
+
+        return response()->json(['payload' => 'success']);
     }
     
 }

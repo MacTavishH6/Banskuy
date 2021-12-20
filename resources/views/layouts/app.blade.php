@@ -71,10 +71,12 @@
                 function(response){
                     var result = response.payload;
                     if(result != null && result.length > 0){
-                        
+                        var unReadNotif = 0;
                         result.forEach(element => {
                             var data = {};
-
+                            if(element.StatusNotification == 1){
+                                unReadNotif += 1;
+                            }
                             data.title = element.notification.NotificationHeader;
                             data.content = element.notification.NotificationContent;
                             data.postId = element.notification.PostID;
@@ -84,6 +86,11 @@
                                 data:data
                             }));
                         });
+                        if(unReadNotif > 0){
+                            $('#imgBell').css("color","blue"); 
+                            $('#lblPostNotificationCount').html(parseInt(unReadNotif));
+                        }
+                        
                     }
                 }
             });
@@ -92,10 +99,21 @@
                 if($('#ddlNotifStatus').val() == "hide"){
                     $('#dropdownNotification').addClass("show");
                     $('#ddlNotifStatus').val("show");
+
+                    $.ajax({
+                        type : 'GET',
+                        url: '/SetReadNotification',
+                        success:
+                        function(response){
+                            $('#imgBell').css("color","gray"); 
+                            $('#lblPostNotificationCount').html("");
+                        }
+                    });
                 }
                 else{
                     $('#dropdownNotification').removeClass("show");
                     $('#ddlNotifStatus').val("hide");
+
                 }
             });
             window.Echo.channel('notification1')
@@ -108,7 +126,13 @@
                     $('#dropdownNotification').prepend(divPostNotif({
                         data:data
                     }));
-                    $('#lblPostNotificationCount').html(parseInt($('#lblPostNotificationCount').html()) + 1);
+                    $('#imgBell').css("color","blue"); 
+                    if($('#lblPostNotificationCount').html() == ""){
+                        $('#lblPostNotificationCount').html(parseInt("1"));
+                    }
+                    else{
+                        $('#lblPostNotificationCount').html(parseInt($('#lblPostNotificationCount').html()) + 1);
+                    }
 
                 });
         });

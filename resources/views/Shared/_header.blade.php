@@ -62,9 +62,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/Forum">{{ __('Forum') }}</a>
                 </li>
-
+               
                 <!-- Authentication Links -->
                 @if (Auth::guard('foundations')->check() || Auth::check() || Auth::guard('admin')->check())
+                    <li class="nav-item">
+                        <a class="nav-link" href="/chat" }}">
+                            Lihat Pesan
+                        </a>
+                    </li>
                     <li class="nav-item">
                         @if (!Auth::guard('admin')->check())
                         @if (Auth::guard('foundations')->check())
@@ -81,11 +86,12 @@
                         @endif
                         @endif
                     </li>
+                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toogle mr-4 ml-2" id="navbarNotification"
                                 href="#" role="button" aria-expanded="true" aria-haspopup="true">
-                                <i class="fa fa-bell" style="z-index: 0;color:blue"></i>
-                                <small id="lblPostNotificationCount" style="padding:0 3px 0 2px;z-index: 2;position: absolute;border-radius:40%;border:5px;">1</small>
+                                <i class="fa fa-bell" id="imgBell" style="z-index: 0;color: gray"></i>
+                                <small id="lblPostNotificationCount" style="padding:0 3px 0 2px;z-index: 2;position: absolute;border-radius:40%;border:5px;"></small>
                         </a>
                         <div class="dropdown-menu" id="dropdownNotification" style="max-width:215px;">
                                 <a class="dropdown-item" href="/Forum" style="text-align: center" id="dropdownAllPostNotif">
