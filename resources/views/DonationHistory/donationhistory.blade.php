@@ -103,8 +103,8 @@
         }
 
         /* #progressbar li.active+li:after {
-                        background: #2F8D46
-                    } */
+                            background: #2F8D46
+                        } */
 
     </style>
 @endsection
@@ -302,19 +302,19 @@
                                 data.transactionID = donation.DonationTransactionID;
                                 data.status = donation.approval_status.ApprovalStatusName;
                                 switch (donation.approval_status.ApprovalStatusID) {
-                                    case 1:
+                                    case "1":
                                         data.statusColor = 'btn-warning';
                                         break;
-                                    case 2:
+                                    case "2":
                                         data.statusColor = 'btn-primary';
                                         break;
-                                    case 3:
+                                    case "3":
                                         data.statusColor = 'btn-danger';
                                         break;
-                                    case 4:
+                                    case "4":
                                         data.statusColor = 'btn-warning';
                                         break;
-                                    case 5:
+                                    case "5":
                                         data.statusColor = 'btn-success';
                                         break;
                                 }
@@ -348,7 +348,6 @@
                                         quantity = transaction.Quantity.substring(0,
                                             transaction.Quantity.indexOf('.'));
                                     }
-                                    console.log(transaction);
                                     var data = {
                                         DonationType: transaction.donation_type_detail
                                             .donation_type.DonationTypeName,
@@ -364,9 +363,10 @@
                                     };
                                     data.donaterName = transaction.user.FirstName + ' ' +
                                         transaction.user.LastName;
-                                    data.donationTitle = transaction.DonationDescriptionName;
+                                    data.donationTitle = transaction
+                                    .DonationDescriptionName;
                                     switch (transaction.approval_status.ApprovalStatusID) {
-                                        case 5:
+                                        case "5":
                                             data.IsShow = '';
                                             break;
                                         default:
@@ -391,16 +391,18 @@
                                     var opacity;
                                     var current;
                                     switch (transaction.approval_status.ApprovalStatusID) {
-                                        case 1:
+                                        case "1":
                                             current = 1;
                                             break;
-                                        case 4:
+                                        case "4":
                                             current = 2;
                                             break;
-                                        case 5:
+                                        case "5":
                                             current = 3;
                                             break;
-
+                                        case "3":
+                                            current = 3;
+                                            break;
                                     }
                                     setProgressBar(current);
 
@@ -424,7 +426,6 @@
             function getDate(element) {
                 var date;
                 try {
-                    console.log(dateFormat);
                     date = $.datepicker.parseDate(dateFormat, element.value);
                 } catch (error) {
                     date = null;
