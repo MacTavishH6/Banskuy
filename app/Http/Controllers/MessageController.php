@@ -95,20 +95,27 @@ class MessageController extends Controller
         // $senderId = Crypt::decrypt($request->senderId);
         // $receiverId = Crypt::decrypt($request->receiverId);
         //$senderId = $request->senderId;
+        $roleId = 0;
         if(Auth::guard('foundations')->check()){
             $User = Auth::guard('foundations');
             $id = Auth::guard('foundations')->user()->FoundationID;
+            $roleId = 2;
         }
         else{
             $User = Auth::user();
             $id = Auth::user()->UserID;
+            $roleId = 1;
         }
         $senderId = $id;
         $receiverId = Crypt::decrypt($request->receiverId);
         $Message = DB::table('trmessage')->whereIn('SenderID', [$senderId,$receiverId])->whereIn('ReceiverID',[$senderId,$receiverId])->orderBy('created_at','asc')->get();
+        
         $DateMessage = '';
          $ListMessage = array();
         foreach($Message as $item){
+            if(($item->ReceiverID == $id && $item->RoleId != $roleId) || ($item->SenderID == $id && $item->SenderRoleID != $roleId)){
+                continue;
+            }
             $ListMessage[] = ['senderId' => $item->SenderID,'receiverId' => $item->ReceiverID , 'messages' => $item->Messages, 'date' => date('d M Y',strtotime($item->created_at)) ];
         }
 
