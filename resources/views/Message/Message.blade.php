@@ -71,6 +71,10 @@
                     $('#titleMessage').html($('#body_User').find('.active div strong').html());
                     $('#txtId').val(receiverId);
                     $('#roleId').val($('#body_User').find('.active div input').val());
+                    if($('#roleId').val() == "2")
+                      $('#hlProfile').attr("href","/foundationprofile/"+receiverId);
+                    else
+                      $('#hlProfile').attr("href","/profile/"+receiverId);                    
                     FetchMessage();
             }
 
@@ -241,7 +245,7 @@
             </div>
           </div>
            <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white border" style="width: 60%;">
-            <a href="#" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+            <a href="#" id="hlProfile" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
                 <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
                 <span class="fs-5 fw-semibold" id="titleMessage"></span>
               </a>

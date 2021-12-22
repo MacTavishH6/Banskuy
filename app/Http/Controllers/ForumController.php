@@ -79,12 +79,12 @@ class ForumController extends Controller
 
         $StatusPost = true;
         if(Auth::check()){
-            if(Auth::user()->UserID == $Post->ID){
+            if(Auth::user()->UserID == $Post->ID && $Post->RoleID == 1){
                 $StatusPost = false;
             }
         }
         else if(Auth::guard('foundations')->check()){
-            if(Auth::guard('foundations')->user()->FoundationID == $Post->ID){
+            if(Auth::guard('foundations')->user()->FoundationID == $Post->ID && $Post->RoleID == 2){
                 $StatusPost = false;
             }
         }
