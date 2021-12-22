@@ -11,7 +11,7 @@ use App\Models\Post;
 use App\Models\DocumentType;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Auth;
-use App\Models\HtrNotification;
+// use App\Models\HtrNotification;
 use App\Models\TrNotification;
 
 class LOVController extends Controller
@@ -81,7 +81,7 @@ class LOVController extends Controller
         }
 
         // $retVal = HtrNotification::with('TrnsactionNotif')->where()
-         $retVal = TrNotification::where('ReceiverID',$CurrUser)->where('RoleID',$RoleID)->with('notification')->get();
+         $retVal = TrNotification::where('ReceiverID',$CurrUser)->where('RoleID',$RoleID)->with('notification')->get()->take(3);
 
         return response()->json(array('payload'=>$retVal),200);
     }

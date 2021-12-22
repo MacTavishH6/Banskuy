@@ -156,18 +156,33 @@ class MessageController extends Controller
     public function GetListUserMessage(Request $request){
         $currUserId = $request->currUserId;
 
+        if(Auth::guard('foundations')->check()){
+            $User = Auth::guard('foundations');
+            $id = Auth::guard('foundations')->user()->FoundationID;
+            $roleId = 2;
+        }
+        else{
+            $User = Auth::user();
+            $id = Auth::user()->UserID;
+            $roleId = 1;
+        }
+
         $User = DB::table('trmessage')->select('SenderID','ReceiverID','RoleID','SenderRoleID')->where('ReceiverID',$currUserId)->orWhere('SenderID',$currUserId)->orderBy('created_at','asc')->distinct()->get();
         //$User = Messages::select('SenderID','ReceiverID')->where('ReceiverID',$currUserId)->orWhere('SenderID',$currUserId)->distinct()->get();
         // dd($User);
         // $ListUser = [];
         $ListUser = array();
         foreach($User as $val){
-            if($val->SenderID == $currUserId){
-                $ListUser[] = ['UserID' =>$val->ReceiverID, 'RoleID' => $val->RoleID];
+            if(($val->ReceiverID == $currUserId && $val->RoleID != $roleId) || ($val->SenderID == $currUserId && $val->SenderRoleID != $roleId)){
+                continue;
             }
-            else{
-                $ListUser[] = ['UserID' =>$val->SenderID, 'RoleID' => $val->SenderRoleID];
-            }
+                if($val->SenderID == $currUserId){
+                    $ListUser[] = ['UserID' =>$val->ReceiverID, 'RoleID' => $val->RoleID];
+                }
+                else{
+                    $ListUser[] = ['UserID' =>$val->SenderID, 'RoleID' => $val->SenderRoleID];
+                }   
+        
         }   
 
         $chatTo = "";
