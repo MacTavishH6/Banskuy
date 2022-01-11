@@ -13,6 +13,7 @@ class Admin extends Authenticatable
 
     protected $table = "msadmin";
     protected $primaryKey = "AdminID";
+    protected $guard = 'admin';
     
     protected $fillable = [
         'username',

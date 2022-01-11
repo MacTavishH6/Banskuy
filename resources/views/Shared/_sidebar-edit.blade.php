@@ -1,4 +1,4 @@
-<ul class="nav flex-column">
+<ul class="nav flex-column" id="editTab">
     <li class="nav-item">
         <a class="nav-link profile-link active" id="editprofile-tab" data-toggle="tab" href="#editprofile" role="tab"
             aria-controls="editprofile" aria-selected="true">Sunting Profil</a>

@@ -17,7 +17,7 @@
                     @csrf
                     @method('POST')
                     <input type="hidden" name="UserID"
-                        value="{{ Crypt::encrypt($report->first()->UserReported->UserID) }}">
+                        value="{{ $report->first()->RoleIDTarget == 1 ? Crypt::encrypt($report->first()->UserReported->UserID) : Crypt::encrypt($report->first()->UserReported->FoundationID) }}">
                     <div class="form-group">
                         <label class="col-3">Durasi Ban</label>
                         <div class="col-6">

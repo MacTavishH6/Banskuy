@@ -57,6 +57,16 @@
 
         }
 
+        #myCard {
+            flex-direction: row;
+        }
+
+        @media (max-width: 767px) {
+            #myCard {
+                flex-direction: column;
+            }
+        }
+
     </style>
 @endsection
 
@@ -113,44 +123,54 @@
             <b>Anda dapat menolong dengan</b>
         </div>
 
-        <div class="donationstuffcontainer d-flex">
-            <div class="card" style="margin:1%; background-color: #18171f; border-radius: 20px">
-                <div class="text-center my-2">
-                    <img class="" src="{{ env('FTP_URL') }}assets/uang.jpg" alt="image"
-                        style="max-width:200px; color: white">
-                </div>
-                <div class="container text-center" style="color: white">
-                    <h2><b>Uang</b></h2> <br>
-                    <p style="font-size: 140%" align="justify">Anda dapat mendonasikan uang anda dengan mentranfser uang and
-                        ke rekening
-                        Yayasan atau langsung.</p>
-                    <br><br>
-                </div>
-            </div>
-            <div class="card" style="margin:1%; background-color: #18171f; border-radius: 20px">
-                <div class="text-center my-2">
-                    <img class="text-center" src="{{ env('FTP_URL') }}assets/barang.jpg" alt="image"
-                        style="max-width:200px; color: white">
-                </div>
-                <div class="container text-center" style="color: white">
-                    <h2><b>Barang Bekas</b></h2> <br>
-                    <p style="font-size: 140%" align="justify">Anda memiliki barang bekas dalam keadaan masih layak pakai ?
-                        Kamu dapat
-                        mendonasikannya, sederhana namun sangat berharga</p>
-                    <br><br>
+        <div class="d-flex justify-content-center" id="myCard">
+            <div class="col-md-4 d-flex justify-content-center px-0 w-100">
+                <div class="card w-75" style="background-color: #18171f; border-radius: 20px">
+                    <div class="text-center my-2">
+                        <img class="" src="{{ env('FTP_URL') }}assets/uang.jpg" alt="image"
+                            style="max-width:10vw; color: white">
+                    </div>
+                    <div class="container text-center" style="color: white">
+                        <h2 style="font-size: 3vw"><b>Uang</b></h2> <br>
+                        <p style="font-size: 2vw" align="left">Anda dapat mendonasikan uang anda dengan mentranfser
+                            uang
+                            and
+                            ke rekening
+                            Yayasan atau langsung.</p>
+                        <br><br>
+                    </div>
                 </div>
             </div>
-            <div class="card" style="margin:1%; background-color: #18171f; border-radius: 20px">
-                <div class="text-center my-2">
-                    <img  src="{{ env('FTP_URL') }}assets/comserv.png" alt="image"
-                    style="max-width:200px; color: white">
+            <div class="col-md-4 d-flex justify-content-center px-0 w-100">
+                <div class="card w-75" style="background-color: #18171f; border-radius: 20px">
+                    <div class="text-center my-2">
+                        <img class="text-center" src="{{ env('FTP_URL') }}assets/barang.jpg" alt="image"
+                            style="max-width:10vw; color: white">
+                    </div>
+                    <div class="container text-center" style="color: white">
+                        <h2 style="font-size: 3vw"><b>Barang Bekas</b></h2> <br>
+                        <p style="font-size: 2vw" align="left">Anda memiliki barang bekas dalam keadaan masih layak
+                            pakai ?
+                            Kamu dapat
+                            mendonasikannya, sederhana namun sangat berharga</p>
+                        <br><br>
+                    </div>
                 </div>
-                <div class="container text-center" style="color: white">
-                    <h2><b>Pelayanan Masyarakat</b></h2> <br>
-                    <p style="font-size: 140%" align="justify">Menolong orang lain adalah hal yang sederhana, jika anda
-                        memiliki waktu
-                        luang, anda dapat menolong mereka.</p>
-                    <br><br>
+            </div>
+            <div class="col-md-4 d-flex justify-content-center px-0 w-100">
+                <div class="card w-75" style="background-color: #18171f; border-radius: 20px">
+                    <div class="text-center my-2">
+                        <img src="{{ env('FTP_URL') }}assets/comserv.png" alt="image"
+                            style="max-width:10vw; color: white">
+                    </div>
+                    <div class="container text-center" style="color: white">
+                        <h2 style="font-size: 3vw"><b>Pelayanan Masyarakat</b></h2> <br>
+                        <p style="font-size: 2vw" align="left">Menolong orang lain adalah hal yang sederhana, jika
+                            anda
+                            memiliki waktu
+                            luang, anda dapat menolong mereka.</p>
+                        <br><br>
+                    </div>
                 </div>
             </div>
         </div>
