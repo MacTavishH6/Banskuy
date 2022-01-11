@@ -47,7 +47,7 @@
                                     <td>{{ date('d M Y', strtotime($rprt->UserTarget->RegisterDate)) }}</td>
                                     <td>Terlapor</td>
                                     <td>
-                                        <a href="/usersearching/detail/{{Crypt::encrypt($rprt->UserTarget->UserID)}}" class="btn btn-link report-detail">
+                                        <a href="/usersearching/detail/{{$rprt->RoleIDTarget == 1 ? Crypt::encrypt($rprt->UserTarget->UserID) : Crypt::encrypt($rprt->UserTarget->FoundationID)}}" class="btn btn-link report-detail">
                                             <img src="{{ env('FTP_URL') }}/assets/details.png" alt=""
                                                 style="max-width: 20px">
                                         </a>

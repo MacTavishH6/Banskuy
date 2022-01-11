@@ -27,6 +27,9 @@ class User extends Authenticatable
 
     }
 
+    protected $guard = 'web';
+
+
     public function UserLevel(){
 
         return $this->hasMany(UserLevel::class,'UserID','UserID');

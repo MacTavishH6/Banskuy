@@ -20,6 +20,8 @@ class Foundation extends Authenticatable
         'registerDate'
     ];
 
+    protected $guard = 'foundations';
+
     public function Document(){
         return $this->hasMany(Document::class, 'FoundationID', 'FoundationID');
     }

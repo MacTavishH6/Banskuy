@@ -54,6 +54,16 @@
 
         }
 
+        #myCard {
+            flex-direction: row;
+        }
+
+        @media (max-width: 767px) {
+            #myCard {
+                flex-direction: column;
+            }
+        }
+
     </style>
 @endsection
 
@@ -107,8 +117,9 @@
             <b>Anda dapat menolong dengan</b>
         </div>
 
-        <div class="row justify-content-around w-100">
-            <div class="col-md-4 col-xs-12 d-flex justify-content-center px-0">
+
+        <div class="d-flex justify-content-center" id="myCard">
+            <div class="col-md-4 d-flex justify-content-center px-0 w-100">
                 <div class="card w-75" style="background-color: #18171f; border-radius: 20px">
                     <div class="text-center my-2">
                         <img class="" src="{{ env('FTP_URL') }}assets/uang.jpg" alt="image"
@@ -125,7 +136,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-xs-12 d-flex justify-content-center px-0">
+            <div class="col-md-4 d-flex justify-content-center px-0 w-100">
                 <div class="card w-75" style="background-color: #18171f; border-radius: 20px">
                     <div class="text-center my-2">
                         <img class="text-center" src="{{ env('FTP_URL') }}assets/barang.jpg" alt="image"
@@ -141,7 +152,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-xs-12 d-flex justify-content-center px-0">
+            <div class="col-md-4 d-flex justify-content-center px-0 w-100">
                 <div class="card w-75" style="background-color: #18171f; border-radius: 20px">
                     <div class="text-center my-2">
                         <img src="{{ env('FTP_URL') }}assets/comserv.png" alt="image"

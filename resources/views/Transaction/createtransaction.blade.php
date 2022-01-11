@@ -1,5 +1,19 @@
 @extends('layouts.app')
 
+@section('styles')
+    <style>
+        #myCard{
+                width: 50%;
+            }
+        @media (max-width: 767px){
+            #myCard{
+                width: 100%;
+            }
+        }
+
+    </style>
+@endsection
+
 @section('content')
     <section>
         <div class="container">
@@ -23,16 +37,16 @@
         </div>
     </section>
     <section>
-        <div class="card w-50 mx-auto my-3">
+        <div class="card mx-auto my-3" id="myCard">
             <div class="card-body">
                 <div class="form-row py-4">
-                    <div class="col-2 text-center">
+                    <div class="col-md-2 text-center">
                         <img src="{{ env('FTP_URL') }}{{ $user->Photo ? 'ProfilePicture/Donatur/' . $user->Photo->Path : 'assets/Smiley.png' }}"
                             alt="UsernamePhotoProfile"
                             style="border-radius: 50%; border: 1px solid black; width: 70px; height: 70px;"
                             onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
                     </div>
-                    <div class="col-9 mt-3">
+                    <div class="col-md-9 mt-3">
                         <h3>{{ $user->Username ? $user->Username : $user->Email }}
                             <small
                                 style="display: inline-block; vertical-align: top; font-size: 16px; color: #2f9194;">{{ $user->UserLevel->where('IsCurrentLevel', '1')->first()->LevelGrade->LevelName }}
@@ -49,18 +63,18 @@
                     @method('POST')
                     <input type="hidden" name="UserID" value="{{ Crypt::encrypt($user->UserID) }}">
                     <div class="form-row py-1">
-                        <div class="col-3">
+                        <div class="col-md-3">
                             <label for="DonationType">Tipe Donasi</label>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <select name="DonationType" class="form-control" id="DonationType" required></select>
                         </div>
                     </div>
                     <div class="form-row py-1">
-                        <div class="col-3">
+                        <div class="col-md-3">
                             <label for="WithPost">Dengan Post</label>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="WithPost" id="WithPostYes" value="1"
                                     required>
@@ -78,10 +92,10 @@
                         </div>
                     </div>
                     <div class="form-row py-1 d-none" id="select-tipepost">
-                        <div class="col-3">
+                        <div class="col-md-3">
                             <label for="TipePost">Tipe Post</label>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <select name="TipePost" class="form-control" id="TipePost">
                                 <option value="1">Post Donatur</option>
                                 <option value="2">Post Yayasan</option>
@@ -91,10 +105,10 @@
 
 
                     <div class="form-row py-1">
-                        <div class="col-3">
+                        <div class="col-md-3">
                             <label for="Foundation">Yayasan</label>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <input type="text" name="Foundation" id="Foundation" class="form-control" required>
                             <input type="hidden" name="FoundationID" id="FoundationID">
                         </div>
@@ -104,71 +118,71 @@
                         </div>
                     </div>
                     <div class="form-row py-1">
-                        <div class="col-3">
+                        <div class="col-md-3">
                             <label for="FoundationAddress">Alamat Yayasan</label>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <textarea class="form-control" name="FoundationAddress" id="FoundationAddress" rows="3"
                                 style="resize: none;" disabled required></textarea>
                         </div>
                     </div>
                     <div class="form-row py-1">
-                        <div class="col-3">
+                        <div class="col-md-3">
                             <label for="FoundationAddress">Provinsi Yayasan</label>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <input type="text" name="Province" id="Province" class="form-control" disabled required>
                         </div>
                     </div>
                     <div class="form-row py-1">
-                        <div class="col-3">
+                        <div class="col-md-3">
                             <label for="FoundationAddress">Kota Yayasan</label>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <input type="text" name="City" id="City" class="form-control" disabled required>
                         </div>
                     </div>
                     
                     <div class="form-row py-1 d-none" id="select-post">
-                        <div class="col-3">
+                        <div class="col-md-3">
                             <label for="SelectPost">Pilih Post</label>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <select name="SelectPost" class="form-control" id="SelectPost"></select>
                         </div>
                     </div>
                     <div class="form-row py-1 d-none" id="descriptionContainer">
-                        <div class="col-3">
+                        <div class="col-md-3">
                             <label for="DonationDescription" id="descriptionLabel">
 
                             </label>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <textarea name="DonationDescription" id="DonationDescription" rows="3" class="form-control"
                                 style="resize: none;" required></textarea>
                         </div>
                     </div>
                     <div class="form-row py-1">
-                        <div class="col-3">
+                        <div class="col-md-3">
                             <label for="Unit">Unit</label>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <select name="Unit" id="Unit" class="form-control" required></select>
                         </div>
                     </div>
                     <div class="form-row py-1">
-                        <div class="col-3">
+                        <div class="col-md-3">
                             <label for="Quantity">Jumlah</label>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <input type="text" name="Quantity" id="Quantity" class="form-control"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                 required>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6"></div>
-                        <div class="col-6 pr-2">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6 pr-2">
                             <button type="submit" class="float-right py-1 px-5"
                                 style="border-radius: 20px; background-color: #AC8FFF; border: none;">Buat Permintaan</button>
                         </div>

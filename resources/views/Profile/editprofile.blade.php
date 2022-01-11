@@ -127,16 +127,46 @@
             transition: all .2s ease;
         }
 
+        #buttonShowEdit {
+            display: none;
+        }
+
+        #edit-navbar {
+            display: block;
+        }
+
+        @media (max-width: 767px) {
+            #buttonShowEdit {
+                display: block;
+            }
+
+            #edit-navbar {
+                position: absolute;
+                z-index: 2;
+                display: none;
+            }
+        }
+
+        @media (min-width: 767px) {
+            #edit-navbar {
+                display: block;
+            }
+        }
+
     </style>
 @endsection
 
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-4 p-0" style="width: 100vp;background-color: #AC8FFF;">
+            <div class="col-4 p-0" style="width: 100vp;background-color: #AC8FFF;" id="edit-navbar">
                 @include('Shared._sidebar-edit')
+
             </div>
-            <div class="tab-content col-8 my-3" id="myTabContent">
+            <button class="btn btn-secondary col-1 align-self-start px-1 py-3" id="buttonShowEdit" type="button">
+                <span>&#9776;</span>
+            </button>
+            <div class="tab-content col-md-8 my-3" id="myTabContent">
                 <div class="tab-pane fade show active" id="editprofile" role="tabpanel" aria-labelledby="editprofile-tab">
                     @include('Profile.Misc.component-form-editprofile', ['user' => $user])
                 </div>
@@ -223,6 +253,12 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            $("ul#editTab li.nav-item a.nav-link").on('click', function() {
+                $("#edit-navbar").css("display","");
+            });
+            $("#buttonShowEdit").on('click', function() {
+                $("#edit-navbar").show();
+            });
             var passwordError = <?php echo ($errors->any() && $errors->has('NewPassword')) || $errors->has('OldPassword') ? json_encode($errors) : '""'; ?>;
             if (passwordError) $("#changepassword-tab").click();
             var user;
