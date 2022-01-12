@@ -31,7 +31,7 @@
         }
 
         .container{
-            width:60%
+            width:100%
         }
     </style>
 
@@ -46,6 +46,17 @@
                 
                 $('#lblDescLenght').text(TextLength + "/255");
              });
+
+             $("#btnAction").click(function(){
+                if($('#ddlActionStatus').val() == "hide"){
+                    $('#ddlAction').addClass("show");
+                    $('#ddlActionStatus').val('show');
+                }
+                else{
+                    $('#ddlAction').removeClass("show");
+                    $('#ddlActionStatus').val("hide");
+                }
+            });
         });
 
             function btnSendCommentOnClick(){
@@ -70,15 +81,16 @@
                             Body += "<div class=\"media-body p-3\">";
                             Body += "<div class=\"d-flex \">";
                                 
-                            Body += "<div class=\"p-1\"> <a href=\"/"+response.hrefProfile+"\" style=\"color: black\"><h5 style=\"font-weight: normal\">"+Name+"</h5></a></div> ";
+                            Body += "<div class=\"p-1\"> <a href=\"/"+response.hrefProfile+"\" style=\"color: black\"><h5 style=\"font-size:1rem\">"+Name+"</h5></a></div> ";
                             
-                            Body += "<div class=\"p-1 text-muted mr-auto\"> <small>"+response.date+"</small></div>"
+                            
                             Body += "<div>";
                             Body += "<button id=\"btnReplyComment\" class=\"btn btn-link\" onclick=\"btnReplyCommentOnClick("+commentResponse.CommentID+","+commentResponse.PostID+")\">"
                             Body += "<h6>Reply</h6> </button>"                      
                             Body += "</div>"
                             Body += "</div>";
-                            Body += "<h6>"+commentResponse.Comment+"</h6>"; 
+                            Body += "<p>"+commentResponse.Comment+"</p>"; 
+                            Body += "<div class=\" text-muted\" style=\"text-align:right\"> <small>"+response.date+"</small></div>"
                             Body += "</div>";
                             Body += "</div>";
                             Body += "</div>";
@@ -109,6 +121,8 @@
                     }
                 }
             });
+
+
         }
    
        
@@ -133,14 +147,16 @@
                             Body += "<img class=\"mr-3 mt-2    d-block rounded-circle\" style=\"height:50px;width:50px\" src=\""+response.PhotoPath+"\">"
                             Body += "<div class=\"border mt-2 w-100\">";
                             Body += "<div class=\"media-body p-3\">";
+                            Body += "<div class=\"p-1 text-muted\"><small>Reply to "+ response.replyTo +"</small> </div>"
                             Body += "<div class=\"d-flex\">";
                             //Body += "<div class=\"p-1\"> <h5 style=\"font-weight: normal\">"+Name+"</h5></div>"
-                            Body += "<div class=\"p-1\"> <a href=\"/"+response.hrefProfile+"\" style=\"color: black\"><h5 style=\"font-weight: normal\">"+Name+"</h5></a></div> ";
+                            Body += "<div class=\"p-1\"> <a href=\"/"+response.hrefProfile+"\" style=\"color: black\"><h5 style=\"font-size:1rem\">"+Name+"</h5></a></div> ";
                             
-                            Body += "<div class=\"p-1 text-muted mr-auto\"> <small>"+response.date+"</small></div>"
-                            Body += "<div class=\"p-1 text-muted\"><small>Reply to "+ response.replyTo +"</small> </div>"
+                            
+                            
                             Body += "</div>"; 
-                            Body += "<h6>"+Reply.Comment+"</h6>"; 
+                            Body += "<p>"+Reply.Comment+"</p>"; 
+                            Body += "<div class=\"ext-muted \" style=\"text-align:right\"> <small>"+response.date+"</small></div>"
                             Body += "</div>";  
                             Body += "</div>";
                             Body += "</div>";    
@@ -177,11 +193,18 @@
                 
             Body += "<div class=\"form-inline\">"
             Body += "<div class=\"form-group w-100 ml-5\" >"
-            Body += "<input type=\"text\" class=\"form-control w-75 mr-3\" style=\"height: 28px;font-size:10pt\"";
+            Body += "<div class=\"row w-100\">"
+            Body += "<div class=\"col-9\">"
+            Body += "<input type=\"text\" class=\"form-control mr-3 w-100\" style=\"height: 28px;font-size:10pt\"";
             Body += "placeholder=\"Tinggalkan komentar...\" id=\"txtReplyComment" + $id +"\" name=\"txtReplyComment\">";
+            Body += "</div>"
+            Body += "<div class=\"col-3\">"
             Body += "<button type=\"button\" id=\"btnSendReply1\" onclick=\"btnSendReply("+ $PostID + "," + $id+ ")\" class=\"btn btn-primary px-3 py-1\" style=\"font-size:10pt\">Send</button>";                                   
+            Body += "</div>"
+            Body += "</div>"
             Body += "</div>";
             Body += "</div>";
+
            // Body += "</form>";
             Body += "</div>";
             $('#CommentSection' + $id).append(Body);
@@ -236,15 +259,65 @@
 
                         
                         @endif
-
+                        
                     <div class="media-body mt-3">
-                        <div class="d-flex">
-                            <div class="mr-auto">
-                                <h2>{{$Post->PostTitle}}</h2>
+                        <div class="d-flex col-sm-12 pl-0">
+                            <div class="mr-auto col-sm-6  pl-0">
+                                <h2 style="font-size: 4vw;">{{$Post->PostTitle}}</h2>
                             </div>
-                            @if (Auth::check() || Auth::guard('foundations')->check())
                             
-                            <div class="mr-2">
+                            <div class="btn-group dropleft">
+                                <a href="#" style="color: black" role="button" id="btnAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-align-justify"></i>
+                                </a>
+                              
+                                <div class="dropdown-menu" id="ddlAction" aria-labelledby="btnAction">
+                                  {{-- <a class="dropdown-item" href="#">Action</a>
+                                  <a class="dropdown-item" href="#">Another action</a>
+                                  <a class="dropdown-item" href="#">Something else here</a> --}}
+                                  @if (Auth::check() || Auth::guard('foundations')->check())
+                            
+                                        @if ($Post->StatusPostId == 1)
+                                            @if ($Post->PostTypeID == 1 && Auth::guard('foundations')->check())
+                                            <a class="dropdown-item" href="#">
+                                                Meminta Donasi
+                                            </a> 
+                                            @elseif(Auth::check() && $Post->PostTypeID == 2)
+                                            <a class="dropdown-item" href="#"">
+                                                Memberikan Donasi
+                                            </a> 
+                                            @endif  
+                                        @elseif($Post->StatusPostId == 2)
+                                            <a class="dropdown-item" href="#"">
+                                                Post Ditutup
+                                            </a>  
+                                        @endif  
+                            
+                           
+                                @if ($StatusPost == true)
+
+                                    <form action="/chatTo" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input id="id" name="id" type="hidden" value="{{$Post->ID}}">
+                                        <input id="roleId" name="roleId" type="hidden" value="{{$Post->RoleID}}">
+                                        <button type="submit" class="dropdown-item">
+                                            Hubungi Pembuat</button>
+                                    </form>
+                                    <button id="btnMakeReport" type="button" class="dropdown-item" data-toggle="modal"
+                                    data-target="#mdlMakeReport" onclick="btnMakeReportOnClick()">
+                                    Report
+                                    </button> 
+   
+                                @endif
+                                
+                            
+                                @endif
+                                </div>
+                            </div>
+                            <input type="hidden" id="ddlActionStatus" value="hide">
+                            {{-- @if (Auth::check() || Auth::guard('foundations')->check())
+                            
+                            <div class="mr-2 col-sm-2">
                                 @if ($Post->StatusPostId == 1)
                                     @if ($Post->PostTypeID == 1 && Auth::guard('foundations')->check())
                                     <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
@@ -264,7 +337,7 @@
                             
                            
                                 @if ($StatusPost == true)
-                                <div class="mr-2">
+                                <div class="mr-2 col-sm-2">
                                     <form action="/chatTo" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <input id="id" name="id" type="hidden" value="{{$Post->ID}}">
@@ -274,7 +347,7 @@
                                     </form>
                                    
                                 </div>
-                                <div>
+                                <div class="col-sm-2">
                                     <button id="btnMakeReport" type="button" class="btn btn-danger pb-2 pt-1 px-3" data-toggle="modal"
                                     data-target="#mdlMakeReport" onclick="btnMakeReportOnClick()">
                                     Report
@@ -283,18 +356,18 @@
                                 @endif
                                 
                             
-                                @endif
+                                @endif --}}
                         </div>
                         <div class="d-flex">
                             <div class="mr-2">
                                 @if ($Post->RoleID == 2)
-                                <a href="/foundationprofile/{{Crypt::encrypt($Post->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Post->Foundation->FoundationName}}</h5></a>
+                                <a href="/foundationprofile/{{Crypt::encrypt($Post->ID)}}" style="color: black;"><h5 style="font-weight: normal;font-size:3vw">{{$Post->Foundation->FoundationName}}</h5></a>
                                 @else
-                                <a href="/profile/{{Crypt::encrypt($Post->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Post->User->FirstName}} {{$Post->User->LastName}}</h5></a>
+                                <a href="/profile/{{Crypt::encrypt($Post->ID)}}" style="color: black;font-size:3vw"><p style="font-weight: normal;font-size:3vw">{{$Post->User->FirstName}} {{$Post->User->LastName}}</p></a>
                                 @endif
                             </div>
-                            <div class="text-muted">
-                                <small>{{date('d M Y',strtotime($Post->created_at))}} at {{date('h:i A',strtotime($Post->created_at))}}</small>
+                            <div class="text-muted mt-2">
+                                <p style="font-size: 2vw;">{{date('d M Y',strtotime($Post->created_at))}} at {{date('h:i A',strtotime($Post->created_at))}}</p>
                             </div>
                         </div>
                     </div>
@@ -350,17 +423,15 @@
                                     <div class="border mt-2 w-100">
                                         <div class="media-body p-3">
                                             <div class="d-flex ">
-                                                <div class="p-1">
+                                                <div class="p-1 mr-auto">
                                                     
                                                     @if ($Comment->RoleID == 2)
-                                                        <a href="/foundationprofile/{{Crypt::encrypt($Comment->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Comment->Foundation->FoundationName}}</h5></a>
+                                                        <a href="/foundationprofile/{{Crypt::encrypt($Comment->ID)}}" style="color: black"><h5 style="font-size:1rem">{{$Comment->Foundation->FoundationName}}</h5></a>
                                                         @else
-                                                        <a href="/profile/{{Crypt::encrypt($Comment->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Comment->User->FirstName}} {{$Comment->User->LastName}}</h5></a>
+                                                        <a href="/profile/{{Crypt::encrypt($Comment->ID)}}" style="color: black"><h5 style="font-size:1rem">{{$Comment->User->FirstName}} {{$Comment->User->LastName}}</h5></a>
                                                         @endif
                                                 </div>
-                                                <div class="p-1 text-muted mr-auto">
-                                                    <small>{{date('d M Y',strtotime($Comment->created_at))}}</small> 
-                                                </div>
+
                                                 <div>
                                                     @if (Auth::check() || Auth::guard('foundations')->check())
                                                         <button id="btnReplyComment" class="btn btn-link" onclick="btnReplyCommentOnClick({{$Comment->CommentID}},{{$Post->PostID}})">
@@ -369,7 +440,11 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <h6>{{$Comment->Comment}}</h6>
+                        
+                                            <p>{{$Comment->Comment}}</p>
+                                            <div class="text-muted" style="text-align: right">
+                                                <small>{{date('d M Y',strtotime($Comment->created_at))}}</small> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -390,28 +465,28 @@
                                         @endif
                                         <div class="border mt-2 w-100">
                                             <div class="media-body p-3">
-                                                <div class="d-flex ">
-                                                    <div class="p-1">
-                                                        @if ($Reply->RoleID == 2)
-                                                        <a href="/foundationprofile/{{Crypt::encrypt($Reply->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Reply->Foundation->FoundationName}}</h5></a>
-                                                        @else
-                                                        <a href="/profile/{{Crypt::encrypt($Reply->ID)}}" style="color: black"><h5 style="font-weight: normal">{{$Reply->User->FirstName}} {{$Reply->User->LastName}}</h5></a>
-                                                        @endif
-                                                    </div>
-                                                    <div class="p-1 text-muted mr-auto">
-                                                        <small>{{date('d M Y',strtotime($Reply->created_at))}}</small> 
-                                                    </div>
-                                                    <div class="p-1 text-muted">
-                                                        
-                                                        
-                                                        @if ($Comment->RoleID == 1)
-                                                        <small>Reply to {{$Comment->User->FirstName}} {{$Comment->User->LastName}}</small> 
-                                                        @else
-                                                        <small>Reply to {{$Comment->Foundation->FoundationName}}</small> 
-                                                        @endif
-                                                    </div>
+                                                <div class="p-1 text-muted">
+                                                    @if ($Comment->RoleID == 1)
+                                                    <small>Reply to {{$Comment->User->FirstName}} {{$Comment->User->LastName}}</small> 
+                                                    @else
+                                                    <small>Reply to {{$Comment->Foundation->FoundationName}}</small> 
+                                                    @endif
                                                 </div>
-                                                <h6>{{$Reply->Comment}}</h6>
+                                                <div class="d-flex ">
+                                                    <div class="p-1 mr-auto">
+                                                        @if ($Reply->RoleID == 2)
+                                                        <a href="/foundationprofile/{{Crypt::encrypt($Reply->ID)}}" style="color: black"><h5 style="font-size:1rem">{{$Reply->Foundation->FoundationName}}</h5></a>
+                                                        @else
+                                                        <a href="/profile/{{Crypt::encrypt($Reply->ID)}}" style="color: black"><h5 style="font-size:1rem">{{$Reply->User->FirstName}} {{$Reply->User->LastName}}</h5></a>
+                                                        @endif
+                                                    </div>
+                                                    
+                                                    
+                                                </div>
+                                                <p>{{$Reply->Comment}}</p>
+                                                <div class="p-1 text-muted" style="text-align: right">
+                                                    <small>{{date('d M Y',strtotime($Reply->created_at))}}</small> 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -428,10 +503,21 @@
                                     @csrf --}}
                                     <div class="form-inline">
                                         <div class="form-group w-100">
-                                            <input type="text" class="form-control w-75 mr-3"
-                                                placeholder="Leave a comment..." id="txtComment" name="txtComment">
-                                            <button type="button"
-                                                class="btn btn-primary px-4" id="btnSendComment" onclick="btnSendCommentOnClick()" >Send</button>
+                                            <div class="row w-100">
+
+                                                    <div class="col-9">
+                                                        <input type="text" class="form-control mr-3 w-100"
+                                                        placeholder="Tinggalkan komentar..." id="txtComment" name="txtComment">
+                                                    </div>
+                                                    <div class="col-3">
+                                                    <button type="button"
+                                                    class="btn btn-primary px-4" id="btnSendComment" onclick="btnSendCommentOnClick()" >Send</button>
+                                                    </div>
+
+                                            </div>
+                                               
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 {{-- </form> --}}

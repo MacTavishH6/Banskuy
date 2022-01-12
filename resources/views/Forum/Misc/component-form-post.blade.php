@@ -8,6 +8,7 @@
                 <div class="mr-auto p-1">
                     <h5><a href="/ViewPost/{{$ItemPost->PostID}}" class="PostTitle" style="color: black;text-decoration:none">{{$ItemPost->PostTitle}}</a></h5>
                 </div>
+                
                 <div>
                                 @if($ItemPost->StatusPostId == 1)
                                     @if ($ItemPost->PostTypeID == 1 && Auth::guard('foundations')->check())
@@ -30,11 +31,11 @@
             </div>
             <div class="d-flex flex-column bd-highlight">
                 <div class="d-flex flex-row bd-highlight">
-                    <div class="p-1 bd-higlight mb-2 mr-4">
+                    <div class="p-1 bd-higlight mb-2 col-sm-2">
                         Pembuat :
                     </div>
 
-                    <div class="p-1 bd-higlight mb-2">
+                    <div class="p-1 bd-higlight mb-2 col-sm-2">
                         @if ($ItemPost->RoleID == 1)
                         {{$ItemPost->User->FirstName}} {{$ItemPost->User->LastName}}
                         @else
@@ -45,7 +46,7 @@
                 </div>
 
                 <div class="d-flex flex-row bd-highlight">
-                    <div class="p-1 bd-higlight mb-2 mr-3">
+                    <div class="p-1 bd-higlight mb-2 col-sm-2">
                         @if ($ItemTypeDetail->DonationTypeID == 1)
                         Unit : 
                         @elseif($ItemTypeDetail->DonationTypeID == 2)
@@ -54,7 +55,7 @@
                         Uang :
                         @endif
                     </div>
-                    <div class="p-1 bd-higlight mb-2">
+                    <div class="p-1 bd-higlight mb-2 col-sm-2">
                         @if ($ItemTypeDetail->DonationTypeID != 3)
                         {{$ItemPost->Quantity + 0}} 
                         @else
@@ -65,10 +66,10 @@
                 </div>
 
                 <div class="d-flex flex-row bd-highlight">
-                    <div class="p-1 bd-higlight mb-2 mr-1">
+                    <div class="p-1 bd-higlight mb-2  col-sm-2">
                         Komentar :
                     </div>
-                    <div class="p-1 bd-higlight mb-2">
+                    <div class="p-1 bd-higlight mb-2 col-sm-2">
                         {{$ItemPost->Comment->count()}}
                     </div>
                 </div>
@@ -78,11 +79,11 @@
                         <form method="POST" enctype="multipart/form-data" action="/PostCommentFromForum/{{$ItemPost->PostID}}">
                             @csrf
                             <div class="form-inline">
-                                <div class="form-group w-100">
-                                    <input type="text" class="form-control w-75 mr-3"
+                                <div class="form-group col-sm-12">
+                                    <input type="text" class="form-control mr-4 col-sm-9"
                                         placeholder="Leave a comment..." id="text" name="text">
                                     <button type="submit"
-                                        class="btn btn-primary px-4">Kirim</button>
+                                        class="btn btn-primary px-4 col-sm-2">Kirim</button>
                                 </div>
                             </div>
                         </form>
