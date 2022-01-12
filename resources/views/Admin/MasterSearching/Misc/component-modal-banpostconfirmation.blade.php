@@ -3,8 +3,8 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Apakah kamu yakin ingin melakukan Ban untuk
-                    {{ $report->first()->UserReported->Username }}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Apakah kamu yakin ingin melakukan Ban untuk post dengan judul
+                    {{ $report->first()->Post->PostTitle }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -13,22 +13,11 @@
                 <label class="form-group">
                     Tolong dipastikan kembali apakah anda ingin melakukan Ban pada akun ini?
                 </label>
-                <form action="/usersearching/ban" method="post" id="form-ban">
+                <form action="/postsearching/ban" method="post" id="form-ban">
                     @csrf
                     @method('POST')
-                    <input type="hidden" name="UserID"
-                        value="{{ $report->first()->RoleIDTarget == 1 ? Crypt::encrypt($report->first()->UserReported->UserID) : Crypt::encrypt($report->first()->UserReported->FoundationID) }}">
-                    <div class="form-group">
-                        <label class="col-3">Durasi Ban</label>
-                        <div class="col-6">
-                            <select name="Duration" class="form-control" name="Duration" id="Duration" required>
-                                <option value="32">32 Jam</option>
-                                <option value="48">48 Jam</option>
-                                <option value="168">168 Jam</option>
-                                <option value="1000000000">Permanent</option>
-                            </select>
-                        </div>
-                    </div>
+                    <input type="hidden" name="PostID"
+                        value="{{Crypt::encrypt($report->first()->PostID)}}">
                 </form>
             </div>
             <div class="modal-footer">

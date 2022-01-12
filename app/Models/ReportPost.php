@@ -13,4 +13,9 @@ class ReportPost extends Model
     public function Post(){
         return $this->hasOne(Post::class, 'PostID', 'PostID');
     }
+
+    public function ReportCategory()
+    {
+        return $this->hasOne(ReportCategory::class, 'ReportCategoryID', 'ReportCategoryID');
+    }
 }

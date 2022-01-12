@@ -76,6 +76,25 @@ class MasterSearchingController extends Controller
         return view('Admin.MasterSearching.reportdetail', compact('report'));
     }
 
+    public function PostSearchingDetail($id){
+        $id = Crypt::decrypt($id);
+        $report = ReportPost::where([['IsTakenAction', 0],['PostID', $id]])->with('ReportCategory')->with('Post')->get();
+        $User = User::all();
+        $Foundation = Foundation::all();
+        foreach($report as $rprtPost){
+            if ($rprtPost->RoleIDSource == 1) {
+                $UserSource = $User->where('UserID', $rprtPost->IDSource)->first();
+                $rprtPost->UserSource = $UserSource;
+                $rprtPost->RoleSource = 1;
+            } else {
+                $UserSource = $Foundation->where('FoundationID', $rprtPost->IDSource)->first();
+                $rprtPost->UserSource = $UserSource;
+                $rprtPost->RoleSource = 2;
+            }
+        }
+        return view('Admin.MasterSearching.reportpostdetail', compact('report'));
+    }
+
     public function BanUser(Request $request){
         $id = Crypt::decrypt($request->UserID);
         $report = Report::where([['IsTakenAction', '0'], ['IDTarget', $id]])->with('ReportCategory')->get();
@@ -93,5 +112,16 @@ class MasterSearchingController extends Controller
         }
         $request->session()->flash('toastsuccess', 'Pengguna telah diBan');
         return redirect('/usersearching');
+    }
+    
+    public function BanPost(Request $request){
+        $id = Crypt::decrypt($request->PostID);
+        $report = ReportPost::where([['IsTakenAction', 0], ['PostID', $id]])->get();
+        foreach ($report as $rprt) {
+            $rprt->IsTakenAction = 1;
+            $rprt->save();
+        }
+        $request->session()->flash('toastsuccess', 'Post telah diBan');
+        return redirect('/postsearching');
     }
 }

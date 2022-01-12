@@ -17,6 +17,10 @@ Route::middleware(['auth:admin'])->group(function () {
 
     Route::post('/usersearching/ban', [App\Http\Controllers\Admin\MasterSearchingController::class, 'BanUser']);
 
+    Route::get('/postsearching/detail/{id}', [App\Http\Controllers\Admin\MasterSearchingController::class, 'PostSearchingDetail']);
+
+    Route::post('/postsearching/ban', [App\Http\Controllers\Admin\MasterSearchingController::class, 'BanPost']);
+
     Route::get('/DocumentApproval', [App\Http\Controllers\Admin\DocumentController::class, 'GetListDocumentApproval']);
     Route::get('/GetListDocumentType', [App\Http\Controllers\LOVController::class, 'GetDocumentTypeList']);
     Route::get('/GetApprovalStatus', [App\Http\Controllers\LOVController::class, 'GetApprovalStatus']);

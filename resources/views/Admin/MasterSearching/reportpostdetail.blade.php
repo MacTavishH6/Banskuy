@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="col-12">
-                    <h2>{{$report->first()->UserReported->Username}}</h2>
+                    <h2>{{$report->first()->Post->PostTitle}}</h2>
                 </div>
                 <div class="col-4">
                     Detail Laporan
@@ -49,7 +49,7 @@
             </div>
         </div>
     </section>
-    @include('Admin.MasterSearching.Misc.component-modal-banconfirmation')
+    @include('Admin.MasterSearching.Misc.component-modal-banpostconfirmation')
 @endsection
 
 @section('scripts')

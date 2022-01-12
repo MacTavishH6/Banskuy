@@ -9,6 +9,12 @@ Route::get('/login', function () {
     return redirect('/foundationlogin');
 });
 
+Route::get('/password/reset', function() {
+    return view('auth.passwords.email');
+});
+
+Route::post('/password/email', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail']);
+
 Route::get('/register', function () {
     return redirect('/foundationregister');
 });
