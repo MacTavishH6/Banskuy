@@ -80,7 +80,7 @@ class TransactionController extends Controller
     public function GetDonationHistory(Request $request)
     {
         $id = Crypt::decrypt($request->UserID);
-        $donationhistory = DonationTransaction::where('UserID', $id)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('Foundation')->join('MsApprovalStatus as as', 'as.ApprovalStatusID', '=', 'TrDonationTransaction.ApprovalStatusID')->orderBy('as.Order','ASC')->select('TrDonationTransaction.*')->orderBy('TransactionDate', 'DESC')->orderBy('created_at','DESC')->get();
+        $donationhistory = DonationTransaction::where('UserID', $id)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('Foundation')->orderBy('TransactionDate', 'DESC')->orderBy('created_at','DESC')->get();
         // echo ($donationhistory);
         $donationhistory = $donationhistory->filter(function ($x) use ($request) {
             if ($request->keyword) $x = (str_contains($x->DonationDescriptionName, $request->keyword) || str_contains($x->DonationTypeDetail->DonationType->DonationTypeName, $request->keyword) || str_contains($x->Foundation->FoundationName, $request->keyword)) ? $x : [];
@@ -127,7 +127,7 @@ class TransactionController extends Controller
     public function GetDonationApproval(Request $request)
     {
         $foundationid = Crypt::decrypt($request->FoundationID);
-        $donationapproval = DonationTransaction::where('FoundationID', $foundationid)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->with('Post')->join('MsApprovalStatus as as', 'as.ApprovalStatusID', '=', 'TrDonationTransaction.ApprovalStatusID')->orderBy('as.Order', 'ASC')->select('TrDonationTransaction.*')->orderBy('TransactionDate', 'DESC')->orderBy('created_at', 'DESC')->get();
+        $donationapproval = DonationTransaction::where('FoundationID', $foundationid)->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('User')->with('Post')->orderBy('TransactionDate', 'DESC')->orderBy('created_at', 'DESC')->get();
         // echo ($donationhistory);
         $donationapproval = $donationapproval->filter(function ($x) use ($request) {
             if ($request->keyword) $x = (str_contains($x->DonationDescriptionName, $request->keyword) || str_contains($x->DonationTypeDetail->DonationType->DonationTypeName, $request->keyword)) ? $x : [];
@@ -277,8 +277,8 @@ class TransactionController extends Controller
         $hashed = str_replace('\\', ';', $hashed);
         $hashed = str_replace('/', ';', $hashed);
         $filename = $hashed . '.' . $request->file('DocumentationPhoto')->getClientOriginalExtension();
-        $ftp = ftp_connect(env('FTP_SERVER'));
-        $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
+        // $ftp = ftp_connect(env('FTP_SERVER'));
+        // $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
 
         $donation = DonationTransaction::where('DonationTransactionID', $request->transactionID)->first();
         $post = Post::where('PostID', $donation->PostID)->first();
