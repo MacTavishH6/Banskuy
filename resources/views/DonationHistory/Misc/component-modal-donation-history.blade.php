@@ -9,7 +9,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <%if(data.batalStatus == false){%>
                     @include('DonationHistory.Misc.component-modal-progress')
+                    <%}%>
                     <div class="d-flex justify-content-around">
                         <div class="col-md-9">
                             <div class="card">
@@ -76,6 +78,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Tutup</button>
+                    <button type="button" id="batal-transaksi" data-id="<%=data.TransactionID%>" class="btn btn-danger text-white <%=data.batal%>">Batalkan Transaksi</button>
                 </div>
             </div>
         </div>

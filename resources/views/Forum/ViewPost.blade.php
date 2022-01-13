@@ -57,6 +57,11 @@
                     $('#ddlActionStatus').val("hide");
                 }
             });
+
+            $("#hapus-post").on('click', function () {
+                $("input[name='PostDeleteID']").val($(this).attr('data-id'))
+                $("#modal-delete-confirmation").modal()
+            })
         });
 
             function btnSendCommentOnClick(){
@@ -292,6 +297,15 @@
                                                 Post Ditutup
                                             </a>  
                                         @endif  
+                                        @if($Post->RoleID == 1 && Auth::check() && Auth::id() == $Post->ID)
+                                            <a class="dropdown-item" data-id="{{$Post->PostID}}" id="hapus-post" href="#"">
+                                                Hapus Post
+                                            </a> 
+                                        @elseif($Post->RoleID == 1 && Auth::guard('foundations') &&Auth::guard('foundations')->id() == $Post->ID) 
+                                            <a class="dropdown-item" data-id="{{$Post->PostID}}" id="hapus-post" href="#"">
+                                                Hapus Post
+                                            </a> 
+                                        @endif
                             
                            
                                 @if ($StatusPost == true)
@@ -527,6 +541,34 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="modal-delete-confirmation" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hapus Post</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex">
+                            <h6>Apakah anda yakin ingin menghapus post ini ?</h6>
+                            
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Tutup</button>
+                        <form id="formDelete" action="/Post/Delete" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="PostDeleteID">
+                            <button type="submit" id="batal-popup-transaksi" class="btn btn-danger text-white">Hapus
+                            Post</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

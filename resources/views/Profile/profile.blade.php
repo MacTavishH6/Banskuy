@@ -160,11 +160,53 @@
     <div id="modal">
         @include('Shared._popupConfirmed')
     </div>
+    <div class="modal" id="modal-delete-confirmation" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hapus Post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex">
+                        <h6>Apakah anda yakin ingin menghapus post ini ?</h6>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Tutup</button>
+                    <form id="formDelete" action="/Post/Profile/Delete" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="PostDeleteID">
+                        <button type="submit" id="batal-popup-transaksi" class="btn btn-danger text-white">Hapus
+                            Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
+            $("a[id^='btnAction']").click(function() {
+                let _id = $(this).attr('id').split('-')[1]
+                if ($('input[id="ddlActionStatus-' + _id + '"]').val() == "hide") {
+                    $('div[id="ddlAction-' + _id + '"]').addClass("show");
+                    $('input[id="ddlActionStatus-' + _id + '"]').val('show');
+                } else {
+                    $('div[id="ddlAction-' + _id + '"]').removeClass("show");
+                    $('input[id="ddlActionStatus-' + _id + '"]').val("hide");
+                }
+            })
+            $("a.hapus-post").on('click', function() {
+                $("input[name='PostDeleteID']").val($(this).attr('data-id'))
+                $("#modal-delete-confirmation").modal()
+            })
             var user;
             var authUser = <?php echo '"' . Auth::guard()->id() . '"'; ?>;
             console.log(authUser);

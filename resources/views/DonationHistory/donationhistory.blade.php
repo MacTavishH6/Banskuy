@@ -110,8 +110,8 @@
 
 
         /* #progressbar li.active+li:after {
-                                            background: #2F8D46
-                                        } */
+                                                                            background: #2F8D46
+                                                                        } */
 
     </style>
 @endsection
@@ -196,12 +196,40 @@
     <div class="modalcontainer">
 
     </div>
+    <div class="modal" id="modal-confirmation" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Batalkan transaksi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex">
+                        <h6>Apakah anda yakin ingin membatalkan transaksi ?</h6>
+                        <form id="formDelete" action="/Transaction/Delete" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="popupTransactionID">
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Tutup</button>
+                    <button type="button" id="batal-popup-transaksi" class="btn btn-danger text-white">Batalkan
+                        Transaksi</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @include('DonationHistory.Misc.component-modal-donation-history')
     @include('DonationHistory.Misc.component-list-donation')
 @endsection
 @section('scripts')
     <script>
         $(document).ready(function() {
+
             var dateFormat = "mm/dd/yy",
                 from = $("#from")
                 .datepicker({
@@ -324,6 +352,9 @@
                                     case "5":
                                         data.statusColor = 'btn-success';
                                         break;
+                                    case "6":
+                                        data.statusColor = 'btn-danger';
+                                        break;
                                     case 1:
                                         data.statusColor = 'btn-warning';
                                         break;
@@ -338,6 +369,9 @@
                                         break;
                                     case 5:
                                         data.statusColor = 'btn-success';
+                                        break;
+                                    case 6:
+                                        data.statusColor = 'btn-danger';
                                         break;
                                 }
                                 data.donationTitle = donation.DonationDescriptionName;
@@ -371,6 +405,7 @@
                                             transaction.Quantity.indexOf('.'));
                                     }
                                     var data = {
+                                        TransactionID: transactionid,
                                         DonationType: transaction.donation_type_detail
                                             .donation_type.DonationTypeName,
                                         Unit: transaction.donation_type_detail
@@ -388,14 +423,40 @@
                                     data.donationTitle = transaction
                                         .DonationDescriptionName;
                                     switch (transaction.approval_status.ApprovalStatusID) {
+                                        case "1":
+                                            data.batal = ''
+                                            data.batalStatus = true
+                                            data.IsShow = 'd-none';
+                                            break
+                                        case 1:
+                                            data.batal = ''
+                                            data.batalStatus = true
+                                            data.IsShow = 'd-none';
+                                            break
+                                        case "6":
+                                            data.batal = 'd-none'
+                                            data.batalStatus = true
+                                            data.IsShow = 'd-none';
+                                            break
+                                        case 6:
+                                            data.batal = 'd-none'
+                                            data.batalStatus = true
+                                            data.IsShow = 'd-none';
+                                            break
                                         case "5":
                                             data.IsShow = '';
+                                            data.batalStatus = false
+                                            data.batal = 'd-none'
                                             break;
                                         case 5:
                                             data.IsShow = '';
+                                            data.batalStatus = false
+                                            data.batal = 'd-none'
                                             break;
                                         default:
                                             data.IsShow = 'd-none';
+                                            data.batalStatus = false
+                                            data.batal = 'd-none'
                                             break;
                                     }
                                     var transactionDate = new Date(transaction
@@ -454,6 +515,16 @@
 
                                     $(".submit").click(function() {
                                         return false;
+                                    })
+                                    $("#batal-transaksi").on('click', function() {
+                                        $("#donationhistorydetail").modal('hide');
+                                        $("input[name='popupTransactionID']").val($(
+                                            this).attr('data-id'))
+                                        $("#modal-confirmation").modal()
+                                        $("#batal-popup-transaksi").on('click',
+                                            function() {
+                                                $("#formDelete").submit()
+                                            })
                                     })
                                 });
                         });
