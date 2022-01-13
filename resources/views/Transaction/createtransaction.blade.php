@@ -279,9 +279,9 @@
                                 tbodystring += "<td>" + foundation.FoundationPhone +
                                     "</td>";
                                 tbodystring +=
-                                    "<td><button type=\"Button\" id=\"foundationselect\" data-id=\"" +
+                                    "<td><button type=\"Button\" id=\"foundationselect-" + hashedFoundationId + "\" data-id=\"" +
                                     hashedFoundationId +
-                                    "\" class=\"btn btn-info\">Select</button></td>";
+                                    "\" class=\"btn btn-info btn-select-foundation\">Select</button></td>";
                                 tbodystring += "</tr>";
                             });
                         } else {
@@ -294,7 +294,7 @@
                     })
                     .finally(function() {
                         $("#modal-foundation").modal();
-                        $("#foundationselect").on('click', function() {
+                        $(".btn-select-foundation").on('click', function() {
                             var foundationid = $(this).attr('data-id');
                             var data = {
                                 UserID: foundationid,
