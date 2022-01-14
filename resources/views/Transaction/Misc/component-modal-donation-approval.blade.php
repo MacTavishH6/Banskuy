@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Donation Approval Detail</h5>
+                    <h5 class="modal-title">Detail Persetujuan Donasi</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -13,7 +13,7 @@
                         <div class="col-md-9">
                             <div class="card">
                                 <div class="card-header text-center" style="font-size:140%">
-                                    Your Donation Approval Detail
+                                    Detail Persetujuan Donasi Anda
                                 </div>
 
                                 <div class="card-body d-flex flex-column ">
