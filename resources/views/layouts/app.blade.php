@@ -43,7 +43,6 @@
 <body>
     <div id="app">
         @include('Shared._header')
-        {{ session('toastsuccess') }}
         <main class="">
             @yield('content')
         </main>
