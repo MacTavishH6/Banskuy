@@ -409,9 +409,9 @@ class ForumController extends Controller
             $request->session()->flash('toasterror', 'Terjadi kesalahan');
             return redirect('')->back();
         }
-        $post->delete();
         $comment->each->delete();
         $like->each->delete();
+        $post->delete();
         $request->session()->flash('toastsuccess', 'Post Berhasil Dihapus');
         return redirect('/Forum');
     }
@@ -429,9 +429,9 @@ class ForumController extends Controller
             $request->session()->flash('toasterror', 'Terjadi kesalahan');
             return redirect('')->back();
         }
-        $post->delete();
         $comment->each->delete();
         $like->each->delete();
+        $post->delete();
         $request->session()->flash('toastsuccess', 'Post Berhasil Dihapus');
         return redirect()->back();
     }
