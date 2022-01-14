@@ -56,7 +56,7 @@
                     <div class="col-3">
                         <div class="buttonapprovaldetail mt-4">
                             <button type="button" id="btnApprovalDetail" data-id="<%=data.transactionID%>" class="approvaldetail_button">
-                                {{ __('Detail') }}
+                                {{ __('Detail Transaksi') }}
                             </button>
                         </div>
                     </div>

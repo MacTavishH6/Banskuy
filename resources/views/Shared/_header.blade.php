@@ -48,14 +48,14 @@
                 @endif
 
                 @if (!Auth::guard('admin')->check())
-                @if (Auth::check())
-                    <li class="nav-item">
-                        <a class="nav-link" href="/donationhistory">{{ __('Check Progress Anda di sini!') }}</a>
-                    </li>
-                @elseif(Auth::guard('foundations')->check())
+                @if (Auth::guard('foundations')->check())
                     <li class="nav-item">
                         <a class="nav-link"
-                            href="/donationapproval">{{ __('Check Progress Anda di sini!') }}</a>
+                            href="/donationapproval">{{ __('Daftar Persetujuan Donasi') }}</a>
+                    </li>
+                @elseif(Auth::check())
+                    <li class="nav-item">
+                        <a class="nav-link" href="/donationhistory">{{ __('Check Progress Anda di sini!') }}</a>
                     </li>
                 @endif
                 @endif

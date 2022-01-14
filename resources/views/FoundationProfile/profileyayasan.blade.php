@@ -52,19 +52,19 @@
                                 <p align="justify">{{ $foundation->Bio }}</p>
                             </div>
                             @if (Auth::guard('foundations') && Auth::guard('foundations')->id() == $foundation->FoundationID)
-                            <div class="col-12 edit-bio">
-                                <textarea name="Bio" id="Bio" class="form-control" rows="3"
-                                    style="resize: none">{{ $foundation->Bio ? $foundation->Bio : '' }}</textarea>
-                            </div>
+                                <div class="col-12 edit-bio">
+                                    <textarea name="Bio" id="Bio" class="form-control" rows="3"
+                                        style="resize: none">{{ $foundation->Bio ? $foundation->Bio : '' }}</textarea>
+                                </div>
                             @endif
-                            
+
                         </div>
                         @if (Auth::guard('foundations') && Auth::guard('foundations')->id() == $foundation->FoundationID)
-                        <div class="col">
-                            <label id="count-bio-word" class="edit-bio float-right">0/100</label>
-                        </div>
-                            @endif
-                       
+                            <div class="col">
+                                <label id="count-bio-word" class="edit-bio float-right">0/100</label>
+                            </div>
+                        @endif
+
                         <div class="row">
                             <div class="col-12 mt-3" style="font-size:150%">
                                 <small>
@@ -100,22 +100,23 @@
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting
                                         Profil</button>
                                     <button class="text-white py-1 px-3 donation-approval"
-                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Donation
-                                        Approval</button>
+                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Persetujuan Donasi</button>
                                 @else
                                     <button class="text-white py-1 px-3"
-                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Hubungi Sekarang</button>
+                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Hubungi
+                                        Sekarang</button>
 
-                                        <button class="text-white py-1 px-3"
+                                    <button class="text-white py-1 px-3"
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;"
-                                        data-toggle="modal" data-target="#mdlMakeReport" onclick="btnMakeReportOnClick()">Laporkan</button>
+                                        data-toggle="modal" data-target="#mdlMakeReport"
+                                        onclick="btnMakeReportOnClick()">Laporkan</button>
 
 
-                                {{-- POP UP report START HERE --}}
-                                <div class="slider">
-                                    @include('FoundationProfile.FoundationMisc.component-form-reportfoundationpopup')
-                                </div>
-                                {{-- POP UP report End HERE --}}
+                                    {{-- POP UP report START HERE --}}
+                                    <div class="slider">
+                                        @include('FoundationProfile.FoundationMisc.component-form-reportfoundationpopup')
+                                    </div>
+                                    {{-- POP UP report End HERE --}}
                                 @endif
                             </div>
 
@@ -149,8 +150,7 @@
                         @include('FoundationProfile.FoundationMisc.component-list-post')
                     </div>
                 </div>
-                <div class="tab-pane fade" id="documentation" role="tabpanel"
-                    aria-labelledby="documentation-tab">
+                <div class="tab-pane fade" id="documentation" role="tabpanel" aria-labelledby="documentation-tab">
                     <div class="container">
                         @include('FoundationProfile.FoundationMisc.component-list-documentation')
                     </div>
@@ -166,12 +166,63 @@
         <div id="modal">
             @include('Shared._popupConfirmed')
         </div>
+        <div class="modal" id="modal-delete-confirmation" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hapus Post</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex">
+                            <h6>Apakah anda yakin ingin menghapus post ini ?</h6>
 
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Tutup</button>
+                        <form id="formDelete" action="/Post/Profile/Delete" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="PostDeleteID">
+                            <button type="submit" id="batal-popup-transaksi" class="btn btn-danger text-white">Hapus
+                                Post</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endsection
 
     @section('scripts')
         <script type="text/javascript">
             $(document).ready(function() {
+                $("a[id^='btnAction']").click(function() {
+                    let _id = $(this).attr('id').split('-')[1]
+                    if ($('input[id="ddlActionStatus-' + _id + '"]').val() == "hide") {
+                        $('div[id^="ddlAction-"]').removeClass("show");
+                        _.each($('input[id^="ddlActionStatus-"]'), function(x) {
+                            $(x).val('hide')
+                        });
+                        $('div[id="ddlAction-' + _id + '"]').addClass("show");
+                        $('div[id="ddlAction-' + _id + '"]').css({
+                            'position': 'absolute',
+                            'will-change': 'transform',
+                            'top': '0px',
+                            'left': '0px',
+                            'transform': 'translate3d(-162px, 0px, 0px)'
+                        });
+                        $('input[id="ddlActionStatus-' + _id + '"]').val('show');
+                        $('div[id="ddlAction-' + _id + '"]').removeClass("show");
+                        $('input[id="ddlActionStatus-' + _id + '"]').val("hide");
+                    }
+                })
+                $("a.hapus-post").on('click', function() {
+                    $("input[name='PostDeleteID']").val($(this).attr('data-id'))
+                    $("#modal-delete-confirmation").modal()
+                })
                 var foundation;
                 banskuy.getReq('/getfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>)
                     .then(function(data) {
@@ -210,23 +261,25 @@
                         });
                     });
             });
-            function btnMakeReportOnClick(){
-            $.ajax({
-                type: 'GET',
-                dataType : 'json',
-                url : '/GetReportCategory',
-                success:function(response){
-                    if(response.payload){
-                        $('#ddlReportType').empty();
-                        $.each(response.payload,function(index){
-                            var Value = response.payload[index].ReportCategoryID;
-                            var Name = response.payload[index].ReportCategoryName;
-                            $('#ddlReportType').append("<option value="+Value+">"+Name+"</option");
-                        });
+
+            function btnMakeReportOnClick() {
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: '/GetReportCategory',
+                    success: function(response) {
+                        if (response.payload) {
+                            $('#ddlReportType').empty();
+                            $.each(response.payload, function(index) {
+                                var Value = response.payload[index].ReportCategoryID;
+                                var Name = response.payload[index].ReportCategoryName;
+                                $('#ddlReportType').append("<option value=" + Value + ">" + Name +
+                                    "</option");
+                            });
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
         </script>
     @endsection
 

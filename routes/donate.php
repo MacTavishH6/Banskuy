@@ -37,6 +37,8 @@ Route::middleware(['auth:web'])->group(function () {
 
     Route::post('/pdf_download', [App\Http\Controllers\GeneratePdfController::class, 'pdfDownload']);
 
+    Route::delete('/Transaction/Delete', [App\Http\Controllers\TransactionController::class, 'DeleteTransaction']);
+
     // Route::get('/getprovince', [App\Http\Controllers\LOVController::class, 'Province']);
     // Route::get('/getcity/{id}', [App\Http\Controllers\LOVController::class, 'City']);
     // Route::get('/getdonationtype', [App\Http\Controllers\LOVController::class, 'DonationType']);

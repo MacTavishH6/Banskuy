@@ -82,4 +82,9 @@ Route::middleware(['auth:web,foundations'])->group(function () {
     Route::post('/chatTo',[MessageController::class,'ChatTo']);
     Route::post('/getMessage',[MessageController::class,'GetMessage']);
     Route::post('/GetListUserMessage',[MessageController::class,'GetListUserMessage']);
+
+    Route::delete('/Post/Delete', [ForumController::class, 'PostDelete']);
+    Route::delete('/Post/Profile/Delete', [ForumController::class, 'PostProfileDelete']);
+
+    Route::post('/Comment/Delete', [ForumController::class, 'CommentDelete']);
 });
