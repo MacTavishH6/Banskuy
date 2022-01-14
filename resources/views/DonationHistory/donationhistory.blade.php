@@ -102,9 +102,16 @@
             content: none;
         }
 
+        @media (max-width: 767px) {
+            div.col-md-1 {
+                display: none;
+            }
+        }
+
+
         /* #progressbar li.active+li:after {
-                        background: #2F8D46
-                    } */
+                                                                            background: #2F8D46
+                                                                        } */
 
     </style>
 @endsection
@@ -117,7 +124,7 @@
         </div>
         <div class="row w-75 mx-auto mb-5">
             {{-- sebelahkiri --}}
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="searchbox">Pencarian :</label>
                     <form class="form-inline m-0">
@@ -131,7 +138,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="form-row">
                     <div class="form-group col-md-5">
                         <label for="from">Tanggal Awal :</label>
@@ -156,8 +163,8 @@
                     </select>
                 </div>
             </div>
-            <div class="col-6"></div>
-            <div class="col-6">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
                 <button id="applyFilter" class="btn btn-primary float-right">Terapkan Filter</button>
             </div>
         </div>
@@ -189,12 +196,40 @@
     <div class="modalcontainer">
 
     </div>
+    <div class="modal" id="modal-confirmation" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Batalkan transaksi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex">
+                        <h6>Apakah anda yakin ingin membatalkan transaksi ?</h6>
+                        <form id="formDelete" action="/Transaction/Delete" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="popupTransactionID">
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Tutup</button>
+                    <button type="button" id="batal-popup-transaksi" class="btn btn-danger text-white">Batalkan
+                        Transaksi</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @include('DonationHistory.Misc.component-modal-donation-history')
     @include('DonationHistory.Misc.component-list-donation')
 @endsection
 @section('scripts')
     <script>
         $(document).ready(function() {
+
             var dateFormat = "mm/dd/yy",
                 from = $("#from")
                 .datepicker({
@@ -302,6 +337,24 @@
                                 data.transactionID = donation.DonationTransactionID;
                                 data.status = donation.approval_status.ApprovalStatusName;
                                 switch (donation.approval_status.ApprovalStatusID) {
+                                    case "1":
+                                        data.statusColor = 'btn-warning';
+                                        break;
+                                    case "2":
+                                        data.statusColor = 'btn-primary';
+                                        break;
+                                    case "3":
+                                        data.statusColor = 'btn-danger';
+                                        break;
+                                    case "4":
+                                        data.statusColor = 'btn-warning';
+                                        break;
+                                    case "5":
+                                        data.statusColor = 'btn-success';
+                                        break;
+                                    case "6":
+                                        data.statusColor = 'btn-danger';
+                                        break;
                                     case 1:
                                         data.statusColor = 'btn-warning';
                                         break;
@@ -316,6 +369,9 @@
                                         break;
                                     case 5:
                                         data.statusColor = 'btn-success';
+                                        break;
+                                    case 6:
+                                        data.statusColor = 'btn-danger';
                                         break;
                                 }
                                 data.donationTitle = donation.DonationDescriptionName;
@@ -348,8 +404,8 @@
                                         quantity = transaction.Quantity.substring(0,
                                             transaction.Quantity.indexOf('.'));
                                     }
-                                    console.log(transaction);
                                     var data = {
+                                        TransactionID: transactionid,
                                         DonationType: transaction.donation_type_detail
                                             .donation_type.DonationTypeName,
                                         Unit: transaction.donation_type_detail
@@ -364,13 +420,43 @@
                                     };
                                     data.donaterName = transaction.user.FirstName + ' ' +
                                         transaction.user.LastName;
-                                    data.donationTitle = transaction.DonationDescriptionName;
+                                    data.donationTitle = transaction
+                                        .DonationDescriptionName;
                                     switch (transaction.approval_status.ApprovalStatusID) {
+                                        case "1":
+                                            data.batal = ''
+                                            data.batalStatus = true
+                                            data.IsShow = 'd-none';
+                                            break
+                                        case 1:
+                                            data.batal = ''
+                                            data.batalStatus = true
+                                            data.IsShow = 'd-none';
+                                            break
+                                        case "6":
+                                            data.batal = 'd-none'
+                                            data.batalStatus = true
+                                            data.IsShow = 'd-none';
+                                            break
+                                        case 6:
+                                            data.batal = 'd-none'
+                                            data.batalStatus = true
+                                            data.IsShow = 'd-none';
+                                            break
+                                        case "5":
+                                            data.IsShow = '';
+                                            data.batalStatus = false
+                                            data.batal = 'd-none'
+                                            break;
                                         case 5:
                                             data.IsShow = '';
+                                            data.batalStatus = false
+                                            data.batal = 'd-none'
                                             break;
                                         default:
                                             data.IsShow = 'd-none';
+                                            data.batalStatus = false
+                                            data.batal = 'd-none'
                                             break;
                                     }
                                     var transactionDate = new Date(transaction
@@ -391,6 +477,18 @@
                                     var opacity;
                                     var current;
                                     switch (transaction.approval_status.ApprovalStatusID) {
+                                        case "1":
+                                            current = 1;
+                                            break;
+                                        case "4":
+                                            current = 2;
+                                            break;
+                                        case "5":
+                                            current = 3;
+                                            break;
+                                        case "3":
+                                            current = 3;
+                                            break;
                                         case 1:
                                             current = 1;
                                             break;
@@ -400,7 +498,9 @@
                                         case 5:
                                             current = 3;
                                             break;
-
+                                        case 3:
+                                            current = 3;
+                                            break;
                                     }
                                     setProgressBar(current);
 
@@ -416,6 +516,16 @@
                                     $(".submit").click(function() {
                                         return false;
                                     })
+                                    $("#batal-transaksi").on('click', function() {
+                                        $("#donationhistorydetail").modal('hide');
+                                        $("input[name='popupTransactionID']").val($(
+                                            this).attr('data-id'))
+                                        $("#modal-confirmation").modal()
+                                        $("#batal-popup-transaksi").on('click',
+                                            function() {
+                                                $("#formDelete").submit()
+                                            })
+                                    })
                                 });
                         });
                     });
@@ -424,7 +534,6 @@
             function getDate(element) {
                 var date;
                 try {
-                    console.log(dateFormat);
                     date = $.datepicker.parseDate(dateFormat, element.value);
                 } catch (error) {
                     date = null;

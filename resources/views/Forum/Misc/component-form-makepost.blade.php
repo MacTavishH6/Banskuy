@@ -70,13 +70,13 @@
                                     <div class="mt-2 mr-3">
                                         <h6>Post Title :</h6>
                                     </div>
-                                    <input type="text" class="form-control" id="txtPostTitle" name="txtPostTitle" placeholder="Post Title">
+                                    <input type="text" class="form-control" id="txtPostTitle" name="txtPostTitle" placeholder="Post Title" required>
                                    
                                 </div>  
                             </div>
                         </div>
                         <div class="form-group ">
-                            <textarea class="form-control" id="txaPostDesc" name="txaPostDesc" rows="3" style="resize: none" placeholder="Description" maxlength="255"></textarea>
+                            <textarea class="form-control" id="txaPostDesc" name="txaPostDesc" rows="3" style="resize: none" placeholder="Description" maxlength="255" required></textarea>
                             <label class="float-right text-muted" id="lblDescLenght"></label>
                         </div>
                         <br>
@@ -100,13 +100,13 @@
                                     <div class="mt-2 mr-1" style="width: 30%">
                                         <h6>Quantity :</h6>
                                     </div>
-                                    <input class="form-control" type="number" id="txtQuantity" name="txtQuantity" >
+                                    <input class="form-control" type="number" id="txtQuantity" name="txtQuantity" required>
                                 </div>
                             </div>
                         </div>
 
                         <div class="custom-file w-100 mb-3">
-                            <input class="custom-file-input" type="file" id="fuAttachment" name="fuAttachment" >
+                            <input class="custom-file-input" type="file" id="fuAttachment" name="fuAttachment" required >
                             <label class="custom-file-label" for="fuAttachment" id="lblFuAttachment">Choose File</label>
                         </div>
                         <div class="text-center w-100">

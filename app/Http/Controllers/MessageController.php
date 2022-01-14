@@ -95,20 +95,27 @@ class MessageController extends Controller
         // $senderId = Crypt::decrypt($request->senderId);
         // $receiverId = Crypt::decrypt($request->receiverId);
         //$senderId = $request->senderId;
+        $roleId = 0;
         if(Auth::guard('foundations')->check()){
             $User = Auth::guard('foundations');
             $id = Auth::guard('foundations')->user()->FoundationID;
+            $roleId = 2;
         }
         else{
             $User = Auth::user();
             $id = Auth::user()->UserID;
+            $roleId = 1;
         }
         $senderId = $id;
         $receiverId = Crypt::decrypt($request->receiverId);
         $Message = DB::table('trmessage')->whereIn('SenderID', [$senderId,$receiverId])->whereIn('ReceiverID',[$senderId,$receiverId])->orderBy('created_at','asc')->get();
+        
         $DateMessage = '';
          $ListMessage = array();
         foreach($Message as $item){
+            if(($item->ReceiverID == $id && $item->RoleId != $roleId) || ($item->SenderID == $id && $item->SenderRoleID != $roleId)){
+                continue;
+            }
             $ListMessage[] = ['senderId' => $item->SenderID,'receiverId' => $item->ReceiverID , 'messages' => $item->Messages, 'date' => date('d M Y',strtotime($item->created_at)) ];
         }
 
@@ -149,18 +156,33 @@ class MessageController extends Controller
     public function GetListUserMessage(Request $request){
         $currUserId = $request->currUserId;
 
+        if(Auth::guard('foundations')->check()){
+            $User = Auth::guard('foundations');
+            $id = Auth::guard('foundations')->user()->FoundationID;
+            $roleId = 2;
+        }
+        else{
+            $User = Auth::user();
+            $id = Auth::user()->UserID;
+            $roleId = 1;
+        }
+
         $User = DB::table('trmessage')->select('SenderID','ReceiverID','RoleID','SenderRoleID')->where('ReceiverID',$currUserId)->orWhere('SenderID',$currUserId)->orderBy('created_at','asc')->distinct()->get();
         //$User = Messages::select('SenderID','ReceiverID')->where('ReceiverID',$currUserId)->orWhere('SenderID',$currUserId)->distinct()->get();
         // dd($User);
         // $ListUser = [];
         $ListUser = array();
         foreach($User as $val){
-            if($val->SenderID == $currUserId){
-                $ListUser[] = ['UserID' =>$val->ReceiverID, 'RoleID' => $val->RoleID];
+            if(($val->ReceiverID == $currUserId && $val->RoleID != $roleId) || ($val->SenderID == $currUserId && $val->SenderRoleID != $roleId)){
+                continue;
             }
-            else{
-                $ListUser[] = ['UserID' =>$val->SenderID, 'RoleID' => $val->SenderRoleID];
-            }
+                if($val->SenderID == $currUserId){
+                    $ListUser[] = ['UserID' =>$val->ReceiverID, 'RoleID' => $val->RoleID];
+                }
+                else{
+                    $ListUser[] = ['UserID' =>$val->SenderID, 'RoleID' => $val->SenderRoleID];
+                }   
+        
         }   
 
         $chatTo = "";

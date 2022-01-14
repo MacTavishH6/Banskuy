@@ -323,4 +323,12 @@ class TransactionController extends Controller
         
         return view('Transaction.createtransaction', compact('user', 'Foundation', 'Post', 'StatusRedirect'));
     }
+
+    public function DeleteTransaction(Request $request){
+        $donation = DonationTransaction::where("DonationTransactionID", $request->popupTransactionID)->first();
+        $donation->ApprovalStatusID = '6';
+        $donation->save();
+        $request->session()->flash('toastsuccess', 'Transaksi Berhasil Dibatalkan');
+        return redirect()->back();
+    }
 }
