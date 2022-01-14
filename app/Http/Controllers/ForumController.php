@@ -403,12 +403,14 @@ class ForumController extends Controller
         $path = $post->PostID . '/' . $post->PostPicture;
         $ftp = ftp_connect(env('FTP_SERVER'));
         $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
-        if ($login_result)
-            ftp_delete($ftp, 'Forum/Post/' . $path);
-        else {
+        if ($login_result) {
+            if ($path && ftp_size($ftp, 'Forum/Post/' . $path) > 0)
+                ftp_delete($ftp, 'Forum/Post/' . $path);
+        } else {
             $request->session()->flash('toasterror', 'Terjadi kesalahan');
             return redirect('')->back();
         }
+        ftp_close($ftp);
         $comment->each->delete();
         $like->each->delete();
         $post->delete();
@@ -416,23 +418,35 @@ class ForumController extends Controller
         return redirect('/Forum');
     }
 
-    public function PostProfileDelete(Request $request){
+    public function PostProfileDelete(Request $request)
+    {
         $post = Post::where('PostID', $request->PostDeleteID)->first();
         $comment = Comment::where('PostID', $post->PostID)->get();
         $like = Like::where('PostID', $post->PostID)->get();
         $path = $post->PostID . '/' . $post->PostPicture;
         $ftp = ftp_connect(env('FTP_SERVER'));
         $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
-        if ($login_result)
-            ftp_delete($ftp, 'Forum/Post/' . $path);
-        else {
+        if ($login_result) {
+            if ($path && ftp_size($ftp, 'Forum/Post/' . $path) > 0)
+                ftp_delete($ftp, 'Forum/Post/' . $path);
+        } else {
             $request->session()->flash('toasterror', 'Terjadi kesalahan');
             return redirect('')->back();
         }
+        ftp_close($ftp);
         $comment->each->delete();
         $like->each->delete();
         $post->delete();
         $request->session()->flash('toastsuccess', 'Post Berhasil Dihapus');
         return redirect()->back();
+    }
+
+    public function CommentDelete(Request $request){
+        $comment = Comment::where('CommentID', $request->id)->first();
+        $commentReply = Comment::where('CommentReplyID', $comment->id)->get()->each->delete();
+        $comment->delete();
+        // dd($comment);
+        $response = ['payload' => "success"];
+        return response()->json($response);
     }
 }
