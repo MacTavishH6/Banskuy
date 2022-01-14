@@ -100,8 +100,7 @@
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting
                                         Profil</button>
                                     <button class="text-white py-1 px-3 donation-approval"
-                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Donation
-                                        Approval</button>
+                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">Persetujuan Donasi</button>
                                 @else
                                     <button class="text-white py-1 px-3"
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;">Hubungi
