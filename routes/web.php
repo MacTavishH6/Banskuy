@@ -85,4 +85,6 @@ Route::middleware(['auth:web,foundations'])->group(function () {
 
     Route::delete('/Post/Delete', [ForumController::class, 'PostDelete']);
     Route::delete('/Post/Profile/Delete', [ForumController::class, 'PostProfileDelete']);
+
+    Route::post('/Comment/Delete', [ForumController::class, 'CommentDelete']);
 });

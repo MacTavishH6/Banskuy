@@ -34,7 +34,7 @@
         integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="icon" href="{{env("FTP_URL")}}assets/favicon.ico" type="image/icon type">
+    <link rel="icon" href="{{ env('FTP_URL') }}assets/favicon.ico" type="image/icon type">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     {{-- CustomStyles --}}
     @yield('styles')
@@ -43,7 +43,7 @@
 <body>
     <div id="app">
         @include('Shared._header')
-
+        {{ session('toastsuccess') }}
         <main class="">
             @yield('content')
         </main>
@@ -59,58 +59,57 @@
         var toasterror = <?php echo session('toasterror') ? '"' . session('toasterror') . '"' : '""'; ?>;
         $(document).ready(function() {
             if (toastsuccess) toastr.success(toastsuccess);
+            if (toasterror) toastr.error(toasterror)
         });
 
-        $(function(){
+        $(function() {
 
             $.ajax({
-                type : 'GET',
+                type: 'GET',
                 url: '/GetListNotificationPost',
-                datType : 'json',
-                success:
-                function(response){
+                datType: 'json',
+                success: function(response) {
                     var result = response.payload;
-                    if(result != null && result.length > 0){
+                    if (result != null && result.length > 0) {
                         var unReadNotif = 0;
                         result.forEach(element => {
                             var data = {};
-                            if(element.StatusNotification == 1){
+                            if (element.StatusNotification == 1) {
                                 unReadNotif += 1;
                             }
                             data.title = element.notification.NotificationHeader;
                             data.content = element.notification.NotificationContent;
                             data.postId = element.notification.PostID;
-      
-                            var divPostNotif = _.template($('#component-view-postnotification').html());
+
+                            var divPostNotif = _.template($('#component-view-postnotification')
+                                .html());
                             $('#dropdownNotification').prepend(divPostNotif({
-                                data:data
+                                data: data
                             }));
                         });
-                        if(unReadNotif > 0){
-                            $('#imgBell').css("color","blue"); 
+                        if (unReadNotif > 0) {
+                            $('#imgBell').css("color", "blue");
                             $('#lblPostNotificationCount').html(parseInt(unReadNotif));
                         }
-                        
+
                     }
                 }
             });
 
-            $("#navbarNotification").click(function(){
-                if($('#ddlNotifStatus').val() == "hide"){
+            $("#navbarNotification").click(function() {
+                if ($('#ddlNotifStatus').val() == "hide") {
                     $('#dropdownNotification').addClass("show");
                     $('#ddlNotifStatus').val("show");
 
                     $.ajax({
-                        type : 'GET',
+                        type: 'GET',
                         url: '/SetReadNotification',
-                        success:
-                        function(response){
-                            $('#imgBell').css("color","gray"); 
+                        success: function(response) {
+                            $('#imgBell').css("color", "gray");
                             $('#lblPostNotificationCount').html("");
                         }
                     });
-                }
-                else{
+                } else {
                     $('#dropdownNotification').removeClass("show");
                     $('#ddlNotifStatus').val("hide");
 
@@ -124,14 +123,14 @@
                     data.postId = e.notification.PostID;
                     var divPostNotif = _.template($('#component-view-postnotification').html());
                     $('#dropdownNotification').prepend(divPostNotif({
-                        data:data
+                        data: data
                     }));
-                    $('#imgBell').css("color","blue"); 
-                    if($('#lblPostNotificationCount').html() == ""){
+                    $('#imgBell').css("color", "blue");
+                    if ($('#lblPostNotificationCount').html() == "") {
                         $('#lblPostNotificationCount').html(parseInt("1"));
-                    }
-                    else{
-                        $('#lblPostNotificationCount').html(parseInt($('#lblPostNotificationCount').html()) + 1);
+                    } else {
+                        $('#lblPostNotificationCount').html(parseInt($('#lblPostNotificationCount').html()) +
+                            1);
                     }
 
                 });

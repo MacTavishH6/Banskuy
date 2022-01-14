@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     protected $table = 'trcomment';
+    protected $primaryKey = 'CommentID';
 
     public function Post(){
         return $this->hasOne(Post::class,'PostID','PostID');
