@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewResetPasswordMail;
 use App\Models\Address;
 use App\Models\Foundation;
 use App\Models\UserDocumentation;
@@ -14,8 +15,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Document;
@@ -146,8 +148,18 @@ class FoundationProfileController extends Controller
             return redirect()->back()->withErrors($validator->errors());
         }
         // Tambahin send email
-
-        return redirect()->action('App\Http\Controllers\FoundationProfileController@editfoundationprofile', ['id' => $request->FoundationID]);
+        $newPassword = $request->NewPassword;
+        $foundation->Password = Hash::make($newPassword);
+        $foundation->save();
+        Auth::login($foundation);
+        Mail::to($foundation->Email)->send(new NewResetPasswordMail($newPassword));
+        Session::flash(
+            'toastsuccess', //TOAST NYA KENAPA GA MUNCUL YA??
+            'Password telah disetel ulang, silahkan cek email anda'
+        );
+        Auth::logout();
+        return redirect('/login');
+        // return redirect()->action('App\Http\Controllers\FoundationProfileController@editfoundationprofile', ['id' => $request->FoundationID]);
     }
 
     public function UpdateProfilePicture(Request $request)
