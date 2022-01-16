@@ -316,7 +316,7 @@
             $('.modal-confirmation').empty();
             var Data = {};
             Data.typeApproval = "Menerima";
-            Data.typeApprovalId = "5"; 
+            Data.typeApprovalId = "2"; 
             Data.buttonType = "btn btn-primary";
             var divModalConf = _.template($('#component-modal-confimartion-approval').html());
             $('.modal-confirmation').append(divModalConf({

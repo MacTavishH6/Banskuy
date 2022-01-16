@@ -59,7 +59,7 @@ Route::middleware(['auth:web,foundations'])->group(function () {
 
     Route::get('/GetDonationCategoryDetail/{DonationTypeID}', [ForumController::class, 'GetDonationCategoryDetail']);
     Route::post('/CreatePost', [ForumController::class, 'CreatePost']);
-
+    Route::post('/EditPost', [ForumController::class, 'EditPost']);
     
     Route::post('/PostComment/{id}', [ForumController::class, 'PostComment']);
     Route::post('/PostCommentFromForum/{id}', [ForumController::class, 'PostCommentFromForum']);
