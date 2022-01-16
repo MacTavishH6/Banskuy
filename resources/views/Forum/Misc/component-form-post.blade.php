@@ -8,13 +8,17 @@
                 <div class="mr-auto p-1">
                     <h5><a href="/ViewPost/{{$ItemPost->PostID}}" class="PostTitle" style="color: black;text-decoration:none">{{$ItemPost->PostTitle}}</a></h5>
                 </div>
-                
                 <div>
                                 @if($ItemPost->StatusPostId == 1)
                                     @if ($ItemPost->PostTypeID == 1 && Auth::guard('foundations')->check())
-                                        <a class="btn btn-secondary pb-2 pt-1 px-1" id="btnOpenDonation" href="#">
-                                            Meminta Donasi
-                                        </a> 
+
+                                        <form action="/chatTo" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <input id="id" name="id" type="hidden" value="{{$ItemPost->ID}}">
+                                            <input id="roleId" name="roleId" type="hidden" value="{{$ItemPost->RoleID}}">
+                                            <button type="submit" class="btn btn-secondary pb-2 pt-1 px-1">
+                                                Hubungi Pembuat</button>
+                                        </form>
                                         @elseif(Auth::check() && $ItemPost->PostTypeID == 2)
                                         <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($ItemPost->PostID)}}">
                                             Memberikan Donasi
@@ -31,11 +35,11 @@
             </div>
             <div class="d-flex flex-column bd-highlight">
                 <div class="d-flex flex-row bd-highlight">
-                    <div class="p-1 bd-higlight mb-2 col-sm-2">
+                    <div class="p-1 bd-higlight mb-2 mr-4">
                         Pembuat :
                     </div>
 
-                    <div class="p-1 bd-higlight mb-2 col-sm-2">
+                    <div class="p-1 bd-higlight mb-2">
                         @if ($ItemPost->RoleID == 1)
                         {{$ItemPost->User->FirstName}} {{$ItemPost->User->LastName}}
                         @else
@@ -46,7 +50,7 @@
                 </div>
 
                 <div class="d-flex flex-row bd-highlight">
-                    <div class="p-1 bd-higlight mb-2 col-sm-2">
+                    <div class="p-1 bd-higlight mb-2 mr-3">
                         @if ($ItemTypeDetail->DonationTypeID == 1)
                         Unit : 
                         @elseif($ItemTypeDetail->DonationTypeID == 2)
@@ -55,7 +59,7 @@
                         Uang :
                         @endif
                     </div>
-                    <div class="p-1 bd-higlight mb-2 col-sm-2">
+                    <div class="p-1 bd-higlight mb-2">
                         @if ($ItemTypeDetail->DonationTypeID != 3)
                         {{$ItemPost->Quantity + 0}} 
                         @else
@@ -66,10 +70,10 @@
                 </div>
 
                 <div class="d-flex flex-row bd-highlight">
-                    <div class="p-1 bd-higlight mb-2  col-sm-2">
+                    <div class="p-1 bd-higlight mb-2 mr-1">
                         Komentar :
                     </div>
-                    <div class="p-1 bd-higlight mb-2 col-sm-2">
+                    <div class="p-1 bd-higlight mb-2">
                         {{$ItemPost->Comment->count()}}
                     </div>
                 </div>
@@ -79,11 +83,11 @@
                         <form method="POST" enctype="multipart/form-data" action="/PostCommentFromForum/{{$ItemPost->PostID}}">
                             @csrf
                             <div class="form-inline">
-                                <div class="form-group col-sm-12">
-                                    <input type="text" class="form-control mr-4 col-sm-9"
+                                <div class="form-group w-100">
+                                    <input type="text" class="form-control w-75 mr-3"
                                         placeholder="Leave a comment..." id="text" name="text">
                                     <button type="submit"
-                                        class="btn btn-primary px-4 col-sm-2">Kirim</button>
+                                        class="btn btn-primary px-4">Kirim</button>
                                 </div>
                             </div>
                         </form>

@@ -98,7 +98,7 @@
                 <div class="p-2">
                     {{-- @if (true) --}}
                     @if ($AllowedPost == 1)
-                    <button type="button" class="btn btn-info px-2 pt-2" data-toggle="modal"
+                    <button type="button" class="btn btn-info px-3 pt-1 pb-0"" data-toggle="modal"
                         data-target="#mdlMakePost" >
                         <h6>Buat post</h6>
                     </button>
