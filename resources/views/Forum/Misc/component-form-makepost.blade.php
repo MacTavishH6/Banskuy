@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content p-4">
             <div class="modal-header">
-                <h3 class="modal-title w-100 text-center">Create a Post</h3>
+                <h3 class="modal-title w-100 text-center">Membuat Post</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -54,7 +54,7 @@
 
                                 <div class="input-group p-1" style="width:60%">
                                     <div class="mt-2 mr-1" style="width:30%">
-                                        <h6>Donation Type :</h6>
+                                        <h6>Tipe Donasi :</h6>
                                     </div>
                                     <select class="form-control" id="ddlDonationType" name="ddlDonationType" onchange="ChangeDonationTypeDetail(this)">
                                         @foreach ($DonationType as $item)
@@ -68,7 +68,7 @@
                             <div class="form-group w-100">
                                 <div class="input-group w-100 p-1">
                                     <div class="mt-2 mr-3">
-                                        <h6>Post Title :</h6>
+                                        <h6>Judul Post :</h6>
                                     </div>
                                     <input type="text" class="form-control" id="txtPostTitle" name="txtPostTitle" placeholder="Post Title" required>
                                    
