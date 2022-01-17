@@ -42,7 +42,7 @@
                             <div class="form-group w-100">
                                 <div class="input-group p-1" style="width:40%">
                                     <div class=" mt-2 mr-1" style="width: 30%">
-                                        <h6>Post Type :</h6>
+                                        <h6>Tipe Post :</h6>
                                     </div>
                                     <select class="form-control" id="ddlPostType" name="ddlPostType">
                                         @if (Auth::guard('foundations')->check())
@@ -55,7 +55,7 @@
 
                                 <div class="input-group p-1" style="width:60%">
                                     <div class="mt-2 mr-1" style="width:30%">
-                                        <h6>Donation Type :</h6>
+                                        <h6>Tipe Donasi :</h6>
                                     </div>
                                     <select class="form-control" id="ddlDonationType" name="ddlDonationType" onchange="ChangeDonationTypeDetail(this)">
                                         @foreach ($DonationType as $item)
@@ -70,7 +70,7 @@
                             <div class="form-group w-100">
                                 <div class="input-group w-100 p-1">
                                     <div class="mt-2 mr-3">
-                                        <h6>Post Title :</h6>
+                                        <h6>Judul Post :</h6>
                                     </div>
                                     <input type="text" value="{{$Post->PostTitle}}" class="form-control" id="txtPostTitle" name="txtPostTitle" placeholder="Post Title" required>
                                     
