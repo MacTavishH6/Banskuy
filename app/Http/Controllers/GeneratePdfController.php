@@ -17,20 +17,20 @@ class GeneratePdfController extends Controller
 
         $data =
             [
-            'DonaterName' => $request->DonaterName,
-            'DonationType' => $request->DonationType,
-            'DonationDate' => $request->DonationDate,
-            'DonationTItle' => $request->DonationTItle
+                'DonaterName' => $request->DonaterName,
+                'DonationType' => $request->DonationType,
+                'DonationDate' => $request->DonationDate,
+                'DonationTItle' => $request->DonationTItle
             ];
         $pdf = PDF::loadView('pdf_download', $data);
 
-        return $pdf->download('Sertifikat_'.Carbon::now().'_'.$request->DonaterName.'.pdf');
+        return $pdf->download('Sertifikat_' . Carbon::now() . '_' . $request->DonaterName . '.pdf');
     }
 
     public function pdfRecapDownload(Request $request)
     {
-        $data = DonationTransaction::where('UserID', $request->id)->where('ApprovalStatusID', '!=', '6')->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('Foundation')->with('User')->orderBy('TransactionDate', 'DESC')->orderBy('created_at', 'DESC')->get();
-        // echo ($donationhistory);
+        $data = DonationTransaction::where('FoundationID', $request->id)->where('ApprovalStatusID', '!=', '6')->with('DonationTypeDetail.DonationType')->with('ApprovalStatus')->with('Foundation')->with('User')->orderBy('TransactionDate', 'DESC')->orderBy('created_at', 'DESC')->get();
+        //dd($data);
         $data = $data->filter(function ($x) use ($request) {
             if ($request->keyword) $x = (str_contains($x->DonationDescriptionName, $request->keyword) || str_contains($x->DonationTypeDetail->DonationType->DonationTypeName, $request->keyword) || str_contains($x->Foundation->FoundationName, $request->keyword)) ? $x : [];
             // echo ($x);
