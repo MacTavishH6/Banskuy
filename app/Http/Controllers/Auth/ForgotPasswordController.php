@@ -38,6 +38,7 @@ class ForgotPasswordController extends Controller
         if (str_contains($_SERVER['HTTP_HOST'], 'foundation.')) {
             $User = Foundation::where('Email', $request->email)->first();
             Auth::guard('foundations')->login($User);
+            // Auth::guard()->login($User);
         } else if (str_contains($_SERVER['HTTP_HOST'], 'donate.')) {
             $User = User::where('Email', $request->email)->first();
             Auth::login($User);

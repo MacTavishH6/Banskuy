@@ -30,72 +30,103 @@
 @endsection
 
 @section('content')
-<div class="container mt-3">
-    <div class="pagetitle">
-        <p>Daftar Persetujuan Donasi</p>
-    </div>
-    <div class="row w-75 mx-auto mb-5">
-        {{-- sebelahkiri --}}
-        <div class="col-6">
-            <div class="form-group">
-                <label for="searchbox">Pencarian :</label>
-                <form class="form-inline m-0">
-                    <input class="form-control col" type="search" placeholder="Input Keyword" aria-label="Search"
-                        id="searchKeyword">
+    <div class="container mt-3">
+        <div class="pagetitle">
+            <p>Daftar Persetujuan Donasi</p>
+        </div>
+        <div class="row w-75 mx-auto mb-5">
+            {{-- sebelahkiri --}}
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="searchbox">Pencarian :</label>
+                    <form class="form-inline m-0">
+                        <input class="form-control col" type="search" placeholder="Input Keyword" aria-label="Search"
+                            id="searchKeyword">
+                    </form>
+                </div>
+                <div class="form-group">
+                    <label for="inputState">Status Donasi :</label>
+                    <select id="donationStatus" class="form-control">
+                    </select>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        <label for="from">Tanggal Awal</label>
+                        <input type="text" class="form-control" name="DateStart" id="from" placeholder="">
+                    </div>
+
+                    <div class="form-group col-md-1">
+                        <label for=""></label>
+                        <button id="resetfrom" class="btn btn-info mt-2 ml-n2 d-none"><span>x</span></button>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label for="to">Tanggal Akhir</label>
+                        <input type="text" class="form-control" name="DateEnd" id="to" placeholder="">
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for=""></label>
+                        <button id="resetto" class="btn btn-info mt-2 ml-n2 d-none"><span>x</span></button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputState">Tipe Donasi :</label>
+                    <select id="donationType" class="form-control">
+                    </select>
+                </div>
+            </div>
+            <div class="col-6">
+
+            </div>
+            <div class="col-6">
+                <button id="applyFilter" class="btn btn-primary float-right">Terapkan Filter</button>
+
+            </div>
+        </div>
+        <div class="row mb-2" id="btnRecap">
+            <div class="col-9"></div>
+            <div class="col-2">
+                <form id="formRecap" action="/pdf_recapdownload" method="post">
+                    @method("POST")
+                    @csrf
+                    <input type="hidden" name="id" value="{{ Auth::guard()->id() }}">
+                    <input type="hidden" name="keyword" id="formKeyword">
+                    <input type="hidden" name="donationStatus" id="formdonationStatus">
+                    <input type="hidden" name="dateStart" id="formdateStart">
+                    <input type="hidden" name="dateEnd" id="formdateEnd">
+                    <input type="hidden" name="transactionDate" id="formtransactionDate">
+                    <input type="hidden" name="donationType" id="formdonationType">
+                    <button id="btnRecap" type="submit" class="btn btn-primary mr-2">Buat Rekap</button>
                 </form>
             </div>
-            <div class="form-group">
-                <label for="inputState">Status Donasi :</label>
-                <select id="donationStatus" class="form-control">
-                </select>
-            </div>
         </div>
-        <div class="col-6">
-            <div class="form-row">
-                <div class="form-group col-md-5">
-                    <label for="from">Tanggal Awal</label>
-                    <input type="text" class="form-control" name="DateStart" id="from" placeholder="">
-                </div>
+        <div id="list-containter">
 
-                <div class="form-group col-md-1">
-                    <label for=""></label>
-                    <button id="resetfrom" class="btn btn-info mt-2 ml-n2 d-none"><span>x</span></button>
-                </div>
-                <div class="form-group col-md-5">
-                    <label for="to">Tanggal Akhir</label>
-                    <input type="text" class="form-control" name="DateEnd" id="to" placeholder="">
-                </div>
-                <div class="form-group col-md-1">
-                    <label for=""></label>
-                    <button id="resetto" class="btn btn-info mt-2 ml-n2 d-none"><span>x</span></button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputState">Tipe Donasi :</label>
-                <select id="donationType" class="form-control">
-                </select>
-            </div>
         </div>
-        <div class="col-6"></div>
-        <div class="col-6">
-            <button id="applyFilter" class="btn btn-primary float-right">Terapkan Filter</button>
-        </div>
-    </div>
-    <div id="list-containter">
 
     </div>
-    
-</div>
-<div class="modal-containter">
+    <div class="modal-containter">
 
-</div>
-@include('Transaction.Misc.component-list-approval')
-@include('Transaction.Misc.component-modal-donation-approval')
+    </div>
+    @include('Transaction.Misc.component-list-approval')
+    @include('Transaction.Misc.component-modal-donation-approval')
 @endsection
 
 @section('scripts')
     <script>
         $(document).ready(function() {
+            $("#btnRecap").hide()
+            $("#formRecap").on('submit', function() {
+                $("#formKeyword").val($("#searchKeyword").val())
+                $("#formdonationStatus").val($("#donationStatus").val())
+                $("#formdateStart").val($("#from").val())
+                $("#formdateEnd").val($("#to").val())
+                $("#formtransactionDate").val($("#transactionDate").val())
+                $("#formdonationType").val($("#donationType").val())
+                // console.log($(this).serializeArray())
+                // event.preventDefault()
+            })
             var dateFormat = "mm/dd/yy",
                 from = $("#from")
                 .datepicker({
@@ -161,6 +192,7 @@
                 });
             // DISINI MULAI APPLY FILTER
             $("#applyFilter").on('click', function() {
+                $("#btnRecap").hide()
                 if (!$("#from").val() && $("#to").val()) {
                     toastr.error("Tolong isi tanggal awal!");
                     return;
@@ -217,7 +249,7 @@
                             data.donationTitle = donation.DonationDescriptionName;
                             data.donationType = donation.donation_type_detail
                                 .donation_type.DonationTypeName;
-                                console.log(donation);
+                            console.log(donation);
                             data.username = donation.user.Username;
                             var divtemplate = _.template($("#component-list-approval")
                                 .html());
@@ -228,6 +260,7 @@
 
                     })
                     .finally(function() {
+                        $("#btnRecap").show()
                         $(".approvaldetail_button").on('click', function() {
                             // alert('tes');
                             var transactionid = $(this).attr('data-id');
@@ -250,7 +283,8 @@
                                         Status: transaction.approval_status
                                             .ApprovalStatusName,
                                         Quantity: transaction.Quantity,
-                                        transactionID: transaction.DonationTransactionID,
+                                        transactionID: transaction
+                                            .DonationTransactionID,
                                         Username: transaction.user.Username,
                                         approvalStatusID: transaction.ApprovalStatusID,
                                     };
@@ -278,75 +312,89 @@
                                     $("#approvaldetail").modal();
                                 })
                                 //============================================================================
-                                .finally(function(){
-                                    $(".btnRejectingTransaction").on('click', function(){
+                                .finally(function() {
+                                    $(".btnRejectingTransaction").on('click', function() {
                                         var transactionid = $(this).attr('data-id');
                                         console.log(transactionid);
                                         var data = {
                                             TransactionID: transactionid,
-                                            donationStatus: $(".btnRejectingTransaction").val(),
+                                            donationStatus: $(
+                                                    ".btnRejectingTransaction")
+                                                .val(),
                                             _token: "<?php echo csrf_token(); ?>"
                                         }
-                                        banskuy.postReq('/updateapprovalstatus', data)
+                                        banskuy.postReq('/updateapprovalstatus',
+                                                data)
                                             .then(function(response) {
-                                                var transaction = response.payload;
+                                                var transaction = response
+                                                    .payload;
                                                 // window.location.reload();
                                                 // console.log(transaction); 
-                                                $("#approvaldetail").modal('hide');
+                                                $("#approvaldetail").modal(
+                                                    'hide');
                                                 $("#applyFilter").click();
                                             })
                                     })
-                                    $(".btnApprovingTransaction").on('click', function(){
+                                    $(".btnApprovingTransaction").on('click', function() {
                                         var transactionid = $(this).attr('data-id');
                                         console.log(transactionid);
                                         var data = {
                                             TransactionID: transactionid,
-                                            donationStatus: $(".btnApprovingTransaction").val(),
+                                            donationStatus: $(
+                                                    ".btnApprovingTransaction")
+                                                .val(),
                                             _token: "<?php echo csrf_token(); ?>"
                                         }
-                                        banskuy.postReq('/updateapprovalstatus', data)
+                                        banskuy.postReq('/updateapprovalstatus',
+                                                data)
                                             .then(function(response) {
-                                                var transaction = response.payload;
+                                                var transaction = response
+                                                    .payload;
                                                 // window.location.reload();
                                                 // console.log(transaction); 
-                                                $("#approvaldetail").modal('hide');
+                                                $("#approvaldetail").modal(
+                                                    'hide');
                                                 $("#applyFilter").click();
                                             })
                                     })
-                                    $(".btnFinishingTransaction").on('click', function(){
+                                    $(".btnFinishingTransaction").on('click', function() {
                                         var transactionid = $(this).attr('data-id');
                                         console.log(transactionid);
                                         var data = {
                                             TransactionID: transactionid,
-                                            donationStatus: $(".btnFinishingTransaction").val(),
+                                            donationStatus: $(
+                                                    ".btnFinishingTransaction")
+                                                .val(),
                                             _token: "<?php echo csrf_token(); ?>"
                                         }
-                                        banskuy.postReq('/updateapprovalstatus', data)
+                                        banskuy.postReq('/updateapprovalstatus',
+                                                data)
                                             .then(function(response) {
-                                                var transaction = response.payload;
+                                                var transaction = response
+                                                    .payload;
                                                 $("#updocumentation").submit();
                                                 // window.location.reload();
                                                 // console.log(transaction); 
                                             })
                                     })
                                 })
-                                //============================================================================
+                            //============================================================================
                         });
                     });
-                });
-                
-                //PEMBATAS SI APPLY FILTER
-                function getDate(element) {
-                    var date;
-                    try {
-                        console.log(dateFormat);
-                        date = $.datepicker.parseDate(dateFormat, element.value);
-                    } catch (error) {
-                        date = null;
-                    }
-
-                    return date;
-                }
             });
+
+            //PEMBATAS SI APPLY FILTER
+            function getDate(element) {
+                var date;
+                try {
+                    console.log(dateFormat);
+                    date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch (error) {
+                    date = null;
+                }
+
+                return date;
+            }
+        });
     </script>
 @endsection
