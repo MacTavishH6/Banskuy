@@ -199,7 +199,8 @@
     @section('scripts')
         <script type="text/javascript">
             $(document).ready(function() {
-                $("a[id^='btnAction']").click(function() {
+                $("a[id^='btnAction-']").click(function() {
+                    
                     let _id = $(this).attr('id').split('-')[1]
                     if ($('input[id="ddlActionStatus-' + _id + '"]').val() == "hide") {
                         $('div[id^="ddlAction-"]').removeClass("show");
@@ -215,6 +216,8 @@
                             'transform': 'translate3d(-162px, 0px, 0px)'
                         });
                         $('input[id="ddlActionStatus-' + _id + '"]').val('show');
+                    }
+                    else{
                         $('div[id="ddlAction-' + _id + '"]').removeClass("show");
                         $('input[id="ddlActionStatus-' + _id + '"]').val("hide");
                     }
