@@ -20,6 +20,7 @@ use App\Models\User;
 use App\Models\Foundation;
 use App\Models\HtrNotification;
 use App\Models\TrNotification;
+use Illuminate\Support\Facades\DB;
 
 
 class ForumController extends Controller
@@ -496,7 +497,8 @@ class ForumController extends Controller
 
     public function CommentDelete(Request $request){
         $comment = Comment::where('CommentID', $request->id)->first();
-        $commentReply = Comment::where('CommentReplyID', $comment->id)->get()->each->delete();
+        $commentReply = Comment::where('CommentReplyID', $request->id)->get();
+        DB::table('trcomment')->where('CommentReplyID',$request->id)->delete();
         $comment->delete();
         // dd($comment);
         $response = ['payload' => "success"];

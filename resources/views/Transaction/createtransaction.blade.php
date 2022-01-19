@@ -3,13 +3,32 @@
 @section('styles')
     <style>
         #myCard {
-            width: 50%;
+            width: 55%;
         }
 
         @media (max-width: 767px) {
             #myCard {
                 width: 100%;
             }
+        }
+
+        .informationDesc {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin-left: 8%;
+            background: gray;
+            color: white;
+            visibility: hidden;
+            opacity: 0.2;
+         
+
+            transition: opacity .2s, visibility .2s;
+        }
+
+        .InfromationTipePost:hover .informationDesc {
+            visibility: visible;
+            opacity: 1;
         }
 
     </style>
@@ -97,11 +116,19 @@
                         <div class="col-md-3">
                             <label for="TipePost">Tipe Post</label>
                         </div>
+                        
+
                         <div class="col-md-5">
                             <select name="TipePost" class="form-control" id="TipePost">
-                                <option value="1">Post Donatur</option>
                                 <option value="2">Post Yayasan</option>
+                                <option value="1">Post Donatur</option>
+
                             </select>
+                        </div>
+                        <div class="col-md-4 InfromationTipePost">
+                            <label id="lblInfromationPost" class="fa fa-question-circle fa-2x"
+                                aria-hidden="true"></label>
+                            <small class="informationDesc rounded px-1">Tipe post berdasarkan siapa pembuat postnya</small>
                         </div>
                     </div>
 
@@ -149,6 +176,7 @@
                         <div class="col-md-3">
                             <label for="SelectPost">Pilih Post</label>
                         </div>
+
                         <div class="col-md-5">
                             <select name="SelectPost" class="form-control" id="SelectPost"></select>
                         </div>
@@ -428,9 +456,17 @@
                 }
             });
 
-            $("#buat-transaksi").on('click', function () {
+            $("#buat-transaksi").on('click', function() {
                 $("#form-transaksi").submit();
             })
+
+            $("#TipePost").on('change', function() {
+                if ($("#TipePost").val() == "1") {
+                    bindListPost('{{ Crypt::encrypt(Auth::user()->id) }}');
+                } else if ($("#TipePost").val() == "2") {
+                    bindListPost($("#FoundationID").val());
+                }
+            });
 
         });
 
