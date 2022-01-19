@@ -12,7 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     {{-- css style start here --}}
     <style>
         .btn {
@@ -60,15 +60,41 @@
                    $('#lblDescLenght').text(TextLength + "/255");
                 });
 
-            $("#btnAction").click(function() {
+            $(".menuAction").click(function() {
                 if ($('#ddlActionStatus').val() == "hide") {
-                    $('#ddlAction').addClass("show");
+                    $('#ddlActionPost').addClass("show");
+                    // $('#ddlActionComment').addClass("show");
                     $('#ddlActionStatus').val('show');
+                    
                 } else {
-                    $('#ddlAction').removeClass("show");
+                    $('#ddlActionPost').removeClass("show");
+                    // $('#ddlActionComment').removeClass("show");
+    
                     $('#ddlActionStatus').val("hide");
                 }
             });
+
+            $("#hapus-post").on('click', function () {
+                $("input[name='PostDeleteID']").val($(this).attr('data-id'))
+                $("#modal-delete-confirmation").modal()
+            })
+
+            $("button[id^='btn-hapuscomment-']").on('click', function() {
+                let commentid = $(this).attr('data-id')
+                let data = {
+                    _token: "<?php echo csrf_token(); ?>",
+                    id: commentid
+                }
+                banskuy.postReq('/Comment/Delete', data)
+                    .then(function(response) {
+                        if (response.payload == 'success') {
+                            toastr.success('Komentar berhasil dihapus')
+                            window.setTimeout(function() {
+                                location.reload()
+                            }, 1000)
+                        }
+                    })
+            })
         });
 
         function ChangeDonationTypeDetail(val) {
@@ -125,6 +151,10 @@
                     Body += "<div class=\"p-1 text-muted mr-auto\"> <small>" + response.date + "</small></div>"
                     Body += "<div>";
                     Body +=
+                        "<button class=\"btn btn-link float-right\" id=\"btn-hapuscomment-" + commentResponse
+                        .CommentID + "\" data-id=\"" +
+                        commentResponse.CommentID + "\">Hapus</button>"
+                    Body +=
                         "<button id=\"btnReplyComment\" class=\"btn btn-link\" onclick=\"btnReplyCommentOnClick(" +
                         commentResponse.CommentID + "," + commentResponse.PostID + ")\">"
                     Body += "<h6>Reply</h6> </button>"
@@ -142,6 +172,23 @@
                     var closeText = "<h6 class=\"text-muted\">Tutup " + response.totalReplies +
                         " komentar <i class=\"fa fa-angle-up\"></i></h6>";
                     $('#btnShowReplies').html(closeText);
+                    $("button[id^='btn-hapuscomment-']").on('click', function() {
+                        let commentid = $(this).attr('data-id')
+                        let data = {
+                            _token: "<?php echo csrf_token(); ?>",
+                            id: commentid
+                        }
+                        banskuy.postReq('/Comment/Delete', data)
+                            .then(function(response) {
+                                if (response.payload == 'success') {
+                                    toastr.success('Komentar berhasil dihapus')
+                                    window.setTimeout(function() {
+                                        location.reload()
+                                    }, 1000)
+                                }
+                            })
+                    })
+
                 }
             });
         }
@@ -192,13 +239,15 @@
                     Body += "<div class=\"media-body p-3\">";
                     Body += "<div class=\"d-flex\">";
                     //Body += "<div class=\"p-1\"> <h5 style=\"font-weight: normal\">"+Name+"</h5></div>"
-                    Body += "<div class=\"p-1\"> <a href=\"/" + response.hrefProfile +
+                    Body += "<div class=\"p-1\"><small>Reply to " + response.replyTo +
+                        "</small> <a href=\"/" + response.hrefProfile +
                         "\" style=\"color: black\"><h5 style=\"font-weight: normal\">" + Name +
                         "</h5></a></div> ";
 
-                    Body += "<div class=\"p-1 text-muted mr-auto\"> <small>" + response.date + "</small></div>"
-                    Body += "<div class=\"p-1 text-muted\"><small>Reply to " + response.replyTo +
-                        "</small> </div>"
+                    Body += "<div class=\"p-1 text-muted mr-auto\"> <small> | " + response.date + "</small></div>"
+                    Body += "<div class=\"p-1 text-muted\"> <button class=\"btn btn-link float-right\" id=\"btn-hapuscomment-" + Reply
+                        .id + "\" data-id=\"" +
+                        Reply.CommentID + "\">Hapus</button> </div>"
                     Body += "</div>";
                     Body += "<h6>" + Reply.Comment + "</h6>";
                     Body += "</div>";
@@ -209,6 +258,23 @@
                     var closeText = "<h6 class=\"text-muted\">Tutup " + response.totalReplies +
                         " komentar <i class=\"fa fa-angle-up\"></i></h6>";
                     $('#btnShowReplies').html(closeText);
+
+                    $("button[id^='btn-hapuscomment-']").on('click', function() {
+                        let commentid = $(this).attr('data-id')
+                        let data = {
+                            _token: "<?php echo csrf_token(); ?>",
+                            id: commentid
+                        }
+                        banskuy.postReq('/Comment/Delete', data)
+                            .then(function(response) {
+                                if (response.payload == 'success') {
+                                    toastr.success('Komentar berhasil dihapus')
+                                    window.setTimeout(function() {
+                                        location.reload()
+                                    }, 1000)
+                                }
+                            })
+                    })
                 }
             });
             $('.ReplyComment').remove();
@@ -305,12 +371,12 @@
                             </div>
                             @if (Auth::check() || Auth::guard('foundations')->check())
                                 <div class="btn-group dropleft">
-                                    <a href="#" style="color: black" role="button" id="btnAction" data-toggle="dropdown"
+                                    <a href="#" class="menuAction" style="color: black" role="button" id="btnAction" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         <i class="fa fa-align-justify"></i>
                                     </a>
 
-                                    <div class="dropdown-menu" id="ddlAction" aria-labelledby="btnAction">
+                                    <div class="dropdown-menu" id="ddlActionPost" aria-labelledby="btnAction">
                                         {{-- <a class="dropdown-item" href="#">Action</a>
                                   <a class="dropdown-item" href="#">Another action</a>
                                   <a class="dropdown-item" href="#">Something else here</a> --}}
@@ -319,7 +385,7 @@
                                         @if ($Post->StatusPostId == 1)
                                             @if ($Post->PostTypeID == 1 && Auth::guard('foundations')->check())
                                             @elseif(Auth::check() && $Post->PostTypeID == 2)
-                                                <a class="dropdown-item" href="#"">
+                                                <a class="dropdown-item" href="/makerequestwithpost/{{Crypt::encrypt($Post->PostID)}}"">
                                                                                                                     Memberikan Donasi
                                                                                                                 </a> 
                                                                                                                           
@@ -481,14 +547,30 @@
                                                         <div class="p-1 text-muted mr-auto">
                                                             <small>{{ date('d M Y', strtotime($Comment->created_at)) }}</small>
                                                         </div>
-                                                        <div>
+                                                        
                                                             @if (Auth::check() || Auth::guard('foundations')->check())
+                                                            <div class="p-1 text-muted">
                                                                 <button id="btnReplyComment" class="btn btn-link"
                                                                     onclick="btnReplyCommentOnClick({{ $Comment->CommentID }},{{ $Post->PostID }})">
                                                                     <h6>Reply</h6>
                                                                 </button>
+                                                                </div>
+                                                                <div class="p-1 text-muted">
+                                                                    @if ($Comment->RoleID == 2 && Auth::guard('foundations')->id() == $Comment->ID)
+                                                                    <button class="btn btn-link"
+                                                                        id="btn-hapuscomment-{{ $Comment->CommentID }}"
+                                                                        data-id="{{ $Comment->CommentID }}">Hapus</button>
+                                                                    @elseif($Comment->RoleID == 1 && Auth::id() == $Comment->ID)
+                                                                    <button class="btn btn-link"
+                                                                        id="btn-hapuscomment-{{ $Comment->CommentID }}"
+                                                                        data-id="{{ $Comment->CommentID }}">Hapus</button>
+                                                                    @endif
+                                                                </div>
+                                                                
+            
+                                                                
                                                             @endif
-                                                        </div>
+                                                        
                                                     </div>
                                                     <h6>{{ $Comment->Comment }}</h6>
                                                 </div>
@@ -517,10 +599,10 @@
                                                                 @if ($Comment->RoleID == 1)
                                                                     <small class="text-muted p-1">Reply to
                                                                         {{ $Comment->User->FirstName }}
-                                                                        {{ $Comment->User->LastName }}</small>
+                                                                        {{ $Comment->User->LastName }} | {{ date('d M Y', strtotime($Reply->created_at)) }}</small>
                                                                 @else
                                                                     <small class="text-muted p-1">Reply to
-                                                                        {{ $Comment->Foundation->FoundationName }}</small>
+                                                                        {{ $Comment->Foundation->FoundationName }} | {{ date('d M Y', strtotime($Reply->created_at)) }}</small>
                                                                 @endif
                                                                 <div class="d-flex ">
                                                                     <div class="p-1">
@@ -541,7 +623,7 @@
                                                                         @endif
                                                                     </div>
                                                                     <div class="p-1 text-muted mr-auto">
-                                                                        <small>{{ date('d M Y', strtotime($Reply->created_at)) }}</small>
+                                                                        <small></small>
                                                                     </div>
                                                                     <div class="p-1 text-muted">
 
@@ -550,7 +632,7 @@
 
                                                                         @if (Auth::check() || Auth::guard('foundations')->check())
                                                                         @if ($Comment->RoleID == 2 && Auth::guard('foundations')->id() == $Comment->ID)
-                                                                        <button class="dropdown-item "
+                                                                        <button class="btn btn-link "
                                                                             id="btn-hapuscomment-{{ $Comment->CommentID }}"
                                                                             data-id="{{ $Comment->CommentID }}">Hapus</button>
                                                                             @elseif($Comment->RoleID == 1 && Auth::id() == $Comment->ID)
@@ -616,6 +698,34 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="modal-delete-confirmation" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hapus Post</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex">
+                            <h6>Apakah anda yakin ingin menghapus post ini ?</h6>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Tutup</button>
+                        <form id="formDelete" action="/Post/Delete" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="PostDeleteID">
+                            <button type="submit" id="batal-popup-transaksi" class="btn btn-danger text-white">Hapus
+                            Post</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
