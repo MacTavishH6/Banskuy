@@ -46,7 +46,9 @@ class ForumController extends Controller
                 $AllowedPost = 0;
             }
         } else if (Auth::check()) {
-            $AllowedPost = 1;
+            if(Auth::User()->IsConfirmed == 1){
+                $AllowedPost = 1;
+            }
         }
 
         return view('/Forum/Forum', compact('DonationType', 'DonationTypeDetail', 'AllowedPost'));
@@ -78,7 +80,7 @@ class ForumController extends Controller
 
         $StatusPost = true;
         if (Auth::check()) {
-            if (Auth::user()->UserID == $Post->ID && $Post->RoleID == 1) {
+            if (Auth::user()->UserID == $Post->ID && $Post->RoleID == 1 || Auth::user()->IsConfirmed != 1 ) {
                 $StatusPost = false;
             }
         } else if (Auth::guard('foundations')->check()) {
