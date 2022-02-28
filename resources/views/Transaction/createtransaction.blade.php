@@ -325,11 +325,30 @@
             </div>
         </div>
     </div>
+    <div id="modal">
+        @include('Shared._popupConfirmed')
+    </div>
 @endsection
 
 @section('scripts')
     <script>
         $(document).ready(function() {
+            var user;
+            var authUser = <?php echo '"' . Auth::guard()->id() . '"'; ?>;
+            banskuy.getReq('/getprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>)
+                .then(function(data) {
+                    user = data.payload;
+                })
+                .finally(function() {
+                    if (authUser && authUser == user.UserID) {
+                        if (!user.IsConfirmed) {
+                            $("#confirmedModal").modal();
+                        }
+                        $(".edit-profile").on('click', function() {
+                            return location.href = '/editprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>;
+                        });
+                    }
+                });
             bindDonationType();
 
             $("#DonationType").on('change', function() {

@@ -45,7 +45,7 @@ Route::get('/ResetPasswordFoundation/{id}', [App\Http\Controllers\Auth\ResetPass
 
 Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'profile']);
 Route::get('/foundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'foundationprofile']);
-
+Route::get('/getfoundationprofile/{id}', [App\Http\Controllers\FoundationProfileController::class, 'getfoundationprofile']);
 
 Route::middleware(['auth:web,foundations'])->group(function () {
 

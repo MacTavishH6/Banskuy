@@ -102,10 +102,21 @@
                                     <button class="text-white py-1 px-3 donation-approval"
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;">Persetujuan Donasi</button>
                                 @else
-                                    <button class="text-white py-1 px-3"
+                                    {{-- <button class="text-white py-1 px-3"
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;">Hubungi
-                                        Sekarang</button>
-
+                                        Sekarang</button> --}}
+                                    <form action="/chatTo" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <input id="id" name="id" type="hidden"
+                                            value="{{ $foundation->FoundationID }}">
+                                        <input id="roleId" name="roleId" type="hidden"
+                                            value="2">
+                                        <button type="submit" class="text-white py-1 px-3"
+                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">
+                                            Hubungi Sekarang</button>
+                                    </form>
+                                    <br/>
                                     <button class="text-white py-1 px-3"
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;"
                                         data-toggle="modal" data-target="#mdlMakeReport"
@@ -229,6 +240,7 @@
                 var foundation;
                 banskuy.getReq('/getfoundationprofile/' + <?php echo '"' . Crypt::encrypt($foundation->FoundationID) . '"'; ?>)
                     .then(function(data) {
+                        debugger
                         foundation = data.payload;
                         $("#Province").html(foundation.address ? (foundation.address.province ? foundation.address
                             .province.ProvinceName : '') : '');
