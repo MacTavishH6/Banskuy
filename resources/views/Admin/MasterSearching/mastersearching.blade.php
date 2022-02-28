@@ -40,8 +40,15 @@
                             @foreach ($report as $rprt)
                                 <tr>
                                     <td>
+                                        @if($rprt->UserTarget->Role == 1)
                                         <a
-                                            href="/profile/{{ Crypt::encrypt($rprt->UserTarget->UserID) }}">{{ $rprt->UserTarget->Username }}</a>
+                                            href="/profile/{{ Crypt::encrypt($rprt->UserTarget->UserID) }}">{{ $rprt->UserTarget->Username }}
+                                        </a>
+                                        @elseif($rprt->UserTarget->Role == 2)
+                                        <a
+                                            href="/foundationprofile/{{ Crypt::encrypt($rprt->UserTarget->FoundationID) }}">{{ $rprt->UserTarget->Username }}
+                                        </a>
+                                        @endif
                                     </td>
                                     <td>{{ $rprt->UserTarget->Email }}</td>
                                     <td>{{ date('d M Y', strtotime($rprt->UserTarget->RegisterDate)) }}</td>

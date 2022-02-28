@@ -93,7 +93,7 @@
                                         <button class="text-white py-1 px-3 edit-profile has-bio"
                                             style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting
                                             Profil</button>
-                                    @else
+                                    @elseif(Auth::check() || Auth::guard('foundations')->check())
                                         <div style="margin-left:10%">
                                             <button class="text-white py-1 px-3 has-bio report-button"
                                             style="border-radius: 20px; background-color: #AC8FFF; border: none;"
@@ -236,11 +236,12 @@
                             $("#count-bio-word").html($(this).val().length + "/100");
                             $("#hidBio").val($(this).val());
                         });
-                        if (user.Bio) {
-                            $(".edit-bio").hide();
-                        } else {
-                            $(".has-bio").hide();
-                        }
+                        $(".edit-bio").hide();
+                        // if (user.Bio) {
+                        //     $(".edit-bio").hide();
+                        // } else {
+                        //     $(".has-bio").hide();
+                        // }
                         $("#btnEditBio").on('click', function() {
                             $(".edit-bio").show();
                             $(".has-bio").hide();
