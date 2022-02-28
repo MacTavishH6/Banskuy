@@ -39,8 +39,24 @@
 <hr style="background-color: black">
 
 <div class="row justify-content-around">
-    <div class="col-12">
-        <p style="font-size: 130%">1. Terdaftar dan Diawasi Pemerintah Provinsi DKI Jakarta</p>
-        <p style="font-size: 130%">2. Terdaftar dan Diawasi Kementerian Sosial Republik Indonesia</p>
-    </div>
+    <?php
+        $flag = 0;
+    ?>
+    @foreach ($foundation->document as $doc)
+        @if ($doc->ApprovalStatusID == 2)
+        <?php
+            $flag++;
+        ?>      
+        @endif
+    @endforeach
+    @if($flag != 2)
+        <div class="col-12">
+            <p style="font-size: 130%">Yayasan Ini Belum Terdaftar Memiliki Status Legalitas Secara Hukum</p>
+        </div>
+    @else
+        <div class="col-12">
+            <p style="font-size: 130%">1. Terdaftar dan Diawasi Dinas Sosial Pemerintah Provinsi</p>
+            <p style="font-size: 130%">2. Terdaftar dan Diawasi Kementerian Sosial Republik Indonesia</p>
+        </div>  
+    @endif
 </div>
