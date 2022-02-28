@@ -17,6 +17,7 @@
             </div>
         </div>
     </div>--}}
+    @if(!$foundation->document)
     <div class="form-row py-1">
         <div class="col-4">
             <label for="FirstName">Sertifikat Yayasan</label>
@@ -38,7 +39,8 @@
                 <label class="custom-file-label" for="FoundationOperationalPermit" id="lblFoundationOperationalPermit" >Choose File</label>
             </div>
         </div>
-    </div> 
+    </div>
+     
     {{-- <div class="form-row py-1">
         <div class="col-4">
             <label for="FirstName">Izin Pendaftaran Yayasan</label>
@@ -57,6 +59,7 @@
                     style="border-radius: 20px; background-color: #AC8FFF; border: none;">Save</button>
         </div>
     </div>
+    @endif
 </form>
 
 <div id="lblNoDocument" class="mb-5 mt-5" >
