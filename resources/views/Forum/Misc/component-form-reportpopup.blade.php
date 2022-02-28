@@ -24,7 +24,7 @@
                             <div>
                                 <h5>Detail Laporan</h5>
                             </div>
-                            <textarea class="form-control" id="txaReportDesc" name="txaReportDesc" rows="3" style="resize: none" placeholder="Description" maxlength="255"></textarea>
+                            <textarea class="form-control" id="txaReportDesc" name="txaReportDesc" rows="3" style="resize: none" placeholder="Deskripsi" maxlength="255" required></textarea>
                             <label class="float-right text-muted" id="lblDescLenght"></label>
                             <div>
                                 <h6 class="text-red">*Tolong berikan informasi mengenai pelanggaran yang terjadi</h6>

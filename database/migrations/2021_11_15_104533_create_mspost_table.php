@@ -25,6 +25,7 @@ class CreateMspostTable extends Migration
             $table->integer('RoleID')->unsigned();
             $table->date('UploadDate');
             $table->string('PostPicture', 255);
+            $table->string('PictureRealName',255);
             $table->decimal('Quantity', $precision = 5, $scale = 2);
             $table->timestamps();
 

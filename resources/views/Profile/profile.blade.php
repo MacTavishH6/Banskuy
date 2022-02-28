@@ -94,10 +94,13 @@
                                             style="border-radius: 20px; background-color: #AC8FFF; border: none;">Sunting
                                             Profil</button>
                                     @else
-                                        <button class="text-white py-1 px-3 has-bio report-button"
+                                        <div style="margin-left:10%">
+                                            <button class="text-white py-1 px-3 has-bio report-button"
                                             style="border-radius: 20px; background-color: #AC8FFF; border: none;"
                                             data-toggle="modal" data-target="#mdlMakeReport"
                                             onclick="btnMakeReportOnClick()">Laporkan</button>
+                                        </div>
+                                        
 
                                         {{-- POP UP report START HERE --}}
                                         <div class="slider">
@@ -196,7 +199,12 @@
             $("a[id^='btnAction']").click(function() {
                 let _id = $(this).attr('id').split('-')[1]
                 if ($('input[id="ddlActionStatus-' + _id + '"]').val() == "hide") {
+                    $('div[id^="ddlAction-"]').removeClass("show");
+                    _.each($('input[id^="ddlActionStatus-"]'), function (x) {
+                        $(x).val('hide')
+                    });
                     $('div[id="ddlAction-' + _id + '"]').addClass("show");
+                    $('div[id="ddlAction-' + _id + '"]').css({'position': 'absolute', 'will-change': 'transform', 'top': '0px', 'left': '0px', 'transform': 'translate3d(-162px, 0px, 0px)'});
                     $('input[id="ddlActionStatus-' + _id + '"]').val('show');
                 } else {
                     $('div[id="ddlAction-' + _id + '"]').removeClass("show");

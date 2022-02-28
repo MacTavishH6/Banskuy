@@ -20,6 +20,7 @@ use App\Models\User;
 use App\Models\Foundation;
 use App\Models\HtrNotification;
 use App\Models\TrNotification;
+use Illuminate\Support\Facades\DB;
 
 
 class ForumController extends Controller
@@ -38,7 +39,7 @@ class ForumController extends Controller
 
         $AllowedPost = 3;
         if (Auth::guard('foundations')->check()) {
-            $Document = Document::where('FoundationID', Auth::guard('foundations')->user()->FoundationID)->where('ApprovalStatusID', '5')->get();
+            $Document = Document::where('FoundationID', Auth::guard('foundations')->user()->FoundationID)->where('ApprovalStatusID', '2')->get();
             if ($Document->count() == 2 && Auth::guard('foundations')->User()->IsConfirmed == 1) {
                 $AllowedPost = 1;
             } else {
@@ -85,7 +86,10 @@ class ForumController extends Controller
                 $StatusPost = false;
             }
         }
-        return view('/Forum/ViewPost', compact('Post', 'Like', 'StatusPost'));
+
+        $DonationType = $this->GetCategory();
+        $DonationTypeDetail = DonationTypeDetail::where('DonationTypeDetailID',$Post->DonationTypeDetailID)->get();
+        return view('/Forum/ViewPost',compact('Post','Like','StatusPost','DonationType','DonationTypeDetail'));
     }
 
     public function CreatePost(Request $request)
@@ -116,8 +120,8 @@ class ForumController extends Controller
         $EncodeFile = Hash::make("img." . $Post->ID . "1");
         $EncodeFile = str_replace(array('/'), '', $EncodeFile) . '.jpg';
         $Post->PostPicture = $EncodeFile;
-
-        try {
+        $Post->PictureRealName = $request->file('fuAttachment')->getClientOriginalName();
+        try{
             //Save first to get PostID
 
             $Post->save();
@@ -176,24 +180,74 @@ class ForumController extends Controller
                 $NewTrNotif->RoleID = 2;
                 $NewTrNotif->save();
             }
-            broadcast(new NotificationEvent($NewNotif));
-            return redirect('/Forum');
-        } catch (Exception $e) {
-            throw ($e);
+            $NewTrNotif = new TrNotification();
+            $NewTrNotif->HtrNotificationID = $NewNotif->HtrNotificationID;
+            $NewTrNotif->ReceiverID = $val->FoundationID;
+            $NewTrNotif->StatusNotification = 1;
+            $NewTrNotif->RoleID = 2;
+            $NewTrNotif->save();
+        
+        broadcast(new NotificationEvent($NewNotif));
+            return redirect('/ViewPost/' . $Post->PostID);
+        }
+        catch(Exception $e){
+            throw($e);
         }
     }
 
-    public function GetCategory()
-    {
+    
+
+
+    public function GetCategory(){
         $Result = DonationType::all();
 
         return $Result;
     }
 
+    public function EditPost(Request $request){
 
-    public function GetDonationCategoryDetail($id)
-    {
-        $arr['Data'] = DonationTypeDetail::where('DonationTypeID', $id)->get();
+        $PostID = Crypt::decrypt($request->PostID);
+        
+        $Post = Post::where('PostID',$PostID)->first();
+        
+        $Post->DonationTypeDetailID = $request->ddlDonationTypeDetail;
+
+        $Post->DonationTypeID = $request->ddlDonationType;
+
+        $Post->PostDescription = $request->txaPostDesc;
+        $Post->UploadDate = Carbon::now()->toDateTimeString();
+        $Post->Quantity = $request->txtQuantity;
+        $Post->PostTitle = $request->txtPostTitle;
+        $Post->StatusPostId = 1;
+ 
+        if($request->hasFile('fuAttachment')){
+            $EncodeFile = Hash::make("img.".$Post->ID."1");
+            $EncodeFile = str_replace(array('/'),'',$EncodeFile) . '.jpg';
+            $Post->PostPicture = $EncodeFile;
+            $Post->PictureRealName = $request->file('fuAttachment')->getClientOriginalName();
+
+            $ftp = ftp_connect(env('FTP_SERVER'));
+            $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
+            if (ftp_size($ftp, 'Forum/Post/'.$Post->PostID.'/' . $Post->PostPicture) > 0)
+            ftp_delete($ftp,  'Forum/Post/'.$Post->PostID.'/' . $Post->PostPicture);
+            ftp_close($ftp);
+
+            //Upload to FTP
+            Storage::disk('ftp')->put('Forum/Post/'.$Post->PostID.'/'.$EncodeFile,fopen($request->file('fuAttachment'),'r+'));
+           
+        }
+        
+          
+            $Post->save();
+            return redirect()->back()->with('toastsuccess', 'Post Updated');
+     
+            
+
+    }
+
+    
+    public function GetDonationCategoryDetail($id){
+        $arr['Data'] = DonationTypeDetail::where('DonationTypeID',$id)->get();
 
         echo json_encode($arr);
         exit;
@@ -403,12 +457,14 @@ class ForumController extends Controller
         $path = $post->PostID . '/' . $post->PostPicture;
         $ftp = ftp_connect(env('FTP_SERVER'));
         $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
-        if ($login_result)
-            ftp_delete($ftp, 'Forum/Post/' . $path);
-        else {
+        if ($login_result) {
+            if ($path && ftp_size($ftp, 'Forum/Post/' . $path) > 0)
+                ftp_delete($ftp, 'Forum/Post/' . $path);
+        } else {
             $request->session()->flash('toasterror', 'Terjadi kesalahan');
             return redirect('')->back();
         }
+        ftp_close($ftp);
         $comment->each->delete();
         $like->each->delete();
         $post->delete();
@@ -416,23 +472,36 @@ class ForumController extends Controller
         return redirect('/Forum');
     }
 
-    public function PostProfileDelete(Request $request){
+    public function PostProfileDelete(Request $request)
+    {
         $post = Post::where('PostID', $request->PostDeleteID)->first();
         $comment = Comment::where('PostID', $post->PostID)->get();
         $like = Like::where('PostID', $post->PostID)->get();
         $path = $post->PostID . '/' . $post->PostPicture;
         $ftp = ftp_connect(env('FTP_SERVER'));
         $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
-        if ($login_result)
-            ftp_delete($ftp, 'Forum/Post/' . $path);
-        else {
+        if ($login_result) {
+            if ($path && ftp_size($ftp, 'Forum/Post/' . $path) > 0)
+                ftp_delete($ftp, 'Forum/Post/' . $path);
+        } else {
             $request->session()->flash('toasterror', 'Terjadi kesalahan');
             return redirect('')->back();
         }
+        ftp_close($ftp);
         $comment->each->delete();
         $like->each->delete();
         $post->delete();
         $request->session()->flash('toastsuccess', 'Post Berhasil Dihapus');
         return redirect()->back();
+    }
+
+    public function CommentDelete(Request $request){
+        $comment = Comment::where('CommentID', $request->id)->first();
+        $commentReply = Comment::where('CommentReplyID', $request->id)->get();
+        DB::table('trcomment')->where('CommentReplyID',$request->id)->delete();
+        $comment->delete();
+        // dd($comment);
+        $response = ['payload' => "success"];
+        return response()->json($response);
     }
 }

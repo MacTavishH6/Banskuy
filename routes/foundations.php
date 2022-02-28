@@ -65,8 +65,9 @@ Route::middleware(['auth:foundations'])->group(function () {
     Route::post('/UpdateDocument',[App\Http\Controllers\FoundationProfileController::class, 'UploadDocument']); 
     Route::post('/ReUploadDocument',[App\Http\Controllers\FoundationProfileController::class, 'ReUploadDocument']); 
     Route::post('/GetListDocument',[App\Http\Controllers\FoundationProfileController::class, 'GetListDocument']); 
-    Route::post('/GetDocumentDetail',[App\Http\Controllers\FoundationProfileController::class, 'GetDocumentDetail']); 
+    Route::post('/GetDocumentDetail',[App\Http\Controllers\FoundationProfileController::class, 'GetDocumentDetail']);
     //Route::get('/chat',[MessageController::class,'Chat']);
-    
+
+    Route::post('/pdf_recapdownload', [App\Http\Controllers\GeneratePdfController::class, 'pdfRecapDownload']);
 
 });

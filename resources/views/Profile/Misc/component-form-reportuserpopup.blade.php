@@ -26,7 +26,7 @@
                             <div>
                                 <h5>Detail Laporan</h5>
                             </div>
-                            <textarea class="form-control" id="txaReportDesc" name="txaReportDesc" rows="5"></textarea>
+                            <textarea class="form-control" id="txaReportDesc" name="txaReportDesc" placeholder="Deskripsi" rows="5" required></textarea>
                             <div>
                                 <h6 class="text-red">*Tolong berikan informasi mengenai pelanggaran yang terjadi</h6>
                             </div>

@@ -1,8 +1,8 @@
-<div class="modal fade bd-example-modal-lg" id="mdlMakePost" tabindex="-1" role="dialog" aria-hidden="true" style="max-height: 700px" >
+<div class="modal fade bd-example-modal-lg" id="mdlEditPost" tabindex="-1" role="dialog" aria-hidden="true" style="max-height: 700px" >
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content p-4">
             <div class="modal-header">
-                <h3 class="modal-title w-100 text-center">Membuat Post</h3>
+                <h3 class="modal-title w-100 text-center">Edit Post</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -35,13 +35,14 @@
                 </div>
 
                 <div>
-                    <form method="POST" action="/CreatePost" enctype="multipart/form-data"> 
+                    <form method="POST" action="/EditPost" enctype="multipart/form-data"> 
                         @csrf
+                       
                         <div class="form-inline mb-2">
                             <div class="form-group w-100">
                                 <div class="input-group p-1" style="width:40%">
                                     <div class=" mt-2 mr-1" style="width: 30%">
-                                        <h6>Post Type :</h6>
+                                        <h6>Tipe Post :</h6>
                                     </div>
                                     <select class="form-control" id="ddlPostType" name="ddlPostType">
                                         @if (Auth::guard('foundations')->check())
@@ -58,25 +59,26 @@
                                     </div>
                                     <select class="form-control" id="ddlDonationType" name="ddlDonationType" onchange="ChangeDonationTypeDetail(this)">
                                         @foreach ($DonationType as $item)
-                                            <option value="{{$item->DonationTypeID}}">{{$item->DonationTypeName}}</option>
+                                            <option value="{{$item->DonationTypeID}}" {{$item->DonationTypeID == $Post->DonationTypeID ? 'selected' : ''}}>{{$item->DonationTypeName}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-inline mb-2">
                             <div class="form-group w-100">
                                 <div class="input-group w-100 p-1">
                                     <div class="mt-2 mr-3">
                                         <h6>Judul Post :</h6>
                                     </div>
-                                    <input type="text" class="form-control" id="txtPostTitle" name="txtPostTitle" placeholder="Post Title" required>
-                                   
+                                    <input type="text" value="{{$Post->PostTitle}}" class="form-control" id="txtPostTitle" name="txtPostTitle" placeholder="Post Title" required>
+                                    
                                 </div>  
                             </div>
                         </div>
                         <div class="form-group ">
-                            <textarea class="form-control" id="txaPostDesc" name="txaPostDesc" rows="3" style="resize: none" placeholder="Description" maxlength="255" required></textarea>
+                            <textarea class="form-control"  id="txaPostDesc" name="txaPostDesc" rows="3" style="resize: none" placeholder="Description" maxlength="255" required>{{$Post->PostDescription}}</textarea>
                             <label class="float-right text-muted" id="lblDescLenght"></label>
                         </div>
                         <br>
@@ -88,9 +90,9 @@
                                     </div>
                                     
                                         <select class="form-control" id="ddlDonationTypeDetail" name="ddlDonationTypeDetail">
-                         
-                                                <option value="{{$DonationTypeDetail->first()->DonationTypeDetailID}}">{{$DonationTypeDetail->first()->DonationTypeDetail}}</option>
-                                    
+                                            @foreach ($DonationTypeDetail as $item)
+                                                <option value="{{$item->DonationTypeDetailID}}" {{$item->DonationTypeDetailID == $Post->DonationTypeDetailID ? 'selected' : ''}}>{{$item->DonationTypeDetail}}</option>
+                                            @endforeach
                                         </select>
                                     
                                     
@@ -100,18 +102,19 @@
                                     <div class="mt-2 mr-1" style="width: 30%">
                                         <h6>Quantity :</h6>
                                     </div>
-                                    <input class="form-control" type="number" id="txtQuantity" name="txtQuantity" required>
+                                    <input class="form-control" type="number" value="{{$Post->Quantity + 0 }}" id="txtQuantity" name="txtQuantity" required>
                                 </div>
                             </div>
                         </div>
 
                         <div class="custom-file w-100 mb-3">
-                            <input class="custom-file-input" type="file" id="fuAttachment" name="fuAttachment" required >
-                            <label class="custom-file-label" for="fuAttachment" id="lblFuAttachment">Choose File</label>
+                            <input class="custom-file-input" type="file" id="fuAttachment" name="fuAttachment" >
+                            <label class="custom-file-label" for="fuAttachment" id="lblFuAttachment">{{$Post->PictureRealName}}</label>
                         </div>
                         <div class="text-center w-100">
+                            <input type="hidden" id="PostID" name="PostID" value="{{Crypt::encrypt($Post->PostID)}}">
                             <button type="submit" class="btn btn-primary w-75 " id="btnSubmit">
-                                <h5>Post</h5>
+                                <h5>Perbarui Post</h5>
                             </button>
                         </div>
                             
