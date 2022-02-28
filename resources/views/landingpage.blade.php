@@ -94,7 +94,7 @@
 
         </div>
 
-        @if (!Auth::guard('foundations')->check() && !Auth::check())
+        @if (!Auth::guard('foundations')->check() && !Auth::guard('admin')->check() && !Auth::check())
             <div class="row mx-5 py-5" style="background-color: #18171f; border-radius: 20px">
                 <div class="col-md-6 col-sm-11 text-center">
                     <h3 class="text-white">Masuk sekarang! Masuk Sebagai :</h3>
