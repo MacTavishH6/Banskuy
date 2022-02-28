@@ -19,7 +19,7 @@
                                             <button type="submit" class="btn btn-secondary pb-2 pt-1 px-1">
                                                 Hubungi Pembuat</button>
                                         </form>
-                                        @elseif(Auth::check() && $ItemPost->PostTypeID == 2)
+                                        @elseif(Auth::check() && $ItemPost->PostTypeID == 2 && $AllowedPost == 1)
                                         <a class="btn btn-primary pb-2 pt-1 px-1" id="btnOpenDonation" href="/makerequestwithpost/{{Crypt::encrypt($ItemPost->PostID)}}">
                                             Memberikan Donasi
                                         </a> 

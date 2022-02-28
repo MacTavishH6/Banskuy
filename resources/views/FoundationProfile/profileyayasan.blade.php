@@ -101,11 +101,21 @@
                                         Profil</button>
                                     <button class="text-white py-1 px-3 donation-approval"
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;">Persetujuan Donasi</button>
-                                @elseif(Auth::guard('foundations')->check() || Auth::check())
-                                    <button class="text-white py-1 px-3"
+                                @else
+                                    {{-- <button class="text-white py-1 px-3"
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;">Hubungi
-                                        Sekarang</button>
-
+                                        Sekarang</button> --}}
+                                    <form action="/chatTo" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <input id="id" name="id" type="hidden"
+                                            value="{{ $foundation->FoundationID }}">
+                                        <input id="roleId" name="roleId" type="hidden"
+                                            value="2">
+                                        <button type="submit" class="text-white py-1 px-3"
+                                        style="border-radius: 20px; background-color: #AC8FFF; border: none;">
+                                            Hubungi Sekarang</button>
+                                    </form>
                                     <button class="text-white py-1 px-3"
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;"
                                         data-toggle="modal" data-target="#mdlMakeReport"
