@@ -12,22 +12,21 @@
                 <div class="col-md-2 col-sm-3">
                     <h5 class="font-weight-bold">BanSkuy</h5>
                     <p><a>Tentang Kami</a></p>
-                    <p><a>Kontak Kami</a></p>
+                    <p><a style="color: white" href="https://www.instagram.com/muhammadwira_02/">Kontak Developer</a></p>
                     <p><a>Call Center</a></p>
-                    <p><a>Lokasi</a></p>
+                    <p><a style="color: white" href="https://goo.gl/maps/BY7yq5gpnh9Du4wH8">Lokasi</a></p>
                 </div>
                 <div class="col-md-2 col-sm-3">
                     <h5 class="font-weight-bold">Produk Donasi</h5>
-                    <p><a>Uang</a></p>
-                    <p><a>Barang Bekas</a></p>
-                    <p><a>Pelayanan Masyarakat</a></p>
+                    <p><a style="color: white" href="https://donate.banskuy.com/Forum/3">Uang</a></p>
+                    <p><a style="color: white" href="https://donate.banskuy.com/Forum/1">Barang Bekas</a></p>
+                    <p><a style="color: white" href="https://donate.banskuy.com/Forum/2">Jasa Pelayanan Masyarakat</a></p>
                 </div>
                 <div class="col-md-2 col-sm-3">
                     <h5 class="font-weight-bold">Media Sosial</h5>
-                    <p><a>Facebook</a></p>
-                    <p><a>Instagram</a></p>
-                    <p><a>Telegram</a></p>
-                    <p><a>Youtube</a></p>
+                    <p><a style="color: white" href="https://www.facebook.com/profile.php?id=100078775299229">Facebook</a></p>
+                    <p><a style="color: white" href="https://www.instagram.com/banskuycom/">Instagram</a></p>
+                    <p><a style="color: white" href="https://www.youtube.com/channel/UChslKXIIJISVfHWnBXQNaEA">Youtube</a></p>
                 </div>
             </div>
             <div class="pt-5 w-25 m-auto">
