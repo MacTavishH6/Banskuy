@@ -212,7 +212,7 @@
                                 <div class="col-md-10">
                                     <input type="checkbox" id="checkbox" name="checkbox" value="checkbox" autocomplete="off">
                                     <label for="checkbox"> Dengan menceklis ini, anda setuju dengan</label>
-                                    <a href="">ketentuan dan kondisi!</a> <label>kami</label>
+                                    <a href="" onclick="return openTermModal()">ketentuan dan kondisi!</a> <label>kami</label>
                                 </div>
                             </div>
 
@@ -236,6 +236,56 @@
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confimationModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ketentuan dan Kondisi</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-around">
+                        <div class="col-md-10">
+                            <ol>
+                                <li>
+                                    Pengguna menyatakan bahwa data yang saya isikan ke dalam aplikasi adalah benar adanya.
+                                </li>
+                                <li>
+                                    Pengguna akan mengikuti semua prosedur yang dijalani dalam aplikasi.
+                                </li>
+                                <li>
+                                    Pengguna dengan sadar memberikan data informasi saya ke dalam sistem.
+                                </li>
+                                <li>
+                                    Segala bentuk kejahatan atau penipuan akan Pengguna pertanggung jawabkan secara hukum yang berlaku.
+                                </li>
+                                <li>
+                                     Pengguna memberikan izin kepada aplikasi Banskuy.com untuk menggunakan dan mengelola data informasi saya.
+                                </li>
+                                <li>
+                                    Banskuy.com berhak melakukan pembekuan akun jika Pengguna terbukti melakukan pelanggaran.
+                                </li>
+                                <li>
+                                    Banskuy.com berhak mengajukan proses hukum apabila Pengguna terbukti melakukan pelanggaran hukum.
+                                </li>
+                                <li>
+                                     Segala bentuk kerugian yang dialami oleh individu maupun kelompok terdaftar dalam aplikasi merupakan di luar tanggung jawab Banskuy.com.
+                                </li>
+                                <li>
+                                     Banskuy.com berhak meminta keterangan lain sebagai bagian proses verifikasi melalui email, telepon, ataupun melalui media lainnya kepada pengguna.
+                                </li>
+                                <li>
+                                    Jika akun pengguna diretas atau dicuri sehingga pengguna kehilangan kontrol atas akunnya, maka pengguna wajib memberitahu Banskuy.com sesegera mungkin agar pihak kami dapat menonaktifkan akun pengguna dan melakukan tindak pencegahan lainnya.
+                                    Jika pengguna tidak melakukan laporan yang menyebabkan kerugian dalam bentuk apapun, maka kerugian tersebut di luar dari tanggung jawab Banskuy.com.
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
@@ -266,6 +316,11 @@
             });
             checkTermandCondition($("#checkbox").get());
         });
+
+        function openTermModal(){
+            $('#confimationModal').modal();
+            return false
+        }
 
         function checkTermandCondition(elm) {
             if ($(elm).prop("checked")) {
