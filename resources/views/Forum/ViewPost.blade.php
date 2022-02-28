@@ -369,13 +369,12 @@
                             <div class="mr-auto">
                                 <h2>{{ $Post->PostTitle }}</h2>
                             </div>
-                            @if (Auth::check() || Auth::guard('foundations')->check())
+                            @if ((Auth::check() || Auth::guard('foundations')->check()) && $IsConfirm == true)
                                 <div class="btn-group dropleft">
                                     <a href="#" class="menuAction" style="color: black" role="button" id="btnAction" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         <i class="fa fa-align-justify"></i>
                                     </a>
-
                                     <div class="dropdown-menu" id="ddlActionPost" aria-labelledby="btnAction">
                                         {{-- <a class="dropdown-item" href="#">Action</a>
                                   <a class="dropdown-item" href="#">Another action</a>
@@ -417,7 +416,6 @@
 
 
                                                                 @if ($StatusPost == true)
-
                                                                     <form action="/chatTo" method="POST"
                                                                         enctype="multipart/form-data">
                                                                         @csrf
