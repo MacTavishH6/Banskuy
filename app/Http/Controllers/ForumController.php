@@ -79,19 +79,26 @@ class ForumController extends Controller
         $Like = Like::where('PostID', $id)->where('LikePost', 1)->get();
 
         $StatusPost = true;
+        $IsConfirm = true;
         if (Auth::check()) {
-            if (Auth::user()->UserID == $Post->ID && $Post->RoleID == 1 || Auth::user()->IsConfirmed != 1 ) {
+            if (Auth::user()->UserID == $Post->ID && $Post->RoleID == 1 ) {
                 $StatusPost = false;
+            }
+            if(Auth::user()->IsConfirmed != 1 ){
+                $IsConfirm = false;
             }
         } else if (Auth::guard('foundations')->check()) {
             if (Auth::guard('foundations')->user()->FoundationID == $Post->ID && $Post->RoleID == 2) {
                 $StatusPost = false;
             }
+            if(Auth::guard('foundations')->IsConfirmed != 1 ){
+                $IsConfirm = false;
+            }
         }
 
         $DonationType = $this->GetCategory();
         $DonationTypeDetail = DonationTypeDetail::where('DonationTypeDetailID',$Post->DonationTypeDetailID)->get();
-        return view('/Forum/ViewPost',compact('Post','Like','StatusPost','DonationType','DonationTypeDetail'));
+        return view('/Forum/ViewPost',compact('Post','Like','StatusPost','IsConfirm','DonationType','DonationTypeDetail'));
     }
 
     public function CreatePost(Request $request)

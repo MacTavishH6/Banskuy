@@ -104,6 +104,8 @@
                     </button>
                     @elseif(Auth::guard('foundations')->check())
                     <p style="color: red">*Harap lengkapi dokumen di menu profile sebelum membuat post</p>
+                    @elseif(Auth::check())
+                    <p style="color: red">*Harap melengkapi biodata di menu profile sebelum membuat post</p>
                     @endif
                 </div>
             </div>
