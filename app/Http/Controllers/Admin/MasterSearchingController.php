@@ -121,6 +121,9 @@ class MasterSearchingController extends Controller
             $rprt->IsTakenAction = 1;
             $rprt->save();
         }
+        $post = Post::where('PostID', $id)->first();
+        $post->StatusPostId = -1;
+        $post->save();
         $request->session()->flash('toastsuccess', 'Post telah diBan');
         return redirect('/postsearching');
     }
