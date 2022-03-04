@@ -91,7 +91,7 @@ class ForumController extends Controller
             if (Auth::guard('foundations')->user()->FoundationID == $Post->ID && $Post->RoleID == 2) {
                 $StatusPost = false;
             }
-            if(Auth::guard('foundations')->IsConfirmed != 1 ){
+            if(Auth::guard('foundations')->user()->IsConfirmed != 1 ){
                 $IsConfirm = false;
             }
         }
