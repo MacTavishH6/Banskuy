@@ -173,6 +173,18 @@
                 <div class="tab-pane fade" id="changepassword" role="tabpanel" aria-labelledby="changepassword-tab">
                     @include('Profile.Misc.component-form-changepassword')
                 </div>
+                <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                    @include('Profile.Misc.component-view-keamanan')
+                </div>
+                <div class="tab-pane fade" id="email" role="tabpanel" aria-labelledby="email-tab">
+                    @include('Profile.Misc.component-view-email')
+                </div>
+                <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+                    @include('Profile.Misc.component-view-tentang')
+                </div>
+                <div class="tab-pane fade" id="Help" role="tabpanel" aria-labelledby="Help-tab">
+                    @include('Profile.Misc.component-view-bantuan')
+                </div>
                 <div class="tab-pane fade" id="leveltracking" role="tabpanel" aria-labelledby="leveltracking-tab">
                     <div class="container">
                         @include('Profile.Misc.component-list-leveltracking')

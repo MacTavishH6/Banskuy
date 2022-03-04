@@ -1,4 +1,5 @@
 @foreach ($ItemTypeDetail->Post as $ItemPost)
+@if($ItemPost->StatusPostId != -1 )
 <div class="Post-Item mb-2 card-body mb-2">
     <div class="media mb-4 ">
         <img class="mr-3 d-block w-25 h-25" style="max-width: 25%;max-height: 25%"
@@ -27,6 +28,10 @@
                                 @elseif($ItemPost->StatusPostId == 2)
                                     <a class="btn btn-danger pb-2 pt-1 px-1" id="btnOpenDonation" href="#}">
                                         Post Ditutup
+                                    </a>  
+                                @elseif($ItemPost->StatusPostId == -1)
+                                    <a class="btn btn-danger pb-2 pt-1 px-1" id="btnOpenDonation" href="#}">
+                                        Post ini telah bekukkan, hubungi admin untuk bantuan
                                     </a>  
                                 @endif
                                 
@@ -99,4 +104,75 @@
     </div>
 
 </div>
+@elseif($ItemPost->StatusPostId == -1 && (Auth::id() == $ItemPost->ID && $ItemPost->RoleID == 1 || Auth::guard('foundations')->id() == $ItemPost->ID && $ItemPost->RoleID == 2) )
+<div class="Post-Item mb-2 card-body mb-2">
+    <div class="media mb-4 ">
+        <img class="mr-3 d-block w-25 h-25" style="max-width: 25%;max-height: 25%"
+            src="{{ env('FTP_URL') }}Forum/Post/{{$ItemPost->PostID}}/{{$ItemPost->PostPicture}}">
+        <div class="media-body">
+            <div class="d-flex">
+                <div class="mr-auto p-1">
+                    <h5><a href="#" class="PostTitle" style="color: black;text-decoration:none">{{$ItemPost->PostTitle}}</a></h5>
+                </div>
+                <div>
+                                @if($ItemPost->StatusPostId == -1)
+                                    <a class="btn btn-danger pb-2 pt-1 px-1" id="btnOpenDonation" href="#}">
+                                        Post ini telah bekukkan, hubungi admin untuk bantuan
+                                    </a>  
+                                @endif
+                                
+                                    
+                </div>
+            </div>
+            <div class="d-flex flex-column bd-highlight">
+                <div class="d-flex flex-row bd-highlight">
+                    <div class="p-1 bd-higlight mb-2 mr-4">
+                        Pembuat :
+                    </div>
+
+                    <div class="p-1 bd-higlight mb-2">
+                        @if ($ItemPost->RoleID == 1)
+                        {{$ItemPost->User->FirstName}} {{$ItemPost->User->LastName}}
+                        @else
+                        {{$ItemPost->Foundation->FoundationName}} 
+                        @endif
+                        
+                    </div>
+                </div>
+
+                <div class="d-flex flex-row bd-highlight">
+                    <div class="p-1 bd-higlight mb-2 mr-3">
+                        @if ($ItemTypeDetail->DonationTypeID == 1)
+                        Unit : 
+                        @elseif($ItemTypeDetail->DonationTypeID == 2)
+                        Jam :
+                        @else
+                        Uang :
+                        @endif
+                    </div>
+                    <div class="p-1 bd-higlight mb-2">
+                        @if ($ItemTypeDetail->DonationTypeID != 3)
+                        {{$ItemPost->Quantity + 0}} 
+                        @else
+                        {{$ItemPost->Quantity}} 
+                        @endif
+                        
+                    </div>
+                </div>
+
+                <div class="d-flex flex-row bd-highlight">
+                    <div class="p-1 bd-higlight mb-2 mr-1">
+                        Komentar :
+                    </div>
+                    <div class="p-1 bd-higlight mb-2">
+                        {{$ItemPost->Comment->count()}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@endif
+
 @endforeach
