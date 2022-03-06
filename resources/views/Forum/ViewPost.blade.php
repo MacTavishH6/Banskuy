@@ -400,7 +400,7 @@
                                                                 id="hapus-post" href="#"">
                                                                                                                     Hapus Post
                                                                                                                 </a> 
-                                        @elseif($Post->RoleID == 1 && Auth::guard('foundations') && Auth::guard('foundations')->id() == $Post->ID) 
+                                        @elseif($Post->RoleID == 2 && Auth::guard('foundations') && Auth::guard('foundations')->id() == $Post->ID) 
                                                                                                                 <a class="
                                                                 
                                                                 

@@ -64,6 +64,6 @@ class GeneratePdfController extends Controller
         //     ];
         $pdf = PDF::loadView('pdf_recapdonation', compact('data'));
 
-        return $pdf->download('Sertifikat_' . Carbon::now() . '_' . Auth::guard()->user()->FoundationName . '_' . date('Y') . 'Recap' . '.pdf');
+        return $pdf->download('Laporan_' . Carbon::now() . '_' . Auth::guard()->user()->FoundationName . '_' . date('Y') . 'Recap' . '.pdf');
     }
 }

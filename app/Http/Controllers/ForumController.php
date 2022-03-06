@@ -21,6 +21,7 @@ use App\Models\Foundation;
 use App\Models\HtrNotification;
 use App\Models\TrNotification;
 use Illuminate\Support\Facades\DB;
+use App\Models\DonationTransaction;
 
 
 class ForumController extends Controller
@@ -461,6 +462,12 @@ class ForumController extends Controller
     public function PostDelete(Request $request)
     {
         $post = Post::where('PostID', $request->PostDeleteID)->first();
+        //tambahan wira
+        $transaction = DonationTransaction::where('PostID', $post->PostID)->first();
+        if($transaction){
+            $request->session()->flash('toasterror', 'Post sudah memiliki sebuah transaksi dari donatur');
+            return redirect()->back();
+        }
         $comment = Comment::where('PostID', $post->PostID)->get();
         $like = Like::where('PostID', $post->PostID)->get();
         $path = $post->PostID . '/' . $post->PostPicture;
@@ -484,6 +491,12 @@ class ForumController extends Controller
     public function PostProfileDelete(Request $request)
     {
         $post = Post::where('PostID', $request->PostDeleteID)->first();
+        //tambahan wira
+        $transaction = DonationTransaction::where('PostID', $post->PostID)->first();
+        if($transaction){
+            $request->session()->flash('toasterror', 'Post sudah memiliki sebuah transaksi dari donatur');
+            return redirect()->back();
+        }
         $comment = Comment::where('PostID', $post->PostID)->get();
         $like = Like::where('PostID', $post->PostID)->get();
         $path = $post->PostID . '/' . $post->PostPicture;
