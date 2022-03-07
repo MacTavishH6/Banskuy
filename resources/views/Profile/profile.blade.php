@@ -95,7 +95,7 @@
                                             Profil</button>
                                     @elseif(Auth::check() || Auth::guard('foundations')->check())
                                         <div style="margin-left:10%">
-                                            <button class="text-white py-1 px-3 has-bio report-button"
+                                            <button class="text-white py-1 px-3 report-button"
                                             style="border-radius: 20px; background-color: #AC8FFF; border: none;"
                                             data-toggle="modal" data-target="#mdlMakeReport"
                                             onclick="btnMakeReportOnClick()">Laporkan</button>

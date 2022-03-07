@@ -101,7 +101,7 @@
                                         Profil</button>
                                     <button class="text-white py-1 px-3 donation-approval"
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;">Persetujuan Donasi</button>
-                                @else
+                                @elseif(Auth::guard('foundations')->check() || Auth::check())
                                     {{-- <button class="text-white py-1 px-3"
                                         style="border-radius: 20px; background-color: #AC8FFF; border: none;">Hubungi
                                         Sekarang</button> --}}

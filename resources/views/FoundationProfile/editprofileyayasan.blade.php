@@ -147,6 +147,18 @@
                 <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
                     @include('FoundationProfile.FoundationMisc.component-form-document')
                 </div>
+                <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                    @include('FoundationProfile.FoundationMisc.component-view-keamanan')
+                </div>
+                <div class="tab-pane fade" id="email" role="tabpanel" aria-labelledby="email-tab">
+                    @include('FoundationProfile.FoundationMisc.component-view-email')
+                </div>
+                <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+                    @include('FoundationProfile.FoundationMisc.component-view-tentang')
+                </div>
+                <div class="tab-pane fade" id="Help" role="tabpanel" aria-labelledby="Help-tab">
+                    @include('FoundationProfile.FoundationMisc.component-view-bantuan')
+                </div>
             </div>
         </div>
     </div>
