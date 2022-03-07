@@ -128,6 +128,12 @@ class LoginController extends Controller
                 }
             }
 
+            if($isRemember == true){
+                $minute = 120;
+                $rememberToken = Auth::getRecallerName();
+                Cookie::queue($rememberToken,Cookie::get($rememberToken),$minute);
+            }
+
             return $this->showLoginForm();
         }
         else return redirect('/foundationlogin')->with('failed',"Email atau password salah");    
