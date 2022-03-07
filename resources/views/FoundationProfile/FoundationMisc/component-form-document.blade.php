@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>--}}
-    @if(!$foundation->document)
+    @if(count($foundation->document)<2)
     <div class="form-row py-1">
         <div class="col-4">
             <label for="FirstName">Sertifikat Yayasan</label>
