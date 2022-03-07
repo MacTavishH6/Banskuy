@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class ReportController extends Controller
 {
     public function MakeReport($postId,Request $request){
-        if(Auth::check()){
+        if(!Auth::guard('foundations')->check()){
             $sourceId = Auth::user()->UserID;
             $sourceRole = 1;
         }
@@ -38,7 +38,7 @@ class ReportController extends Controller
 
 
     public function MakeReportUser(Request $request){
-        if(Auth::check()){
+        if(!Auth::guard('foundations')->check()){
             $sourceId = Auth::user()->UserID;
             $sourceRole = 1;
         }

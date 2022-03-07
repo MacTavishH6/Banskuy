@@ -23,6 +23,7 @@
                         {{ date('h:i A', strtotime($post->created_at)) }}</h6>
                 </div>
             </div>
+            @if(Auth::check() && Auth::user()->UserID == $post->ID && $post->RoleID == 1)
             <div class="col-md-1">
                 <div class="btn-group dropleft">
                     <a href="#" style="color: black" role="button" id="btnAction-{{$post->PostID}}" data-toggle="dropdown"
@@ -36,6 +37,7 @@
                 </div>
                 <input type="hidden" id="ddlActionStatus-{{$post->PostID}}" value="hide">
             </div>
+            @endif
         </div>
     @endforeach
     {{ $posts->links() }}
