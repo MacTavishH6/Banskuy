@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Foundation;
 use App\Models\User;
+use App\Models\BannedAccount;
+use Carbon\Carbon;
+use DateTime;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Validator;
@@ -35,7 +38,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = ("/LandingPage/landingpage");
+    protected $redirectTo = ("/");
 
     /**
      * Create a new controller instance.
@@ -63,7 +66,7 @@ class LoginController extends Controller
 
     public function login(Request $request){
         $validated = $this->validateLoginRequest($request);
-        
+
         if ($validated->fails()) return redirect()->back()->withInput($request->all())->withErrors($validated->errors());
 
         $credential = $request->only('email','password');        
@@ -72,8 +75,26 @@ class LoginController extends Controller
         if($request->rememberMe != null) $isRemember = true;
 
         Auth::attempt($credential,$isRemember);
-
+  
         if(Auth::check()){
+            
+            if(Auth::user()->EmailVerified != 1){
+                Auth::logout();
+                return redirect('/login')->with('failed',"Silahkan verifikasi email anda terlebih dahulu"); 
+            }
+
+            $banned = BannedAccount::where([['ID',Auth::user()->UserID],['RoleID','1']])->first();
+            
+            if($banned!=NULL){
+                $timenow = strtotime(Carbon::now()->toDateTimeString());
+                $timeban = strtotime($banned->created_at);
+                $totalhourban = abs($timenow - $timeban)/(60*60);
+
+                if($totalhourban < $banned->BanDuration){
+                    Auth::logout();
+                    return redirect('/login')->with('failed',"Akun anda sedang diblokir oleh sistem, silahkan tunggu sampai akun anda bisa diakses lagi");
+                }
+            }
 
             if($isRemember == true){
                 $minute = 120;
@@ -82,24 +103,40 @@ class LoginController extends Controller
             }
             return $this->showLoginForm();
         }
-        else return redirect('/login')->with('failed',"Invalid email or password");
+        else return redirect('/login')->with('failed',"Email atau password salah");
     }
 
     public function loginFoundation(Request $request){
-        $foundation = Foundation::where('Email', $request->email)->first();
-        
-        //$result = Hash::check($request->password, $foundation->Password);
-        
         $credential = $request->only('email','password');
 
-            // $guard = Auth::guard('foundations');
-            // auth()->guard($guard)->login();
-            if(Auth::guard('foundations')->attempt($credential)){
-                return $this->showLoginForm();
-            }else dd(Auth::guard('foundations')->attempt($credential));
- 
-     
-        
+        if(Auth::guard('foundations')->attempt($credential)){
+            if(Auth::guard('foundations')->user()->EmailVerified != 1){
+                Auth::guard('foundations')->logout();
+                return redirect('/foundationlogin')->with('failed',"Silahkan verifikasi email anda terlebih dahulu"); 
+            }
+
+            $banned = BannedAccount::where([['ID',Auth::guard('foundations')->user()->FoundationID],['RoleID','2']])->first();
+            
+            if($banned!=NULL){
+                $timenow = strtotime(Carbon::now()->toDateTimeString());
+                $timeban = strtotime($banned->created_at);
+                $totalhourban = abs($timenow - $timeban)/(60*60);
+                
+                if($totalhourban < $banned->BanDuration){
+                    Auth::guard('foundations')->logout();
+                    return redirect('/foundationlogin')->with('failed',"Akun anda sedang diblokir oleh sistem, silahkan tunggu sampai akun anda bisa diakses lagi");
+                }
+            }
+
+            if($isRemember == true){
+                $minute = 120;
+                $rememberToken = Auth::getRecallerName();
+                Cookie::queue($rememberToken,Cookie::get($rememberToken),$minute);
+            }
+
+            return $this->showLoginForm();
+        }
+        else return redirect('/foundationlogin')->with('failed',"Email atau password salah");    
     }
 
     public function showLoginForm(){
@@ -117,6 +154,7 @@ class LoginController extends Controller
     public function logout(){
         Auth::logout();
         Auth::guard('foundations')->logout();
+        Auth::guard('admin')->logout();
         return redirect('/login');
     } 
 }

@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/';
 
     /**
      * The controller namespace for the application.
@@ -26,7 +26,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string|null
      */
-    // protected $namespace = 'App\\Http\\Controllers';
+    //protected $namespace = 'App\\Http\\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -36,7 +36,9 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
-
+        $this->mapDonateRoutes();
+        $this->mapFoundationRoutes();
+        $this->mapAdminRoutes();
         $this->routes(function () {
             Route::prefix('api')
                 ->middleware('api')
@@ -46,11 +48,6 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
-
-            Route::domain('foundation.' . env('APP_URL'))
-                ->middleware('foundations')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/foundations.php'));
         });
     }
 
@@ -64,5 +61,41 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
+    }
+
+    /**
+     * Configure routes donatur
+     * 
+     * @return void
+     */
+    protected function mapDonateRoutes()
+    {
+        Route::domain('donate.' . env('APP_URL'))->middleware(['web', 'donates'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/donate.php'));
+    }
+
+    /**
+     * Configure routes donatur
+     * 
+     * @return void
+     */
+    protected function mapFoundationRoutes()
+    {
+        Route::domain('foundation.' . env('APP_URL'))->middleware(['web', 'foundations'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/foundations.php'));
+    }
+
+    /**
+     * Configure routes donatur
+     * 
+     * @return void
+     */
+    protected function mapAdminRoutes()
+    {
+        Route::domain('admin.' . env('APP_URL'))->middleware(['web'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/admin.php'));
     }
 }

@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class DonationTransaction extends Model
 {
     protected $table = 'trdonationtransaction';
+    protected $primaryKey = 'DonationTransactionID';
 
     public function User(){
         return $this->belongsTo(User::class,'UserID','UserID');
     }
 
     public function Foundation(){
-        return $this->belongsTo(Foundation::class,'FoudationID','FoundationID');
+        return $this->hasOne(Foundation::class, 'FoundationID','FoundationID');
     }
 
     public function DonationTypeDetail(){
@@ -22,5 +23,14 @@ class DonationTransaction extends Model
 
     public function ApprovalStatus(){
         return $this->hasOne(ApprovalStatus::class,'ApprovalStatusID','ApprovalStatusID');
+    }
+
+    public function Post()
+    {
+        return $this->hasOne(Post::class, 'PostID', 'PostID');
+    }
+
+    public function Documentation(){
+        return $this->hasOne(Documentation::class,'DocumentationID','DocumentationID');
     }
 }

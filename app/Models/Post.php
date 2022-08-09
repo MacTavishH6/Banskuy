@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $table = "mspost";
+    protected $primaryKey = "PostID";
 
     public function DonationTypeDetail() {
         return $this->hasOne(DonationTypeDetail::class,'DonationTypeDetailID','DonationTypeDetailID');
@@ -20,8 +21,16 @@ class Post extends Model
         return $this->hasOne(User::class,'UserID','ID');
     }
 
+    public function Foundation(){
+        return $this->hasOne(Foundation::class,'FoundationID','ID');
+    }
+
     public function Like(){
         return $this->hasMany(Like::class,'PostID','PostID');
+    }
+
+    public function Comment(){
+        return $this->hasMany(Comment::class,'PostID','PostID');
     }
 
 }

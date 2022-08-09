@@ -17,4 +17,8 @@ class Users extends Model implements
     CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
+
+    public function getAuthPassword(){
+        return $this->Password;
+    }
 }

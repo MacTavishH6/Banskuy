@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewResetPasswordMail;
 use App\Models\Address;
+use App\Models\DonationTransaction;
 use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\MessageBag;
 
@@ -24,9 +27,10 @@ class ProfileController extends Controller
     {
         $id = Crypt::decrypt($id);
         $user = User::where('UserID', $id)->with('UserLevel.LevelGrade')->with('Photo')->first();
-        $post = Post::where('ID', $id)->get();
-        $documentation = UserDocumentation::where('ID', $id)->with('Documentation')->get();
-        return view('Profile.profile', ['user' => $user, 'post' => $post, 'documentation' => $documentation]);
+        $user->UserLevel = $user->UserLevel->reverse();
+        $post = Post::where([['ID', $id], ['RoleID', '1']])->paginate(10);
+        $donationTransaction = DonationTransaction::where([['UserID', $id], ['ApprovalStatusID', 5]])->with('Documentation.DocumentationPhoto')->paginate(10);
+        return view('Profile.profile', ['user' => $user, 'posts' => $post, 'donationTransaction' => $donationTransaction]);
     }
 
     public function GetProfile($id)
@@ -101,8 +105,9 @@ class ProfileController extends Controller
         $user->Email = $request->Email;
         $user->PhoneNumber = $request->PhoneNumber;
         $user->updated_at = date('Y-m-d H:i:s');
-        $address = Address::where('ID', $user->UserID)->first();
-        if (!$address) {
+        $user->IsConfirmed = 1;
+        $address = Address::where('AddressID', $user->AddressID)->first();
+        if (!$user->AddressID || !$address) {
             $address = new Address();
             $address->ID = $user->UserID;
             $address->created_at = date('Y-m-d H:i:s');
@@ -112,6 +117,7 @@ class ProfileController extends Controller
         $address->CityID = $request->City;
         $address->save();
         $user->AddressID = $address->AddressID;
+        $user->save();
         $request->session()->flash('toastsuccess', 'Profile updated successfully');
         return redirect()->action('App\Http\Controllers\ProfileController@editprofile', ['id' => Crypt::encrypt($id)]);
     }
@@ -140,15 +146,25 @@ class ProfileController extends Controller
             return redirect()->back()->withErrors($validator->errors());
         }
         // Tambahin send email
-
-        return redirect()->action('App\Http\Controllers\ProfileController@editprofile', ['id' => $request->UserID]);
+        $newPassword = $request->NewPassword;
+        $user->Password = Hash::make($newPassword);
+        $user->save();
+        Auth::login($user);
+        Mail::to($user->Email)->send(new NewResetPasswordMail($newPassword));
+        Session::flash(
+            'toastsuccess',
+            'Password telah disetel ulang, silahkan cek email anda'
+        );
+        Auth::logout();
+        return redirect('/login');
+        // return redirect()->action('App\Http\Controllers\ProfileController@editprofile', ['id' => $request->UserID]);
     }
 
     public function UpdateProfilePicture(Request $request)
     {
         $hashed = Hash::make(Crypt::decrypt($request->UserID));
-        $hashed = str_replace('\\',';',$hashed);
-        $hashed = str_replace('/',';',$hashed);
+        $hashed = str_replace('\\', ';', $hashed);
+        $hashed = str_replace('/', ';', $hashed);
         $filename = $hashed . '.' . $request->file('ProfilePicture')->getClientOriginalExtension();
         $ftp = ftp_connect(env('FTP_SERVER'));
         $login_result = ftp_login($ftp, env('FTP_USERNAME'), env('FTP_PASSWORD'));
@@ -196,5 +212,13 @@ class ProfileController extends Controller
         ftp_close($ftp);
         $request->session()->flash('toastsuccess', 'Profile picture has been deleted');
         return redirect()->action('App\Http\Controllers\ProfileController@profile', ['id' => $request->UserID]);
+    }
+
+    public function GetUserListPost($id)
+    {
+        $id = Crypt::decrypt($id);
+        $post = Post::where([["ID", $id], ["RoleID", "1"]])->get();
+        $response = ['payload' => $post];
+        return response()->json($response);
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Address extends Model
 {
     protected $table = "msaddress";
+    protected $primaryKey = "AddressID";
 
     public function Province() {
         return $this->hasOne(Province::class,'ProvinceID','ProvinceID');

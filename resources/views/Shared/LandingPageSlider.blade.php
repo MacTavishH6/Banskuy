@@ -25,21 +25,21 @@
     </ol>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img1.png" alt="First slide">
+            <img src="{{env("FTP_URL")}}Forum/image/img1.png" alt="First slide" onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Yayasan Mutiara Bunda</h5>
                 <p>anak anak sedang belajar matematika dasar dengan kakak pembina</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img2.jpg" alt="Second slide">
+            <img src="{{env("FTP_URL")}}Forum/image/img2.jpg" alt="Second slide" onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Yayasan Mutiara Bunda</h5>
                 <p>Proses Pemberian Donasi oleh salah satu donatur melalui Banskuy.com</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="https://banskuy.com/banskuy.com/Basnkuy2022/Forum/image/img3.jpg" alt="Third slide">
+            <img src="{{env("FTP_URL")}}Forum/image/img3.jpg" alt="Third slide" onerror="this.onerror==null;this.src='{{ env('FTP_URL') }}assets/Smiley.png'">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Yayasan Mutiara Bunda</h5>
                 <p>Kegiatan mengasah kemampuan diri anak anak Yayasan Mutiara Bunda</p>

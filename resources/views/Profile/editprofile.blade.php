@@ -127,21 +127,63 @@
             transition: all .2s ease;
         }
 
+        #buttonShowEdit {
+            display: none;
+        }
+
+        #edit-navbar {
+            display: block;
+        }
+
+        @media (max-width: 767px) {
+            #buttonShowEdit {
+                display: block;
+            }
+
+            #edit-navbar {
+                position: absolute;
+                z-index: 2;
+                display: none;
+            }
+        }
+
+        @media (min-width: 767px) {
+            #edit-navbar {
+                display: block;
+            }
+        }
+
     </style>
 @endsection
 
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-4 p-0" style="width: 100vp;background-color: #AC8FFF;">
+            <div class="col-4 p-0" style="width: 100vp;background-color: #AC8FFF;" id="edit-navbar">
                 @include('Shared._sidebar-edit')
+
             </div>
-            <div class="tab-content col-8 my-3" id="myTabContent">
+            <button class="btn btn-secondary col-1 align-self-start px-1 py-3" id="buttonShowEdit" type="button">
+                <span>&#9776;</span>
+            </button>
+            <div class="tab-content col-md-8 my-3" id="myTabContent">
                 <div class="tab-pane fade show active" id="editprofile" role="tabpanel" aria-labelledby="editprofile-tab">
                     @include('Profile.Misc.component-form-editprofile', ['user' => $user])
                 </div>
                 <div class="tab-pane fade" id="changepassword" role="tabpanel" aria-labelledby="changepassword-tab">
                     @include('Profile.Misc.component-form-changepassword')
+                </div>
+                <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                    @include('Profile.Misc.component-view-keamanan')
+                </div>
+                <div class="tab-pane fade" id="email" role="tabpanel" aria-labelledby="email-tab">
+                    @include('Profile.Misc.component-view-email')
+                </div>
+                <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+                    @include('Profile.Misc.component-view-tentang')
+                </div>
+                <div class="tab-pane fade" id="Help" role="tabpanel" aria-labelledby="Help-tab">
+                    @include('Profile.Misc.component-view-bantuan')
                 </div>
                 <div class="tab-pane fade" id="leveltracking" role="tabpanel" aria-labelledby="leveltracking-tab">
                     <div class="container">
@@ -167,25 +209,25 @@
                         <div class="file-upload">
                             <input type="hidden" name="UserID" value="{{ Crypt::encrypt($user->UserID) }}">
                             <button class="file-upload-btn" type="button"
-                                onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+                                onclick="$('.file-upload-input').trigger( 'click' )">Tambah Foto</button>
 
                             <div class="image-upload-wrap">
                                 <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*"
                                     name="ProfilePicture" />
                                 <div class="drag-text">
-                                    <h3>Photo Preview</h3>
+                                    <h3>Pratinjau Foto</h3>
                                 </div>
                             </div>
                             <div class="file-upload-content">
                                 <img class="file-upload-image" src="#" alt="your image" />
                                 <div class="image-title-wrap">
-                                    <button type="button" onclick="removeUpload()" class="remove-image">Remove <span
-                                            class="image-title">Uploaded Image</span></button>
+                                    <button type="button" onclick="removeUpload()" class="remove-image">Hapus <span
+                                            class="image-title">Foto</span></button>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn-banskuy text-white">Upload</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn-banskuy text-white">Unggah</button>
                     </form>
                 </div>
             </div>
@@ -206,12 +248,12 @@
                         @csrf
                         @method('DELETE')
                         <div class="form-row">
-                            <label>Are you sure you want to delete Profile Photo ?</label>
+                            <label>Anda yakin ingin menghapus Foto ?</label>
                             <input type="hidden" name="UserID" value="{{ Crypt::encrypt($user->UserID) }}">
                         </div>
                         <div class="form-row">
-                            <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-danger text-white">Delete</button>
+                            <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger text-white">Hapus</button>
                         </div>
                     </form>
                 </div>
@@ -223,73 +265,69 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            $("ul#editTab li.nav-item a.nav-link").on('click', function() {
+                $("#edit-navbar").css("display","");
+            });
+            $("#buttonShowEdit").on('click', function() {
+                $("#edit-navbar").show();
+            });
             var passwordError = <?php echo ($errors->any() && $errors->has('NewPassword')) || $errors->has('OldPassword') ? json_encode($errors) : '""'; ?>;
             if (passwordError) $("#changepassword-tab").click();
             var user;
-            $.ajax({
-                url: '/getprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>,
-                type: 'GET',
-                success: function(data) {
+            banskuy.getReq('/getprofile/' + <?php echo '"' . Crypt::encrypt($user->UserID) . '"'; ?>)
+                .then(function(data) {
                     user = data.payload;
-                    console.log(user);
-                },
-                complete: function() {
-                    $.ajax({
-                        url: '/getprovince',
-                        type: 'GET',
-                        success: function(data) {
-                            var option = document.getElementById("Province");
+                })
+                .finally(function() {
+                    banskuy.getReq('/getprovince')
+                        .then(function(data) {
+                            var optionProvince = document.getElementById("Province");
                             let newOption = new Option('', '');
-                            option.add(newOption, undefined);
+                            optionProvince.add(newOption, undefined);
                             data.msg.forEach(element => {
                                 let newOption = new Option(element.ProvinceName,
                                     element.ProvinceID);
-                                option.add(newOption, undefined);
+                                optionProvince.add(newOption, undefined);
                             });
                             if (user.address) {
-                                $(option).val(user.address.ProvinceID);
+                                $(optionProvince).val(user.address.ProvinceID);
                             }
-                            if ($(option).val()) {
+                            if ($(optionProvince).val()) {
                                 $("#City").prop("disabled", false);
                                 $("#City").empty();
-                                $.ajax({
-                                    url: '/getcity/' + $(option).val(),
-                                    type: 'GET',
-                                    success: function(data) {
-                                        var option = document.getElementById(
+                                banskuy.getReq('/getcity/' + $(optionProvince).val())
+                                    .then(function(data) {
+                                        var optionCity = document.getElementById(
                                             "City");
                                         let newOption = new Option('', '');
-                                        option.add(newOption, undefined);
+                                        optionCity.add(newOption, undefined);
                                         data.msg.forEach(element => {
                                             let newOption = new Option(
                                                 element
                                                 .CityName, element
                                                 .CityID);
-                                            option.add(newOption,
+                                            optionCity.add(newOption,
                                                 undefined);
                                         });
                                         if (user.address) {
-                                            $(option).val(user.address.CityID);
+                                            $(optionCity).val(user.address.CityID);
                                         }
-                                    }
-                                });
+                                    })
                             } else {
                                 $("#City").prop("disabled", true);
                             }
-                            $(option).on('change', function() {
+                            $(optionProvince).on('change', function() {
                                 if ($(this).val()) {
                                     $("#City").prop("disabled", false);
                                     $("#City").empty();
-                                    $.ajax({
-                                        url: '/getcity/' + $(this).val(),
-                                        type: 'GET',
-                                        success: function(data) {
-                                            var option = document
+                                    banskuy.getReq('/getcity/' + $(this).val())
+                                        .then(function(data) {
+                                            var optionCity = document
                                                 .getElementById(
                                                     "City");
                                             let newOption = new Option(
                                                 '', '');
-                                            option.add(newOption,
+                                            optionCity.add(newOption,
                                                 undefined);
                                             data.msg.forEach(
                                                 element => {
@@ -300,28 +338,24 @@
                                                             element
                                                             .CityID
                                                         );
-                                                    option.add(
+                                                    optionCity.add(
                                                         newOption,
                                                         undefined
                                                     );
                                                 });
                                             if (user.address) {
-                                                $(option).val(user
+                                                $(optionCity).val(user
                                                     .address.CityID);
                                                 // console.log(option);
                                             }
-                                        }
-                                    });
+                                        })
                                 } else {
                                     $("#City").prop("disabled", true);
                                     $("#City").empty();
                                 }
                             });
-                        }
-                    });
-                }
-
-            })
+                        })
+                });
             $("#editphoto").on('click', function() {
                 event.preventDefault();
                 $("#form-file").modal();

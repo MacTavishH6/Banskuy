@@ -43,6 +43,10 @@ return [
         'foundations' => [
             'driver' => 'session',
             'provider' => 'foundations',
+        ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin',
         ]
     ],
 
@@ -72,6 +76,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Foundation::class,
         ],
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -100,6 +108,12 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        'foundations'=> [
+            'provider' => 'foundations',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ]
     ],
 
     /*
